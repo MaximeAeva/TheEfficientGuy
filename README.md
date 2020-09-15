@@ -1,7 +1,7 @@
 ﻿# The Efficient Guy
 > A full integrated task management and optimization tool
 
-![ThisIsIt](https://github.com/MaximeAeva/Dropplet/blob/master/res/hello.PNG)
+![ThisIsIt](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.PNG)
 
 ## Installation
 Windows:
