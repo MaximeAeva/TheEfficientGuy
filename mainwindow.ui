@@ -39,6 +39,19 @@
         <string>Kanban</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0" rowspan="3">
+         <widget class="QGroupBox" name="ideas">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Ideas</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QPushButton" name="adder">
           <property name="sizePolicy">
@@ -78,8 +91,8 @@ QPushButton:pressed{
           </property>
          </widget>
         </item>
-        <item row="1" column="0" rowspan="3">
-         <widget class="QGroupBox" name="ideas">
+        <item row="1" column="3" rowspan="3">
+         <widget class="QGroupBox" name="standby">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -87,7 +100,7 @@ QPushButton:pressed{
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Ideas</string>
+           <string>StandBy</string>
           </property>
          </widget>
         </item>
@@ -115,19 +128,7 @@ QPushButton:pressed{
           <property name="title">
            <string>InProgress</string>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="3" rowspan="3">
-         <widget class="QGroupBox" name="standby">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>StandBy</string>
-          </property>
+          <layout class="QVBoxLayout" name="verticalLayout"/>
          </widget>
         </item>
        </layout>

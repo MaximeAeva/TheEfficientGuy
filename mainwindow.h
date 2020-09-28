@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGroupBox>
 #include "task.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,5 +22,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    void addWidgetToBox(QGroupBox *gb, QWidget *w);
 };
 #endif // MAINWINDOW_H

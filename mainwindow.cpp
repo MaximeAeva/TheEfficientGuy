@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->todo->setAcceptDrops(true);
     ui->inprogress->setAcceptDrops(true);
     ui->standby->setAcceptDrops(true);
+    setAcceptDrops(true);
 
 }
 
@@ -23,14 +24,20 @@ void MainWindow::createTask()
 {
     task *w = new task(this);
     w->setVisible(true);
-    if(ui->todo->layout()) ui->todo->layout()->addWidget(w);
+    addWidgetToBox(ui->todo, w);
+}
+
+void MainWindow::addWidgetToBox(QGroupBox *gb, QWidget *w)
+{
+    if(gb->layout()) gb->layout()->addWidget(w);
     else
     {
         QVBoxLayout *vbox = new QVBoxLayout;
         vbox->addWidget(w);
         vbox->stretch(1);
-        ui->todo->setLayout(vbox);
+        gb->setLayout(vbox);
     }
-
 }
+
+
 
