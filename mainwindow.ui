@@ -13,12 +13,18 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(25, 52, 65);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QToolBox" name="toolBox">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(145, 170, 180);</string>
+      </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -32,30 +38,93 @@
        <attribute name="label">
         <string>Kanban</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QGroupBox" name="groupBox">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="adder">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
+font: 87 14pt &quot;Arial Black&quot;;
+border-color: rgb(25, 52, 65);
+color: rgb(25, 52, 65);
+background-color: rgb(203, 219, 215);
+border : 2px solid;
+border-radius : 15px;
+height : 1em;
+width : 1em;
+}
+
+QPushButton:hover{
+	background-color: rgb(25, 52, 65);
+	color: rgb(203, 219, 215);
+	border-color: rgb(203, 219, 215);
+}
+
+QPushButton:pressed{
+	background-color: rgb(203, 219, 215);
+	color: rgb(25, 52, 65);
+	border-color: rgb(25, 52, 65);
+}
+
+</string>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" rowspan="3">
+         <widget class="QGroupBox" name="ideas">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Ideas</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_2">
+        <item row="1" column="1" rowspan="3">
+         <widget class="QGroupBox" name="todo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>Todo</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_3">
+        <item row="1" column="2" rowspan="3">
+         <widget class="QGroupBox" name="inprogress">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>InProgress</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_4">
+        <item row="1" column="3" rowspan="3">
+         <widget class="QGroupBox" name="standby">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title">
            <string>StandBy</string>
           </property>
@@ -77,11 +146,27 @@
        </attribute>
       </widget>
       <widget class="QWidget" name="page_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>782</width>
+         <height>427</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Charge</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="page_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>782</width>
+         <height>427</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Parameters</string>
        </attribute>
