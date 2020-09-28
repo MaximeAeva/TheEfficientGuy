@@ -51,8 +51,7 @@ void task::mouseMoveEvent(QMouseEvent *event)
 
 void task::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-item"))
-        event->acceptProposedAction();
+    event->acceptProposedAction();
 }
 
 void task::dropEvent(QDropEvent *event)

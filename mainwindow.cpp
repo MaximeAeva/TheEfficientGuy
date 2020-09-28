@@ -39,5 +39,19 @@ void MainWindow::addWidgetToBox(QGroupBox *gb, QWidget *w)
     }
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    event->acceptProposedAction();
+    if(event->pos().x()<ui->todo->pos().x())
+    {
+        addWidgetToBox(ui->ideas, QWidget w);
+    }
+}
+
 
 

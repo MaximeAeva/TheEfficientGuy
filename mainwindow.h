@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGroupBox>
 #include "task.h"
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,5 +24,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     void addWidgetToBox(QGroupBox *gb, QWidget *w);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 };
 #endif // MAINWINDOW_H
