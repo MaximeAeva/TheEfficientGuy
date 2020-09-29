@@ -24,7 +24,5 @@ public slots:
 private:
     Ui::MainWindow *ui;
     void addWidgetToBox(QGroupBox *gb, QWidget *w);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
 };
 #endif // MAINWINDOW_H
