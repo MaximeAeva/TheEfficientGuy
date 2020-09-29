@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    task.cpp
+    task.cpp \
+    tray.cpp
 
 HEADERS += \
     mainwindow.h \
-    task.h
+    task.h \
+    tray.h
 
 FORMS += \
     mainwindow.ui

@@ -17,8 +17,8 @@
    <string notr="true">background-color: rgb(25, 52, 65);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
      <widget class="QToolBox" name="toolBox">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(145, 170, 180);</string>
@@ -38,30 +38,23 @@
        <attribute name="label">
         <string>Kanban</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0" rowspan="3">
-         <widget class="QGroupBox" name="ideas">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Ideas</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="adder">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+       <widget class="QPushButton" name="adder">
+        <property name="geometry">
+         <rect>
+          <x>375</x>
+          <y>198</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
 font: 87 14pt &quot;Arial Black&quot;;
 border-color: rgb(25, 52, 65);
 color: rgb(25, 52, 65);
@@ -85,53 +78,11 @@ QPushButton:pressed{
 }
 
 </string>
-          </property>
-          <property name="text">
-           <string>+</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3" rowspan="3">
-         <widget class="QGroupBox" name="standby">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>StandBy</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" rowspan="3">
-         <widget class="QGroupBox" name="todo">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Todo</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2" rowspan="3">
-         <widget class="QGroupBox" name="inprogress">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>InProgress</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout"/>
-         </widget>
-        </item>
-       </layout>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_2">
        <property name="geometry">

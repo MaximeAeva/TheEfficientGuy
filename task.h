@@ -12,6 +12,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QMouseEvent>
+#include <QMoveEvent>
 #include <QPoint>
 #include <QApplication>
 #include <QDrag>
@@ -23,6 +24,7 @@
 #include <QPushButton>
 #include <QProgressBar>
 #include <QSlider>
+#include <QSpinBox>
 
 class task: public QDockWidget
 {
@@ -51,5 +53,7 @@ private:
     QString title = "New task";
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 };
 #endif // TASK_H

@@ -2,9 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QGroupBox>
-#include "task.h"
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <iostream>
+#include "task.h"
+#include "tray.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +26,11 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    void addWidgetToBox(QGroupBox *gb, QWidget *w);
+    void designPage();
+    tray *t1 = new tray("Ideas");
+    tray *t2 = new tray("ToDo");
+    tray *t3 = new tray("InProgress");
+    tray *t4 = new tray("StandBy");
+    QPushButton *adder = new QPushButton;
 };
 #endif // MAINWINDOW_H

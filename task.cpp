@@ -44,6 +44,8 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     QPushButton *button = new QPushButton;
     QSlider *slide = new QSlider;
     QLabel *slideVal = new QLabel;
+    QSpinBox *spin = new QSpinBox;
+    spin->setValue(this->duration);
     connect(slide, SIGNAL(valueChanged(int)), slideVal, SLOT(setNum(int)));
     secondLay->addWidget(slideVal);
     secondLay->addWidget(slide);
@@ -63,6 +65,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     layout->addWidget(t3, 2, 0);
     layout->addItem(secondLay, 2, 1);
     layout->addWidget(t4, 3, 0);
+    layout->addWidget(spin, 3, 1);
     layout->addWidget(button, 4, 0);
     d->setLayout(layout);
     d->setWindowTitle("Contenu");
@@ -87,7 +90,8 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
             connect(c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));
             connect(b, SIGNAL(clicked()), this, SLOT(remove(b)));
         }
-        if((slide->value())!=priority) priority = slide->value();
+        this->priority = slide->value();
+        this->duration = spin->value();
         color();
     }
 }
@@ -127,3 +131,24 @@ void task::color()
     }
 }
 
+void task::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+            dragStartPosition = event->pos();
+}
+
+void task::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!(event->buttons() & Qt::LeftButton))
+           return;
+       if ((event->pos() - dragStartPosition).manhattanLength()
+            < QApplication::startDragDistance())
+           return;
+
+       QDrag *drag = new QDrag(this);
+       QMimeData *mimeData = new QMimeData;
+       QByteArray q_b;
+       q_b.setNum(this->wdwId);
+       mimeData->setData("application/x-item", q_b);
+       drag->setMimeData(mimeData);
+}
