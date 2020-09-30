@@ -23,5 +23,5 @@ void tray::dragLeaveEvent(QDragLeaveEvent *event)
 }
 void tray::dropEvent(QDropEvent *event)
 {
-    event->acceptProposedAction();
+    this->layout->addWidget(static_cast<QWidget *>(event->source()));
 }

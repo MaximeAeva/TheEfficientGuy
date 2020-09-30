@@ -26,6 +26,8 @@
 #include <QSlider>
 #include <QSpinBox>
 
+#include "target.h"
+
 class task: public QDockWidget
 {
     Q_OBJECT
@@ -37,12 +39,12 @@ public:
 
 public slots:
     void completionVal(int i);
-    void remove(QPushButton *b);
+    void deleteTarget();
     void color();
 
 private:
     int wdwId = 0;
-    int priority = 1;
+    int priority = 0;
     int duration = 0;
     int group = 0;
     int itemCount = 0;

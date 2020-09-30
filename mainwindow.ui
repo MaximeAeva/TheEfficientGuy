@@ -14,14 +14,14 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(25, 52, 65);</string>
+   <string notr="true">background-color: rgb(48, 56, 58);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(145, 170, 180);</string>
+       <string notr="true">background-color: rgb(166, 192, 198);</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -38,51 +38,6 @@
        <attribute name="label">
         <string>Kanban</string>
        </attribute>
-       <widget class="QPushButton" name="adder">
-        <property name="geometry">
-         <rect>
-          <x>375</x>
-          <y>198</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{
-font: 87 14pt &quot;Arial Black&quot;;
-border-color: rgb(25, 52, 65);
-color: rgb(25, 52, 65);
-background-color: rgb(203, 219, 215);
-border : 2px solid;
-border-radius : 15px;
-height : 1em;
-width : 1em;
-}
-
-QPushButton:hover{
-	background-color: rgb(25, 52, 65);
-	color: rgb(203, 219, 215);
-	border-color: rgb(203, 219, 215);
-}
-
-QPushButton:pressed{
-	background-color: rgb(203, 219, 215);
-	color: rgb(25, 52, 65);
-	border-color: rgb(25, 52, 65);
-}
-
-</string>
-        </property>
-        <property name="text">
-         <string>+</string>
-        </property>
-       </widget>
       </widget>
       <widget class="QWidget" name="page_2">
        <property name="geometry">

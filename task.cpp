@@ -5,7 +5,9 @@ task::task(QWidget *parent) :
 {
     ResID++;
     wdwId = ResID;
-    setStyleSheet( "QWidget{ background-color : rgba( 160, 160, 160, 255); border-radius : 7px;  }" );
+    this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
+    completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
+    lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
     this->setWindowTitle(title);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     completion->setOrientation(Qt::Horizontal);
@@ -51,7 +53,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     secondLay->addWidget(slide);
     slide->setValue(priority);
     slide->setMaximum(5);
-    slide->setMinimum(1);
+    slide->setMinimum(0);
     slide->setOrientation(Qt::Horizontal);
     t1->setText("Titre");
     t2->setText("Tâche");
@@ -77,18 +79,11 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         if(!task->text().isEmpty())
         {
             itemCount++;
-            QHBoxLayout *lays = new QHBoxLayout;
-            QCheckBox *c = new QCheckBox;
-            QPushButton *b = new QPushButton;
-            b->setText("X");
-            b->setStyleSheet("background-color : rgba( 160, 0, 0, 255); border-radius : 7px;");
-            c->setText(task->text());
-            lays->addWidget(c);
-            lays->addWidget(b);
-            this->layout->addLayout(lays);
-            completion->setRange(0, itemCount);
-            connect(c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));
-            connect(b, SIGNAL(clicked()), this, SLOT(remove(b)));
+            target *t = new target(task->text());
+            this->layout->addWidget(t);
+            completion->setMaximum(itemCount);
+            connect(t->c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));
+            connect(t->b, SIGNAL(clicked()), this, SLOT(deleteTarget()));
         }
         this->priority = slide->value();
         this->duration = spin->value();
@@ -102,11 +97,10 @@ void task::completionVal(int i)
     else completion->setValue(completion->value()+1);
 }
 
-void task::remove(QPushButton *b)
+void task::deleteTarget()
 {
     itemCount--;
     if(itemCount) completion->setMaximum(itemCount);
-    b->parentWidget()->destroyed();
 }
 
 void task::color()
@@ -114,19 +108,22 @@ void task::color()
     switch (priority)
     {
         case 1:
-        setStyleSheet("QDockWidget::title {background: #235B66; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;}");
+        this->setStyleSheet("QDockWidget::title {background: #235B66; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
         break;
         case 2:
-        setStyleSheet("QDockWidget::title {background: #11AEBF; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;}");
+        this->setStyleSheet("QDockWidget::title {background: #11AEBF; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
         break;
         case 3:
-        setStyleSheet("QDockWidget::title {background: #A0BF30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;}");
+        this->setStyleSheet("QDockWidget::title {background: #A0BF30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
         break;
         case 4:
-        setStyleSheet("QDockWidget::title {background: #F2AE30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;}");
+        this->setStyleSheet("QDockWidget::title {background: #F2AE30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
         break;
         case 5:
-        setStyleSheet("QDockWidget::title {background: #F25244; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;}");
+        this->setStyleSheet("QDockWidget::title {background: #F25244; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        break;
+        default:
+        this->setStyleSheet("QDockWidget::title {background: #546670; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
         break;
     }
 }
@@ -151,4 +148,5 @@ void task::mouseMoveEvent(QMouseEvent *event)
        q_b.setNum(this->wdwId);
        mimeData->setData("application/x-item", q_b);
        drag->setMimeData(mimeData);
+       drag->exec();
 }

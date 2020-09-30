@@ -27,21 +27,21 @@ void MainWindow::designPage()
     this->adder->setText("+");
     this->adder->setStyleSheet("QPushButton{"
                                    "font: 87 14pt;"
-                                   "border-color: rgb(25, 52, 65);"
-                                   "color: rgb(25, 52, 65);"
-                                   "background-color: rgb(203, 219, 215);"
+                                   "border-color: #66767A;"
+                                   "color: black;"
+                                   "background-color: #9BB3B9;"
                                    "border : 2px solid;"
                                    "border-radius : 15px;"
                                    "height : 1em;"
                                    "width : 1em;}"
                                    "QPushButton:hover{"
-                                       "background-color: rgb(25, 52, 65);"
-                                       "color: rgb(203, 219, 215);"
-                                       "border-color: rgb(203, 219, 215);}"
+                                       "background-color: #66767A;"
+                                       "color: #A6C0C6;"
+                                       "border-color: #A6C0C6;}"
                                    "QPushButton:pressed{"
-                                       "background-color: rgb(203, 219, 215);"
-                                       "color: rgb(25, 52, 65);"
-                                       "border-color: rgb(25, 52, 65);}");
+                                       "background-color: #A6C0C6;"
+                                       "color: #66767A;"
+                                       "border-color: #66767A;}");
     col->addWidget(t1);
     t1->setVisible(true);
     col->addWidget(t2);

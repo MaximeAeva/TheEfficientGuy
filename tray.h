@@ -12,6 +12,7 @@
 
 class tray: public QDockWidget
 {
+    Q_OBJECT
 public:
     tray(QString title);
     QVBoxLayout *layout = new QVBoxLayout;
