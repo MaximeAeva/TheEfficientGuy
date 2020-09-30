@@ -6,8 +6,10 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <iostream>
+#include <iostream>
 #include "task.h"
 #include "tray.h"
+#include "database.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

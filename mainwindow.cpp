@@ -8,7 +8,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     designPage();
     connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
-
+    database *db = new database;
+    QStringList stl = db->Connections();
+    std::cout << stl.at(0).toStdString();
 }
 
 MainWindow::~MainWindow()
@@ -43,10 +45,13 @@ void MainWindow::designPage()
                                        "color: #66767A;"
                                        "border-color: #66767A;}");
     col->addWidget(t1);
+    col->addSpacing(10);
     t1->setVisible(true);
     col->addWidget(t2);
+    col->addSpacing(10);
     t2->setVisible(true);
     col->addWidget(t3);
+    col->addSpacing(10);
     t3->setVisible(true);
     col->addWidget(t4);
     t4->setVisible(true);
