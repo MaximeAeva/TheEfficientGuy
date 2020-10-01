@@ -25,6 +25,7 @@
 #include <QProgressBar>
 #include <QSlider>
 #include <QSpinBox>
+#include <QDate>
 
 #include "target.h"
 
@@ -48,6 +49,7 @@ private:
     int duration = 0;
     int group = 0;
     int itemCount = 0;
+    QDate deadLine = QDate::currentDate();
     QVBoxLayout *layout = new QVBoxLayout;
     QWidget *lab = new QWidget;
     QProgressBar *completion = new QProgressBar;

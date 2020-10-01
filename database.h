@@ -6,11 +6,14 @@
 #include <QDebug>
 #include <QString>
 #include <QSqlError>
+#include <QObject>
+#include <QDir>
+#include <QCoreApplication>
 #include <cstring>
 #include <fstream>
 #include <vector>
 
-class database
+class database: public QObject
 {
 public:
     database();

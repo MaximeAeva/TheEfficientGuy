@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
     database *db = new database;
     QStringList stl = db->Connections();
-    std::cout << stl.at(0).toStdString();
+    for(int i = 0; i < stl.size(); i++)
+        std::cout << i+1 << " : " << stl.at(0).toStdString() << std::endl;
 }
 
 MainWindow::~MainWindow()

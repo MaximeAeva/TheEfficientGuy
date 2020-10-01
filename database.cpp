@@ -2,17 +2,15 @@
 
 database::database()
 {
-        db->addDatabase("QSQLITE");
-        db->setHostName(Readconfig("HOST"));
-        db->setDatabaseName(Readconfig("NAME"));
-        db->setUserName(Readconfig("USER"));
-        db->setPassword(Readconfig("PASSWORD"));
+        db->addDatabase("QSQLITE", "SQLITE3");
+        db->setDatabaseName("C:/Users/maxime.bellot/Documents/build-TheEfficientGuy-Desktop_Qt_5_15_0_MSVC2019_64bit-Debug/debug/a.db.sqlite");
         db->open();
         if(!db->isOpen())
         {
             qDebug() << db->lastError();
             qDebug() << QSqlDatabase::drivers();
          }
+        else qDebug() << "Connected";
 
 }
 
