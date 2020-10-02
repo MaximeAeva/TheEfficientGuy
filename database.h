@@ -24,10 +24,10 @@ public:
     database();
     void CloseDB();
     QStringList Connections();
-    void addTask(int number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
-    void deleteTask(int id);
-    void addTarget(int number, bool state, int parentTask);
-    void deleteTarget(int id);
+    void addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
+    void deleteTask(QDateTime id);
+    void addTarget(QDateTime number, bool state, int parentTask);
+    void deleteTarget(QDateTime id);
 
 private:
     QSqlDatabase db;

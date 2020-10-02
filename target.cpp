@@ -4,8 +4,7 @@ int target::ResID = 0;
 
 target::target(QString targetDesc)
 {
-    ResID++;
-    wdwId = ResID;
+    wdwId = QDateTime::currentDateTime();
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");

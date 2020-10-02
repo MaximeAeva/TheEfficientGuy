@@ -3,8 +3,7 @@
 task::task(QWidget *parent) :
     QDockWidget(parent)
 {
-    ResID++;
-    wdwId = ResID;
+    wdwId = QDateTime::currentDateTime();
     this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
     lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
@@ -24,13 +23,6 @@ task::~task()
 {
 
 }
-
-int task::getID()
-{
-    return wdwId;
-}
-
-int task::ResID = 0;
 
 void task::mouseDoubleClickEvent(QMouseEvent *event)
 {
@@ -145,7 +137,7 @@ void task::mouseMoveEvent(QMouseEvent *event)
        QDrag *drag = new QDrag(this);
        QMimeData *mimeData = new QMimeData;
        QByteArray q_b;
-       q_b.setNum(this->wdwId);
+       q_b.setNum(this->wdwId.toMSecsSinceEpoch());
        mimeData->setData("application/x-item", q_b);
        drag->setMimeData(mimeData);
        drag->exec();

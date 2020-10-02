@@ -48,7 +48,7 @@ void database::Model()
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("CREATE TABLE IF NOT EXISTS task"
                    "("
-                   "number INT PRIMARY KEY NOT NULL, "
+                   "number DATETIME PRIMARY KEY NOT NULL, "
                    "priority INT, "
                    "duration INT, "
                    "tray INT, "
@@ -60,14 +60,14 @@ void database::Model()
     QSqlQuery *query1 = new QSqlQuery(db);
     query1->exec("CREATE TABLE IF NOT EXISTS target"
                    "("
-                   "number INT PRIMARY KEY NOT NULL, "
+                   "number DATETIME PRIMARY KEY NOT NULL, "
                    "state BOOL, "
                    "parentTask INT, "
                    "FOREIGN KEY(parentTask) REFERENCES task(number)"
                    ")");
 }
 
-void database::addTask(int number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
+void database::addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, deadline, title) "
@@ -82,7 +82,7 @@ void database::addTask(int number, int priority, int duration, int tray, int ite
     query->exec();
 }
 
-void database::deleteTask(int id)
+void database::deleteTask(QDateTime id)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("DELETE FROM task "
@@ -91,7 +91,7 @@ void database::deleteTask(int id)
     query->exec();
 }
 
-void database::addTarget(int number, bool state, int parentTask)
+void database::addTarget(QDateTime number, bool state, int parentTask)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO target(number, state, parentTask) "
@@ -102,7 +102,7 @@ void database::addTarget(int number, bool state, int parentTask)
     query->exec();
 }
 
-void database::deleteTarget(int id)
+void database::deleteTarget(QDateTime id)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("DELETE FROM target "

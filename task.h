@@ -35,8 +35,6 @@ class task: public QDockWidget
 public:
     explicit task(QWidget *parent = 0);
     ~task();
-    static int ResID;
-    int getID();
     int group = 0;
 
 public slots:
@@ -45,7 +43,7 @@ public slots:
     void color();
 
 private:
-    int wdwId = 0;
+    QDateTime wdwId;
     int priority = 0;
     int duration = 0;
     int itemCount = 0;

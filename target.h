@@ -2,6 +2,7 @@
 #define TARGET_H
 
 #include <QString>
+#include <QDateTime>
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -21,7 +22,7 @@ public slots:
     void rm();
 
 private:
-    int wdwId;
+    QDateTime wdwId;
 };
 
 #endif // TARGET_H
