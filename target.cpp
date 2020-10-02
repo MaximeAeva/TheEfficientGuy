@@ -1,7 +1,11 @@
 #include "target.h"
 
+int target::ResID = 0;
+
 target::target(QString targetDesc)
 {
+    ResID++;
+    wdwId = ResID;
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
@@ -14,4 +18,8 @@ target::target(QString targetDesc)
     this->setLayout(layout);
     this->show();
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
+}
+
+void target::rm()
+{
 }

@@ -1,8 +1,9 @@
 #include "tray.h"
 
-tray::tray(QString title)
+tray::tray(QString title, int id)
 {
     this->title = title;
+    this->id = id;
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetClosable);
     this->setWindowTitle(this->title);
@@ -23,5 +24,7 @@ void tray::dragLeaveEvent(QDragLeaveEvent *event)
 }
 void tray::dropEvent(QDropEvent *event)
 {
-    this->layout->addWidget(static_cast<QWidget *>(event->source()));
+    task *object = static_cast<task *>(event->source());
+    this->layout->addWidget(object);
+    object->group = this->id;
 }

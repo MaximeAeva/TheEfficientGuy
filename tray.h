@@ -9,17 +9,19 @@
 #include <QMimeData>
 #include <QWidget>
 #include <QVBoxLayout>
+#include "task.h"
 
 class tray: public QDockWidget
 {
     Q_OBJECT
 public:
-    tray(QString title);
+    tray(QString title, int id);
     QVBoxLayout *layout = new QVBoxLayout;
 
 private:
     QString title;
     QWidget *content = new QWidget;
+    int id;
 
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);

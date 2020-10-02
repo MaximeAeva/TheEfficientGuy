@@ -25,7 +25,7 @@
 #include <QProgressBar>
 #include <QSlider>
 #include <QSpinBox>
-#include <QDate>
+#include <QDateTime>
 
 #include "target.h"
 
@@ -37,6 +37,7 @@ public:
     ~task();
     static int ResID;
     int getID();
+    int group = 0;
 
 public slots:
     void completionVal(int i);
@@ -47,9 +48,8 @@ private:
     int wdwId = 0;
     int priority = 0;
     int duration = 0;
-    int group = 0;
     int itemCount = 0;
-    QDate deadLine = QDate::currentDate();
+    QDateTime deadLine = QDateTime::currentDateTime();
     QVBoxLayout *layout = new QVBoxLayout;
     QWidget *lab = new QWidget;
     QProgressBar *completion = new QProgressBar;
@@ -57,7 +57,7 @@ private:
     QString title = "New task";
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 #endif // TASK_H

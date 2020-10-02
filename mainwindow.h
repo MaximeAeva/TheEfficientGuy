@@ -29,10 +29,11 @@ public slots:
 private:
     Ui::MainWindow *ui;
     void designPage();
-    tray *t1 = new tray("Ideas");
-    tray *t2 = new tray("ToDo");
-    tray *t3 = new tray("InProgress");
-    tray *t4 = new tray("StandBy");
+    database *db = new database();
+    tray *t1 = new tray("Ideas", 0);
+    tray *t2 = new tray("ToDo", 1);
+    tray *t3 = new tray("InProgress", 2);
+    tray *t4 = new tray("StandBy", 3);
     QPushButton *adder = new QPushButton;
 };
 #endif // MAINWINDOW_H

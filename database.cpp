@@ -2,7 +2,7 @@
 
 database::database()
 {
-        db = QSqlDatabase::addDatabase("QSQLITE");
+        db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE3");
         db.setDatabaseName(Readconfig("NAME"));
         if(!db.open())
         {
@@ -11,8 +11,11 @@ database::database()
             qDebug() << db.lastError().driverText();
             qDebug() << QSqlDatabase::isDriverAvailable("QSQLITE");
          }
-        else qDebug() << "Connected";
-
+        else
+        {
+            qDebug() << "Connected";
+            Model();
+        }
 }
 
 QString database::Readconfig(std::string paramName)
@@ -42,5 +45,68 @@ QStringList database::Connections()
 
 void database::Model()
 {
+    QSqlQuery *query = new QSqlQuery(db);
+    query->exec("CREATE TABLE IF NOT EXISTS task"
+                   "("
+                   "number INT PRIMARY KEY NOT NULL, "
+                   "priority INT, "
+                   "duration INT, "
+                   "tray INT, "
+                   "itemCount INT, "
+                   "deadline DATETIME, "
+                   "title VARCHAR(255)"
+                   ")");
 
+    QSqlQuery *query1 = new QSqlQuery(db);
+    query1->exec("CREATE TABLE IF NOT EXISTS target"
+                   "("
+                   "number INT PRIMARY KEY NOT NULL, "
+                   "state BOOL, "
+                   "parentTask INT, "
+                   "FOREIGN KEY(parentTask) REFERENCES task(number)"
+                   ")");
+}
+
+void database::addTask(int number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, deadline, title) "
+                   "VALUES (:number, :priority, :duration, :tray, :itemCount, :deadline, :title)");
+    query->bindValue(":number", number);
+    query->bindValue(":priority", priority);
+    query->bindValue(":duration", duration);
+    query->bindValue(":tray", tray);
+    query->bindValue(":itemCount", itemCount);
+    query->bindValue(":deadline", deadline);
+    query->bindValue(":title", title);
+    query->exec();
+}
+
+void database::deleteTask(int id)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("DELETE FROM task "
+                   "WHERE number=:id");
+    query->bindValue(":id", id);
+    query->exec();
+}
+
+void database::addTarget(int number, bool state, int parentTask)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("INSERT INTO target(number, state, parentTask) "
+                   "VALUES (:number, :state, :parentTask)");
+    query->bindValue(":number", number);
+    query->bindValue(":state", state);
+    query->bindValue(":parentTask", parentTask);
+    query->exec();
+}
+
+void database::deleteTarget(int id)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("DELETE FROM target "
+                   "WHERE number=:id");
+    query->bindValue(":id", id);
+    query->exec();
 }
