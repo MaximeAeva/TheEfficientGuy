@@ -91,7 +91,7 @@ void database::deleteTask(QDateTime id)
     query->exec();
 }
 
-void database::addTarget(QDateTime number, bool state, int parentTask)
+void database::addTarget(QDateTime number, bool state, QDateTime parentTask)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO target(number, state, parentTask) "

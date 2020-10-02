@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    database *db = new database();
 
 public slots:
     void createTask();
@@ -29,7 +30,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
     void designPage();
-    database *db = new database();
     tray *t1 = new tray("Ideas", 0);
     tray *t2 = new tray("ToDo", 1);
     tray *t3 = new tray("InProgress", 2);

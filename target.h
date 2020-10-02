@@ -13,7 +13,7 @@ class target: public QWidget
 {
     Q_OBJECT
 public:
-    target(QString targetDesc);
+    target(QString targetDesc, database *db, QDateTime parent);
     static int ResID;
     QCheckBox *c = new QCheckBox;
     QPushButton *b = new QPushButton;

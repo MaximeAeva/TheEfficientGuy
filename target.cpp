@@ -1,10 +1,10 @@
 #include "target.h"
 
-int target::ResID = 0;
-
-target::target(QString targetDesc)
+target::target(QString targetDesc, database *db, QDateTime parentTime)
 {
+
     wdwId = QDateTime::currentDateTime();
+    db->addTarget(this->wdwId, this->c->isChecked(), parentTime);
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");

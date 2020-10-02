@@ -26,7 +26,7 @@ public:
     QStringList Connections();
     void addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
     void deleteTask(QDateTime id);
-    void addTarget(QDateTime number, bool state, int parentTask);
+    void addTarget(QDateTime number, bool state, QDateTime parentTask);
     void deleteTarget(QDateTime id);
 
 private:

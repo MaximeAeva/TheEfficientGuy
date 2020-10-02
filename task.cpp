@@ -1,9 +1,10 @@
 #include "task.h"
 
-task::task(QWidget *parent) :
+task::task(database *db, QWidget *parent) :
     QDockWidget(parent)
 {
     wdwId = QDateTime::currentDateTime();
+    db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
     this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
     lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
@@ -24,7 +25,7 @@ task::~task()
 
 }
 
-void task::mouseDoubleClickEvent(QMouseEvent *event)
+void task::mouseDoubleClickEvent(QMouseEvent *event, database *db)
 {
     QDialog *d = new QDialog;
     QGridLayout *layout = new QGridLayout;
@@ -71,7 +72,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         if(!task->text().isEmpty())
         {
             itemCount++;
-            target *t = new target(task->text());
+            target *t = new target(task->text(), db, this->wdwId);
             this->layout->addWidget(t);
             completion->setMaximum(itemCount);
             connect(t->c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));

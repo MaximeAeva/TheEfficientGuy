@@ -28,12 +28,13 @@
 #include <QDateTime>
 
 #include "target.h"
+#include "database.h"
 
 class task: public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit task(QWidget *parent = 0);
+    explicit task(database *db, QWidget *parent);
     ~task();
     int group = 0;
 
@@ -53,7 +54,7 @@ private:
     QProgressBar *completion = new QProgressBar;
     QString description = "Empty";
     QString title = "New task";
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event, database *db);
     QPoint dragStartPosition;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

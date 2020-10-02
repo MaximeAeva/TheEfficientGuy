@@ -59,7 +59,7 @@ void MainWindow::designPage()
 
 void MainWindow::createTask()
 {
-    task *w = new task(this);
+    task *w = new task(db, this);
     w->setVisible(true);
     t2->layout->addWidget(w);
 }
