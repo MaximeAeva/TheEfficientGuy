@@ -7,6 +7,7 @@
 #include <QString>
 #include <QSqlError>
 #include <QObject>
+#include <QSqlQuery>
 #include <QDir>
 #include <QCoreApplication>
 #include <cstring>
@@ -21,7 +22,7 @@ public:
     QStringList Connections();
 
 private:
-    QSqlDatabase *db = new QSqlDatabase;
+    QSqlDatabase db;
     QString Readconfig(std::string paramName);
     void Model();
 };

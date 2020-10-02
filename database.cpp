@@ -2,13 +2,14 @@
 
 database::database()
 {
-        db->addDatabase("QSQLITE", "SQLITE3");
-        db->setDatabaseName("C:/Users/maxime.bellot/Documents/build-TheEfficientGuy-Desktop_Qt_5_15_0_MSVC2019_64bit-Debug/debug/a.db.sqlite");
-        db->open();
-        if(!db->isOpen())
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(Readconfig("NAME"));
+        if(!db.open())
         {
-            qDebug() << db->lastError();
-            qDebug() << QSqlDatabase::drivers();
+            qDebug() << db.isOpen();
+            qDebug() << db.lastError().databaseText();
+            qDebug() << db.lastError().driverText();
+            qDebug() << QSqlDatabase::isDriverAvailable("QSQLITE");
          }
         else qDebug() << "Connected";
 
@@ -31,12 +32,12 @@ QString database::Readconfig(std::string paramName)
 
 void database::CloseDB()
 {
-    if(db->isOpen()) db->close();
+    if(db.isOpen()) db.close();
 }
 
 QStringList database::Connections()
 {
-    return db->connectionNames();
+    return db.connectionNames();
 }
 
 void database::Model()
