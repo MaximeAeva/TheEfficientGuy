@@ -13,16 +13,18 @@ class target: public QWidget
 {
     Q_OBJECT
 public:
+    target();
     target(QString targetDesc, database *db, QDateTime parent);
-    static int ResID;
+    ~target();
     QCheckBox *c = new QCheckBox;
     QPushButton *b = new QPushButton;
-
-public slots:
-    void rm();
+    void set(QDateTime id, int check, QString title, QDateTime parent, database *db);
 
 private:
+    QString targetDesc;
+    QDateTime parent;
     QDateTime wdwId;
+    database *db;
 };
 
 #endif // TARGET_H

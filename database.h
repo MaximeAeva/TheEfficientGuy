@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QDateTime>
 #include <QCoreApplication>
+#include <QWidget>
 #include <cstring>
 #include <fstream>
 #include <vector>
@@ -26,11 +27,14 @@ public:
     QStringList Connections();
     void addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
     void deleteTask(QDateTime id);
-    void addTarget(QDateTime number, bool state, QDateTime parentTask);
+    void addTarget(QDateTime number, QString title, bool state, QDateTime parentTask);
     void deleteTarget(QDateTime id);
+    void updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
+    void updateTarget(QDateTime number, bool state);
+    QSqlDatabase db;
 
 private:
-    QSqlDatabase db;
+
     QString Readconfig(std::string paramName);
     void Model();
 };

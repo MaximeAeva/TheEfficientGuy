@@ -61,6 +61,7 @@ void database::Model()
     query1->exec("CREATE TABLE IF NOT EXISTS target"
                    "("
                    "number DATETIME PRIMARY KEY NOT NULL, "
+                   "title VARCHAR(255), "
                    "state BOOL, "
                    "parentTask INT, "
                    "FOREIGN KEY(parentTask) REFERENCES task(number)"
@@ -91,12 +92,13 @@ void database::deleteTask(QDateTime id)
     query->exec();
 }
 
-void database::addTarget(QDateTime number, bool state, QDateTime parentTask)
+void database::addTarget(QDateTime number, QString title, bool state, QDateTime parentTask)
 {
     QSqlQuery *query = new QSqlQuery(db);
-    query->prepare("INSERT INTO target(number, state, parentTask) "
-                   "VALUES (:number, :state, :parentTask)");
+    query->prepare("INSERT INTO target(number, title, state, parentTask) "
+                   "VALUES (:number, :title, :state, :parentTask)");
     query->bindValue(":number", number);
+    query->bindValue(":title", title);
     query->bindValue(":state", state);
     query->bindValue(":parentTask", parentTask);
     query->exec();
@@ -110,3 +112,32 @@ void database::deleteTarget(QDateTime id)
     query->bindValue(":id", id);
     query->exec();
 }
+
+void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("UPDATE task "
+                   "SET priority=:priority, duration=:duration, tray=:tray, itemCount=:itemCount, deadline=:deadline, title=:title "
+                   "WHERE number=:number");
+    query->bindValue(":priority", priority);
+    query->bindValue(":duration", duration);
+    query->bindValue(":tray", tray);
+    query->bindValue(":itemCount", itemCount);
+    query->bindValue(":deadline", deadline);
+    query->bindValue(":title", title);
+    query->bindValue(":number", number);
+    query->exec();
+}
+
+void database::updateTarget(QDateTime number, bool state)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("UPDATE target "
+                   "SET state=:state "
+                   "WHERE number=:number");
+    query->bindValue(":state", state);
+    query->bindValue(":number", number);
+    query->exec();
+}
+
+

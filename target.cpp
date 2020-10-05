@@ -1,10 +1,7 @@
 #include "target.h"
 
-target::target(QString targetDesc, database *db, QDateTime parentTime)
+target::target()
 {
-
-    wdwId = QDateTime::currentDateTime();
-    db->addTarget(this->wdwId, this->c->isChecked(), parentTime);
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
@@ -19,6 +16,43 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-void target::rm()
+target::target(QString targetDesc, database *db, QDateTime parentTime)
 {
+
+    wdwId = QDateTime::currentDateTime();
+    this->db = db;
+    this->db->addTarget(this->wdwId, targetDesc, this->c->isChecked(), parentTime);
+    QHBoxLayout *layout = new QHBoxLayout;
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    b->setText("X");
+    b->setStyleSheet("QPushButton{background-color : rgba( 200, 0, 0, 255); border-radius : 3px; height : 1em; width : 1em;}");
+    c->setText(targetDesc);
+    layout->addWidget(c);
+    layout->addStretch(1);
+    layout->addWidget(b);
+    this->setStyleSheet("background-color :#A6C0C6;border-radius : 7px;border : 1px solid black;");
+    this->setLayout(layout);
+    this->show();
+    connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
+
+target::~target()
+{
+    this->db->deleteTarget(this->wdwId);
+    this->db = NULL;
+    delete this->db;
+    this->c = NULL;
+    delete this->c;
+    this->b = NULL;
+    delete this->b;
+}
+
+void target::set(QDateTime id, int check, QString title, QDateTime parent, database *db)
+{
+    this->wdwId = id;
+    this->parent = parent;
+    this->c->setChecked(check);
+    this->targetDesc = title;
+    this->db = db;
+}
+

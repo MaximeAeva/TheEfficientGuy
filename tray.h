@@ -17,6 +17,7 @@ class tray: public QDockWidget
 public:
     tray(QString title, int id);
     QVBoxLayout *layout = new QVBoxLayout;
+    inline int getId(){return this->id;};
 
 private:
     QString title;

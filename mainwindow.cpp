@@ -18,6 +18,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::designPage()
 {
+    load(this->t1);
+    load(this->t2);
+    load(this->t3);
+    load(this->t4);
     QHBoxLayout *b = new QHBoxLayout;
     QVBoxLayout *pageL = new QVBoxLayout;
     QHBoxLayout *col = new QHBoxLayout;
@@ -64,6 +68,53 @@ void MainWindow::createTask()
     t2->layout->addWidget(w);
 }
 
+void MainWindow::load(tray *t)
+{
+    QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
+    QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
+    modelTaskCount->setQuery(str, db->db);
+    QString str1 = "SELECT number, priority, duration, tray, itemCount, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
+    QSqlQueryModel *modelTask = new QSqlQueryModel;
+    modelTask->setQuery(str1, db->db);
+
+    std::cout << modelTaskCount->record(0).value("cnt").toInt() << std::endl;
+
+    for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
+    {
+        task *aTask = new task;
+        aTask->set(modelTask->record(i).value("number").toDateTime(),
+                   this->db,
+                   modelTask->record(i).value("priority").toInt(),
+                   modelTask->record(i).value("duration").toInt(),
+                   modelTask->record(i).value("tray").toInt(),
+                   modelTask->record(i).value("itemCount").toInt(),
+                   modelTask->record(i).value("deadline").toDateTime(),
+                   modelTask->record(i).value("title").toString());
+        QString str2 ="SELECT COUNT(*) as cnt1 FROM target WHERE parentTask="+aTask->get().toString();
+        QSqlQueryModel *modelTargetCount = new QSqlQueryModel;
+        modelTargetCount->setQuery(str2, db->db);
+        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+aTask->get().toString();
+        QSqlQueryModel *modelTarget = new QSqlQueryModel;
+        modelTarget->setQuery(str3, db->db);
+        for(int k = 0; k<modelTargetCount->record(0).value("cnt1").toInt(); k++)//through target
+        {
+            target *targ = new target;
+            targ->set(modelTarget->record(k).value("number").toDateTime(),
+                modelTarget->record(k).value("state").toInt(),
+                modelTarget->record(k).value("title").toString(),
+                aTask->get(),
+                      this->db);
+            aTask->completion->setMaximum(aTask->itemCount);
+            connect(targ->c, SIGNAL(stateChanged(int)), aTask, SLOT(completionVal(int)));
+            connect(targ->b, SIGNAL(clicked()), aTask, SLOT(deleteTarget()));
+            targ->setVisible(true);
+            aTask->layout->addWidget(targ);
+        }
+        aTask->setVisible(true);
+        aTask->color();
+        t->layout->addWidget(aTask);
+    }
+}
 
 
 

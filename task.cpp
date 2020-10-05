@@ -1,15 +1,35 @@
 #include "task.h"
 
+task::task()
+{
+    this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
+    completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
+    lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
+    this->setWindowTitle(title);
+    this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    completion->setOrientation(Qt::Horizontal);
+    completion->setValue(0);
+    completion->setRange(0, 1);
+    this->layout->addWidget(completion);
+    completion->show();
+    lab->setLayout(layout);
+    this->setWidget(lab);
+    this->show();
+}
+
 task::task(database *db, QWidget *parent) :
     QDockWidget(parent)
 {
     wdwId = QDateTime::currentDateTime();
+    this->db = db;
     db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
     this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
     lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
     this->setWindowTitle(title);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
     completion->setRange(0, 1);
@@ -22,11 +42,20 @@ task::task(database *db, QWidget *parent) :
 
 task::~task()
 {
-
+    this->db->deleteTask(this->wdwId);
+    this->db = NULL;
+    delete this->db;
+    this->layout = NULL;
+    delete this->layout;
+    this->lab = NULL;
+    delete this->lab;
+    this->completion = NULL;
+    delete this->completion;
 }
 
-void task::mouseDoubleClickEvent(QMouseEvent *event, database *db)
+void task::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    event->accept();
     QDialog *d = new QDialog;
     QGridLayout *layout = new QGridLayout;
     QVBoxLayout *secondLay = new QVBoxLayout;
@@ -68,11 +97,15 @@ void task::mouseDoubleClickEvent(QMouseEvent *event, database *db)
     int dialogCode = d->exec();
     if(dialogCode == QDialog::Accepted)
     {
-        if(!title->text().isEmpty()) this->setWindowTitle(title->text());
+        if(!title->text().isEmpty())
+        {
+            this->setWindowTitle(title->text());
+            this->title = title->text();
+        }
         if(!task->text().isEmpty())
         {
             itemCount++;
-            target *t = new target(task->text(), db, this->wdwId);
+            target *t = new target(task->text(), this->db, this->wdwId);
             this->layout->addWidget(t);
             completion->setMaximum(itemCount);
             connect(t->c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));
@@ -82,6 +115,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event, database *db)
         this->duration = spin->value();
         color();
     }
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
 }
 
 void task::completionVal(int i)
@@ -93,7 +127,9 @@ void task::completionVal(int i)
 void task::deleteTarget()
 {
     itemCount--;
+    completionVal(0);
     if(itemCount) completion->setMaximum(itemCount);
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
 }
 
 void task::color()
@@ -142,4 +178,24 @@ void task::mouseMoveEvent(QMouseEvent *event)
        mimeData->setData("application/x-item", q_b);
        drag->setMimeData(mimeData);
        drag->exec();
+}
+
+void task::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
+}
+
+void task::set(QDateTime number, database *db, int priority, int duration,
+               int tray, int itemCount, QDateTime deadline, QString title)
+{
+    this->wdwId = number;
+    this->priority = priority;
+    this->duration = duration;
+    this->group = tray;
+    this->itemCount = itemCount;
+    this->deadLine = deadline;
+    this->title = title;
+    this->db = db;
+    setWindowTitle(title);
 }

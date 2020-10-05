@@ -34,9 +34,15 @@ class task: public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit task(database *db, QWidget *parent);
+    task();
+    explicit task(database *db, QWidget *parent = 0);
     ~task();
-    int group = 0;
+    int group = 1;
+    void set(QDateTime number, database *db, int priority = 0, int duration = 0, int tray = 1, int itemCount = 0, QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
+    QVBoxLayout *layout = new QVBoxLayout;
+    QProgressBar *completion = new QProgressBar;
+    inline QDateTime get(){return this->wdwId;};
+    int itemCount = 0;
 
 public slots:
     void completionVal(int i);
@@ -45,18 +51,18 @@ public slots:
 
 private:
     QDateTime wdwId;
+    database *db;
     int priority = 0;
     int duration = 0;
-    int itemCount = 0;
     QDateTime deadLine = QDateTime::currentDateTime();
-    QVBoxLayout *layout = new QVBoxLayout;
     QWidget *lab = new QWidget;
-    QProgressBar *completion = new QProgressBar;
     QString description = "Empty";
     QString title = "New task";
-    void mouseDoubleClickEvent(QMouseEvent *event, database *db);
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+
 };
 #endif // TASK_H
