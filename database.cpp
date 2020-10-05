@@ -73,12 +73,12 @@ void database::addTask(QDateTime number, int priority, int duration, int tray, i
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, deadline, title) "
                    "VALUES (:number, :priority, :duration, :tray, :itemCount, :deadline, :title)");
-    query->bindValue(":number", number);
+    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->bindValue(":priority", priority);
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
-    query->bindValue(":deadline", deadline);
+    query->bindValue(":deadline", deadline.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->bindValue(":title", title);
     query->exec();
 }
@@ -97,10 +97,10 @@ void database::addTarget(QDateTime number, QString title, bool state, QDateTime 
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO target(number, title, state, parentTask) "
                    "VALUES (:number, :title, :state, :parentTask)");
-    query->bindValue(":number", number);
+    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->bindValue(":title", title);
     query->bindValue(":state", state);
-    query->bindValue(":parentTask", parentTask);
+    query->bindValue(":parentTask", parentTask.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->exec();
 }
 
@@ -123,9 +123,9 @@ void database::updateTask(QDateTime number, int priority, int duration, int tray
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
-    query->bindValue(":deadline", deadline);
+    query->bindValue(":deadline", deadline.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->bindValue(":title", title);
-    query->bindValue(":number", number);
+    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->exec();
 }
 
@@ -136,7 +136,7 @@ void database::updateTarget(QDateTime number, bool state)
                    "SET state=:state "
                    "WHERE number=:number");
     query->bindValue(":state", state);
-    query->bindValue(":number", number);
+    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
     query->exec();
 }
 

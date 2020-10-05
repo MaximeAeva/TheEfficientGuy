@@ -94,8 +94,11 @@ void MainWindow::load(tray *t)
         QSqlQueryModel *modelTargetCount = new QSqlQueryModel;
         modelTargetCount->setQuery(str2, db->db);
         QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+aTask->get().toString();
+        std::cout << str3.toStdString();
         QSqlQueryModel *modelTarget = new QSqlQueryModel;
         modelTarget->setQuery(str3, db->db);
+
+        std::cout << modelTargetCount->record(0).value("cnt1").toInt() << std::endl;
         for(int k = 0; k<modelTargetCount->record(0).value("cnt1").toInt(); k++)//through target
         {
             target *targ = new target;
