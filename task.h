@@ -43,6 +43,11 @@ public:
     QProgressBar *completion = new QProgressBar;
     inline QDateTime get(){return this->wdwId;};
     int itemCount = 0;
+    int priority = 0;
+    int duration = 0;
+    QDateTime wdwId;
+    QDateTime deadLine = QDateTime::currentDateTime();
+    QString title = "New task";
 
 public slots:
     void completionVal(int i);
@@ -50,14 +55,13 @@ public slots:
     void color();
 
 private:
-    QDateTime wdwId;
+
     database *db;
-    int priority = 0;
-    int duration = 0;
-    QDateTime deadLine = QDateTime::currentDateTime();
+
+
     QWidget *lab = new QWidget;
     QString description = "Empty";
-    QString title = "New task";
+
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
     void mousePressEvent(QMouseEvent *event) override;

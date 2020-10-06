@@ -1,8 +1,9 @@
 #include "tray.h"
 
-tray::tray(QString title, int id)
+tray::tray(QString title, int id, database *db)
 {
     this->title = title;
+    this->db = db;
     this->id = id;
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetClosable);
@@ -27,4 +28,5 @@ void tray::dropEvent(QDropEvent *event)
     task *object = static_cast<task *>(event->source());
     this->layout->addWidget(object);
     object->group = this->id;
+    this->db->updateTask(object->wdwId, object->priority, object->duration, object->group, object->itemCount, object->deadLine, object->title);
 }

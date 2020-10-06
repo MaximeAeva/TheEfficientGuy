@@ -39,9 +39,9 @@ private:
     void designPage();
     void load(tray *t);
     QPushButton *adder = new QPushButton;
-    tray *t1 = new tray("Ideas", 0);
-    tray *t2 = new tray("ToDo", 1);
-    tray *t3 = new tray("InProgress", 2);
-    tray *t4 = new tray("StandBy", 3);
+    tray *t1 = new tray("Ideas", 0, db);
+    tray *t2 = new tray("ToDo", 1, db);
+    tray *t3 = new tray("InProgress", 2, db);
+    tray *t4 = new tray("StandBy", 3, db);
 };
 #endif // MAINWINDOW_H

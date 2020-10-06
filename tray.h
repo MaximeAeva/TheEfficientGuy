@@ -15,7 +15,7 @@ class tray: public QDockWidget
 {
     Q_OBJECT
 public:
-    tray(QString title, int id);
+    tray(QString title, int id, database *db);
     QVBoxLayout *layout = new QVBoxLayout;
     inline int getId(){return this->id;};
 
@@ -23,7 +23,7 @@ private:
     QString title;
     QWidget *content = new QWidget;
     int id;
-
+    database *db;
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);

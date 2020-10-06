@@ -63,7 +63,7 @@ void database::Model()
                    "number DATETIME PRIMARY KEY NOT NULL, "
                    "title VARCHAR(255), "
                    "state BOOL, "
-                   "parentTask INT, "
+                   "parentTask DATETIME, "
                    "FOREIGN KEY(parentTask) REFERENCES task(number)"
                    ")");
 }
@@ -73,12 +73,12 @@ void database::addTask(QDateTime number, int priority, int duration, int tray, i
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, deadline, title) "
                    "VALUES (:number, :priority, :duration, :tray, :itemCount, :deadline, :title)");
-    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->bindValue(":priority", priority);
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
-    query->bindValue(":deadline", deadline.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":deadline", deadline);
     query->bindValue(":title", title);
     query->exec();
 }
@@ -86,10 +86,7 @@ void database::addTask(QDateTime number, int priority, int duration, int tray, i
 void database::deleteTask(QDateTime id)
 {
     QSqlQuery *query = new QSqlQuery(db);
-    query->prepare("DELETE FROM task "
-                   "WHERE number=:id");
-    query->bindValue(":id", id);
-    query->exec();
+    query->exec("DELETE FROM task WHERE number="+id.toString("yyyyMMddhhmmssz"));
 }
 
 void database::addTarget(QDateTime number, QString title, bool state, QDateTime parentTask)
@@ -97,20 +94,17 @@ void database::addTarget(QDateTime number, QString title, bool state, QDateTime 
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("INSERT INTO target(number, title, state, parentTask) "
                    "VALUES (:number, :title, :state, :parentTask)");
-    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->bindValue(":title", title);
     query->bindValue(":state", state);
-    query->bindValue(":parentTask", parentTask.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":parentTask", parentTask.toString("yyyyMMddhhmmssz"));
     query->exec();
 }
 
 void database::deleteTarget(QDateTime id)
 {
     QSqlQuery *query = new QSqlQuery(db);
-    query->prepare("DELETE FROM target "
-                   "WHERE number=:id");
-    query->bindValue(":id", id);
-    query->exec();
+    query->exec("DELETE FROM target WHERE number="+id.toString("yyyyMMddhhmmssz"));
 }
 
 void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
@@ -123,9 +117,9 @@ void database::updateTask(QDateTime number, int priority, int duration, int tray
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
-    query->bindValue(":deadline", deadline.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":deadline", deadline);
     query->bindValue(":title", title);
-    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->exec();
 }
 
@@ -136,7 +130,7 @@ void database::updateTarget(QDateTime number, bool state)
                    "SET state=:state "
                    "WHERE number=:number");
     query->bindValue(":state", state);
-    query->bindValue(":number", number.toString("yyyy-MM-dd hh:mm:ss.z"));
+    query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->exec();
 }
 

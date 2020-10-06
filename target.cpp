@@ -33,11 +33,13 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     this->setStyleSheet("background-color :#A6C0C6;border-radius : 7px;border : 1px solid black;");
     this->setLayout(layout);
     this->show();
+    connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 target::~target()
 {
+    qDebug() << this->wdwId.toString();
     this->db->deleteTarget(this->wdwId);
     this->db = NULL;
     delete this->db;
@@ -47,12 +49,19 @@ target::~target()
     delete this->b;
 }
 
-void target::set(QDateTime id, int check, QString title, QDateTime parent, database *db)
+void target::set(QDateTime id, bool check, QString title, QDateTime parent, database *db)
 {
     this->wdwId = id;
     this->parent = parent;
     this->c->setChecked(check);
     this->targetDesc = title;
     this->db = db;
+    c->setText(targetDesc);
+    connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
+}
+
+void target::up()
+{
+    this->db->updateTarget(this->wdwId, this->c->checkState());
 }
 

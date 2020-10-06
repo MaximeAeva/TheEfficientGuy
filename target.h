@@ -18,7 +18,10 @@ public:
     ~target();
     QCheckBox *c = new QCheckBox;
     QPushButton *b = new QPushButton;
-    void set(QDateTime id, int check, QString title, QDateTime parent, database *db);
+    void set(QDateTime id, bool check, QString title, QDateTime parent, database *db);
+
+public slots:
+    void up();
 
 private:
     QString targetDesc;
