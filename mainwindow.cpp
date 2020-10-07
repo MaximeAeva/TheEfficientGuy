@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("The Efficient Guy !");
+    this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
     designPage();
     connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
 }

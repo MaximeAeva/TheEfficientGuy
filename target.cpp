@@ -39,7 +39,6 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
 
 target::~target()
 {
-    qDebug() << this->wdwId.toString();
     this->db->deleteTarget(this->wdwId);
     this->db = NULL;
     delete this->db;
