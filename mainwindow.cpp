@@ -9,13 +9,26 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("The Efficient Guy !");
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
     designPage();
-    connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
+    designParms();
+    designConnections();
 }
 
 MainWindow::~MainWindow()
 {
     db->CloseDB();
     delete ui;
+}
+
+void MainWindow::designConnections()
+{
+    connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
+    connect(ui->spinMonday, SIGNAL(valueChanged(int)), this, SLOT(setMon(int)));
+    connect(ui->spinTuesday, SIGNAL(valueChanged(int)), this, SLOT(setTue(int)));
+    connect(ui->spinWednesday, SIGNAL(valueChanged(int)), this, SLOT(setWed(int)));
+    connect(ui->spinThursday, SIGNAL(valueChanged(int)), this, SLOT(setThu(int)));
+    connect(ui->spinFriday, SIGNAL(valueChanged(int)), this, SLOT(setFri(int)));
+    connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
+    connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
 }
 
 void MainWindow::designPage()
@@ -116,6 +129,21 @@ void MainWindow::load(tray *t)
         t->layout->addWidget(aTask);
     }
 }
+
+void MainWindow::designParms()
+{
+    QSqlQuery *query = new QSqlQuery(db->db);
+    query->exec("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM parms");
+    query->first();
+    ui->spinMonday->setValue(query->value("monday").toInt());
+    ui->spinTuesday->setValue(query->value("tuesday").toInt());
+    ui->spinWednesday->setValue(query->value("wednesday").toInt());
+    ui->spinThursday->setValue(query->value("thursday").toInt());
+    ui->spinFriday->setValue(query->value("friday").toInt());
+    ui->spinSaturday->setValue(query->value("saturday").toInt());
+    ui->spinSunday->setValue(query->value("sunday").toInt());
+}
+
 
 
 

@@ -33,10 +33,19 @@ public:
 
 public slots:
     void createTask();
+    inline void setMon(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET monday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setTue(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET tuesday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setWed(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET wednesday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setThu(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET thursday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setFri(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET friday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
 
 private:
     Ui::MainWindow *ui;
     void designPage();
+    void designParms();
+    void designConnections();
     void load(tray *t);
     QPushButton *adder = new QPushButton;
     tray *t1 = new tray("Ideas", 0, db);

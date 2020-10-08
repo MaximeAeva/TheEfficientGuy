@@ -1,6 +1,6 @@
 #include "gantt.h"
 
-gantt::gantt()
+gantt::gantt(QDateTime range)
 {
 
 }

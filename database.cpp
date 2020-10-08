@@ -66,6 +66,23 @@ void database::Model()
                    "parentTask DATETIME, "
                    "FOREIGN KEY(parentTask) REFERENCES task(number)"
                    ")");
+
+    QSqlQuery *query2 = new QSqlQuery(db);
+    query2->exec("CREATE TABLE IF NOT EXISTS parms"
+                   "("
+                   "monday INT, "
+                   "tuesday INT, "
+                   "wednesday INT, "
+                   "thursday INT, "
+                   "friday INT, "
+                   "saturday INT, "
+                   "sunday INT "
+                   ")");
+
+    query->exec("SELECT COUNT(*) FROM parms");
+    query->first();
+    if(!query->value(0).toInt())
+        query->exec("INSERT INTO parms(monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES (0, 0, 0, 0, 0, 0, 0)");
 }
 
 void database::addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
@@ -133,5 +150,6 @@ void database::updateTarget(QDateTime number, bool state)
     query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->exec();
 }
+
 
 
