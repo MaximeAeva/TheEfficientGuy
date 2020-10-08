@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
     designPage();
     designParms();
+    designGanttPage();
     designConnections();
 }
 
@@ -29,6 +30,7 @@ void MainWindow::designConnections()
     connect(ui->spinFriday, SIGNAL(valueChanged(int)), this, SLOT(setFri(int)));
     connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
+    connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
 }
 
 void MainWindow::designPage()
@@ -144,7 +146,28 @@ void MainWindow::designParms()
     ui->spinSunday->setValue(query->value("sunday").toInt());
 }
 
+void MainWindow::designGanttPage()
+{
 
+    QHBoxLayout *lh = new QHBoxLayout;
+    QVBoxLayout *l = new QVBoxLayout;
+    lh->addWidget(ui->displayTo);
+    lh->addStretch(1);
+    ui->displayTo->setDate(QDate::currentDate().addDays(7));
+    ui->page_2->setLayout(l);
+    l->addItem(lh);
+    rngGantt();
+    l->addWidget(this->g->table);
+    this->g->table->show();
+}
+
+void MainWindow::rngGantt()
+{
+    QSqlQuery *query = new QSqlQuery(db->db);
+    query->exec("SELECT COUNT(*) FROM task");
+    query->first();
+    this->g->setSize(query->value(0).toInt(), QDate::currentDate().daysTo(ui->displayTo->date()));
+}
 
 
 

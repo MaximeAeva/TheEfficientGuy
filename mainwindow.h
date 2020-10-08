@@ -9,6 +9,7 @@
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QTableWidget>
 #include <iostream>
 #include <iostream>
 #include <cstring>
@@ -17,6 +18,7 @@
 #include "tray.h"
 #include "database.h"
 #include "target.h"
+#include "gantt.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,14 +42,17 @@ public slots:
     inline void setFri(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET friday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
+    void rngGantt();
 
 private:
     Ui::MainWindow *ui;
     void designPage();
     void designParms();
+    void designGanttPage();
     void designConnections();
     void load(tray *t);
     QPushButton *adder = new QPushButton;
+    gantt *g = new gantt(db);
     tray *t1 = new tray("Ideas", 0, db);
     tray *t2 = new tray("ToDo", 1, db);
     tray *t3 = new tray("InProgress", 2, db);
