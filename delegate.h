@@ -18,8 +18,7 @@ class tableDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    tableDelegate(QObject *parent = 0);
-
+    tableDelegate(int size, int w, QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
 
@@ -29,5 +28,8 @@ public:
 
     void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+    int size;
+    int w;
 };
 #endif // DELEGATE_H

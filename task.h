@@ -38,13 +38,13 @@ public:
     explicit task(database *db, QWidget *parent = 0);
     ~task();
     int group = 1;
-    void set(QDateTime number, database *db, int priority = 0, int duration = 0, int tray = 1, int itemCount = 0, QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
+    void set(QDateTime number, database *db, int priority = 0, int duration = 1, int tray = 1, int itemCount = 0, QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
     QVBoxLayout *layout = new QVBoxLayout;
     QProgressBar *completion = new QProgressBar;
     inline QDateTime get(){return this->wdwId;};
     int itemCount = 0;
     int priority = 0;
-    int duration = 0;
+    int duration = 1;
     QDateTime wdwId;
     QDateTime deadLine = QDateTime::currentDateTime();
     QString title = "New task";

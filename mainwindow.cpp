@@ -164,16 +164,24 @@ void MainWindow::designGanttPage()
 void MainWindow::rngGantt()
 {
     int dayLength[7];
+    QStringList lst;
     QSqlQuery *query = new QSqlQuery(db->db);
+    query->exec("SELECT COUNT(*) FROM task");
+    query->first();
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery("SELECT * FROM parms", db->db);
     for(int i = 0; i<7; i++)
     {
         dayLength[i] = modelTask->record(0).value(i).toInt();
     }
-    query->exec("SELECT COUNT(*) FROM task");
-    query->first();
-    this->g->build(query->value(0).toInt(), QDate::currentDate().daysTo(ui->displayTo->date())+1, dayLength);
+    QSqlQueryModel *titles = new QSqlQueryModel;
+    titles->setQuery("SELECT title as title FROM task", db->db);
+    for(int i = 0; i<query->value(0).toInt(); i++)
+    {
+        lst << titles->record(i).value("title").toString();
+    }
+
+    this->g->build(lst, QDate::currentDate().daysTo(ui->displayTo->date())+1, dayLength);
 }
 
 

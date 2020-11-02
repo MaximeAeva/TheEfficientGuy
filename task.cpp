@@ -70,6 +70,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     QLabel *slideVal = new QLabel;
     QSpinBox *spin = new QSpinBox;
     spin->setValue(this->duration);
+    spin->setMinimum(1);
     connect(slide, SIGNAL(valueChanged(int)), slideVal, SLOT(setNum(int)));
     secondLay->addWidget(slideVal);
     secondLay->addWidget(slide);

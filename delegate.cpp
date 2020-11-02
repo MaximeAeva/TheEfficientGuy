@@ -1,26 +1,31 @@
 #include "delegate.h"
 
-tableDelegate::tableDelegate(QObject *parent)
+tableDelegate::tableDelegate(int size, int w, QObject *parent)
     : QItemDelegate(parent)
 {
+    this->size = size;
+    this->w = w;
 }
+
 
 QWidget *tableDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &/* option */,
     const QModelIndex &/* index */) const
 {
-    QStandardItemModel *model = new QStandardItemModel(1, 5);
+    QStandardItemModel *model = new QStandardItemModel(1, size);
     QTableView *editor = new QTableView(parent);
     QHeaderView *header = editor->horizontalHeader();
     header->hide();
     QHeaderView *header2 = editor->verticalHeader();
     header2->hide();
     editor->setModel(model);
-    for (int column = 0; column < 5; ++column) {
-        QModelIndex index = model->index(0, column, QModelIndex());
-        model->setData(index, QVariant((column+1)));
-        editor->setColumnWidth(column, 20);
+    for (int column = 0; column < size; ++column) {
+        editor->setColumnWidth(column, w/(size));
     }
+    if(!size)
+        editor->setStyleSheet("QTableView { background-color: grey; selection-color: black; }");
+    else
+        editor->setStyleSheet("QTableView { background-color: #222326; selection-color: black; }");
     editor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     return editor;

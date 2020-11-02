@@ -5,43 +5,66 @@ gantt::gantt(database *db)
     this->db = db;
 }
 
-void gantt::build(int row, int col, int dayLength[7])
+void gantt::build(QStringList lst, int col, int dayLength[7])
 {
+    int row = lst.length();
     QStandardItemModel *model = new QStandardItemModel(row, col);
     int day;
+    for(int i = 0; i<row; i++)
+    {
+        std::string s = lst.at(i).toStdString();
+        const char *a = s.c_str();
+        model->setHeaderData(i, Qt::Vertical, QObject::tr(a));
+    }
     for(int i = 0; i<col; i++)
     {
+        std::string s = QDate::currentDate().addDays(i).toString("dd-MM-yyyy").toStdString();
+        std::string k;
         day = QDate::currentDate().addDays(i).dayOfWeek();
         switch (day) {
         case 1:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Mon"));
+            k = "Mon "+s;
             break;
         case 2:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Tue"));
+            k = "Tue "+s;
             break;
         case 3:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Wed"));
+            k = "Wed "+s;
             break;
         case 4:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Thu"));
+            k = "Thu "+s;
             break;
         case 5:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Fri"));
+            k = "Fri "+s;
             break;
         case 6:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sat"));
+            k = "Sat "+s;
             break;
         case 7:
-            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sun"));
+            k = "Sun "+s;
             break;
         }
-
+        const char *a = k.c_str();
+        model->setHeaderData(i, Qt::Horizontal, QObject::tr(a));
     }
 
     this->tableView->setModel(model);
 
-    tableDelegate *delegate = new tableDelegate;
-    this->tableView->setItemDelegate(delegate);
+    int da;
+    int w = this->tableView->width()/(col+1);
+
+    for(int i = 0; i<col; i++)
+    {
+
+        da = QDate::currentDate().addDays(i).dayOfWeek();
+        if(this->tableView->width()/(col+1)<(50*dayLength[da-1])) w = 50*dayLength[da-1];
+        if (dayLength[da-1] == 0) w = 50;
+        tableDelegate *delegate = new tableDelegate(dayLength[da-1], w);
+        this->tableView->setItemDelegateForColumn(i, delegate);
+        this->tableView->setColumnWidth(i, w);
+        this->tableView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    }
+
 
     for(int i = 0; i<row; i++)
     {

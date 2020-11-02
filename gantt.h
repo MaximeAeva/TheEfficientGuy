@@ -24,7 +24,7 @@ class gantt
 {
 public:
     gantt(database *db);
-    void build(int row, int col, int dayLength[7]);
+    void build(QStringList lst, int col, int dayLength[7]);
     QTableView *tableView = new QTableView;
     QTableWidget *table = new QTableWidget;
 
