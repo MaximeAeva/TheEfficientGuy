@@ -4,28 +4,21 @@
 #include <QDateTime>
 #include <QTableWidget>
 #include <QHeaderView>
-#include <QItemDelegate>
+#include <QString>
+#include <QObject>
 #include <QStandardItemModel>
+#include <QAbstractItemModel>
+
+#include <iostream>
 
 #include "database.h"
-
-class hourTable : public QItemDelegate
-{
-    Q_OBJECT
-public:
-    explicit hourTable(QObject *parent = 0);
-    QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index);
-    void setEditorData(QWidget *editor, const QModelIndex &index);
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index);
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,  const QModelIndex &index);
-};
 
 class gantt
 {
 public:
     gantt(database *db);
-    void setSize(int row, int col);
-    void adaptDisplay();
+    void build(int row, int col, int dayLength[7]);
+    QTableView *tableView = new QTableView;
     QTableWidget *table = new QTableWidget;
 
 private:
