@@ -37,14 +37,20 @@ void gantt::build(int row, int col, int dayLength[7])
         }
 
     }
-    tableDelegate delegate;
-    this->tableView->setItemDelegate(&delegate);
+
     this->tableView->setModel(model);
-    for (int r = 0; r < row; ++r) {
-            for (int column = 0; column < col; ++column) {
-                QModelIndex index = model->index(r, column, QModelIndex());
-                model->setData(index, QVariant((r+1) * (column+1)));
-            }
+
+    tableDelegate *delegate = new tableDelegate;
+    this->tableView->setItemDelegate(delegate);
+
+    for(int i = 0; i<row; i++)
+    {
+        for(int j = 0; j<col; j++)
+        {
+            QModelIndex index = model->index(i, j, QModelIndex());
+            this->tableView->openPersistentEditor(index);
         }
+    }
+
 }
 

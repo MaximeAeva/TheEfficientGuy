@@ -9,40 +9,37 @@ QWidget *tableDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &/* option */,
     const QModelIndex &/* index */) const
 {
-    /*QStandardItemModel *model = new QStandardItemModel(1, 5);
+    QStandardItemModel *model = new QStandardItemModel(1, 5);
     QTableView *editor = new QTableView(parent);
+    QHeaderView *header = editor->horizontalHeader();
+    header->hide();
+    QHeaderView *header2 = editor->verticalHeader();
+    header2->hide();
     editor->setModel(model);
-    return editor;*/
-    QSpinBox *editor = new QSpinBox(parent);
-        editor->setMinimum(0);
-        editor->setMaximum(100);
-
+    for (int column = 0; column < 5; ++column) {
+        QModelIndex index = model->index(0, column, QModelIndex());
+        model->setData(index, QVariant((column+1)));
+        editor->setColumnWidth(column, 20);
+    }
+    editor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     return editor;
 }
 
 void tableDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const
 {
-    /*int value = index.model()->data(index, Qt::EditRole).toInt();
-
-    QTableView *subTable = static_cast<QTableView*>(editor);*/
     int value = index.model()->data(index, Qt::EditRole).toInt();
 
-        QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
-        spinBox->setValue(value);
+    QTableView *subTable = static_cast<QTableView*>(editor);
 }
 
 void tableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const
 {
-    /*QTableView *subTable = static_cast<QTableView*>(editor);
+    QTableView *subTable = static_cast<QTableView*>(editor);
 
-    model->setData(index, 1, Qt::EditRole);*/
-    QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
-        spinBox->interpretText();
-        int value = spinBox->value();
-
-        model->setData(index, value, Qt::EditRole);
+    //model->setData(index, 1, Qt::EditRole);
 }
 
 void tableDelegate::updateEditorGeometry(QWidget *editor,
