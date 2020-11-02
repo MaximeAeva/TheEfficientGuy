@@ -8,19 +8,43 @@ gantt::gantt(database *db)
 void gantt::build(int row, int col, int dayLength[7])
 {
     QStandardItemModel *model = new QStandardItemModel(row, col);
-    std::string day;
+    int day;
     for(int i = 0; i<col; i++)
     {
-        day = QDate::currentDate().addDays(i).toString("ddd").toStdString();
+        day = QDate::currentDate().addDays(i).dayOfWeek();
+        switch (day) {
+        case 1:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Mon"));
+            break;
+        case 2:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Tue"));
+            break;
+        case 3:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Wed"));
+            break;
+        case 4:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Thu"));
+            break;
+        case 5:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Fri"));
+            break;
+        case 6:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sat"));
+            break;
+        case 7:
+            model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sun"));
+            break;
+        }
 
-        if(day == "lun.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Mon"));
-        else if(day == "mar.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Tue"));
-        else if(day == "mer.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Wed"));
-        else if(day == "jeu.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Thu"));
-        else if(day == "ven.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Fri"));
-        else if(day == "sam.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sat"));
-        else if(day == "dim.") model->setHeaderData(i, Qt::Horizontal, QObject::tr("Sun"));
     }
+    tableDelegate delegate;
+    this->tableView->setItemDelegate(&delegate);
     this->tableView->setModel(model);
+    for (int r = 0; r < row; ++r) {
+            for (int column = 0; column < col; ++column) {
+                QModelIndex index = model->index(r, column, QModelIndex());
+                model->setData(index, QVariant((r+1) * (column+1)));
+            }
+        }
 }
 

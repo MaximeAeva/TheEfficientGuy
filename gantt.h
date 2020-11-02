@@ -8,10 +8,17 @@
 #include <QObject>
 #include <QStandardItemModel>
 #include <QAbstractItemModel>
+#include <QItemDelegate>
 
 #include <iostream>
+#include <QSpinBox>
 
 #include "database.h"
+#include "delegate.h"
+
+
+
+//####################### ##############################
 
 class gantt
 {

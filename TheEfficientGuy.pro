@@ -19,6 +19,7 @@ RC_ICONS += icon.ico
 
 SOURCES += \
     database.cpp \
+    delegate.cpp \
     gantt.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     database.h \
+    delegate.h \
     gantt.h \
     mainwindow.h \
     target.h \
