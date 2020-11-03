@@ -6,12 +6,13 @@
 #include <QHeaderView>
 #include <QString>
 #include <QObject>
+#include <QPainter>
+#include <QVariant>
 #include <QStandardItemModel>
 #include <QAbstractItemModel>
 #include <QItemDelegate>
 
 #include <iostream>
-#include <QSpinBox>
 
 class tableDelegate : public QItemDelegate
 {
@@ -28,6 +29,11 @@ public:
 
     void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    const QTableView *innerOne = new QTableView;
+
+public slots:
+    void update(const QModelIndex &);
+
 private:
     int size;
     int w;

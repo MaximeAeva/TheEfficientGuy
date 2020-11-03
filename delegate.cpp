@@ -27,6 +27,7 @@ QWidget *tableDelegate::createEditor(QWidget *parent,
     else
         editor->setStyleSheet("QTableView { background-color: #222326; selection-color: black; }");
     editor->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    connect(editor, SIGNAL(pressed(const QModelIndex &)), this, SLOT(update(const QModelIndex &)));
     editor->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     return editor;
 }
@@ -34,8 +35,6 @@ QWidget *tableDelegate::createEditor(QWidget *parent,
 void tableDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const
 {
-    int value = index.model()->data(index, Qt::EditRole).toInt();
-
     QTableView *subTable = static_cast<QTableView*>(editor);
 }
 
@@ -53,3 +52,9 @@ void tableDelegate::updateEditorGeometry(QWidget *editor,
     editor->setGeometry(option.rect);
 }
 
+
+
+void tableDelegate::update(const QModelIndex &index)
+{
+    std::cout << index.column() << std::endl;
+}
