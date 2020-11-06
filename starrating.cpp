@@ -5,19 +5,14 @@
 
 const int PaintingScaleFactor = 20;
 
-StarRating::StarRating(int starCount, int maxStarCount)
+StarRating::StarRating(std::vector<int> starCount, int maxStarCount)
 {
     myStarCount = starCount;
     myMaxStarCount = maxStarCount;
 
-    starPolygon << QPointF(1.0, 0.5);
-    for (int i = 1; i < 5; ++i)
-        starPolygon << QPointF(0.5 + 0.5 * cos(0.8 * i * 3.14),
-                               0.5 + 0.5 * sin(0.8 * i * 3.14));
+    starPolygon << QPointF(0.1, 0.0) << QPointF(0.9, 0.0) <<
+                   QPointF(0.9, 1.0) << QPointF(0.1, 1.0) << QPointF(0.1, 0.0);
 
-    diamondPolygon << QPointF(0.4, 0.5) << QPointF(0.5, 0.4)
-                   << QPointF(0.6, 0.5) << QPointF(0.5, 0.6)
-                   << QPointF(0.4, 0.5);
 }
 
 QSize StarRating::sizeHint() const
@@ -33,21 +28,23 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::NoPen);
 
-    if (mode == Editable) {
-        painter->setBrush(palette.highlight());
-    } else {
-        painter->setBrush(palette.foreground());
-    }
+    painter->setBrush(Qt::red);
+
 
     int yOffset = (rect.height() - PaintingScaleFactor) / 2;
     painter->translate(rect.x(), rect.y() + yOffset);
     painter->scale(PaintingScaleFactor, PaintingScaleFactor);
 
     for (int i = 0; i < myMaxStarCount; ++i) {
-        if (i < myStarCount) {
+        if (myStarCount[i])
+        {
+            painter->setBrush(Qt::red);
             painter->drawPolygon(starPolygon, Qt::WindingFill);
-        } else if (mode == Editable) {
-            painter->drawPolygon(diamondPolygon, Qt::WindingFill);
+        }
+        else
+        {
+            painter->setBrush(Qt::black);
+            painter->drawPolygon(starPolygon, Qt::WindingFill);
         }
         painter->translate(1.0, 0.0);
     }

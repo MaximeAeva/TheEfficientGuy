@@ -22,17 +22,14 @@
                         StarRating::Editable);
  }
 
- void StarEditor::mouseMoveEvent(QMouseEvent *event)
+ void StarEditor::mousePressEvent(QMouseEvent *event)
  {
-     int star = starAtPosition(event->x());
-
-     if (star != myStarRating.starCount() && star != -1) {
-         myStarRating.setStarCount(star);
-         update();
-     }
+    int star = starAtPosition(event->x());
+    myStarRating.setStar(star-1);
+    update();
  }
 
- void StarEditor::mouseReleaseEvent(QMouseEvent * /* event */)
+ void StarEditor::mouseDoubleClickEvent(QMouseEvent * /* event */)
  {
      emit editingFinished();
  }

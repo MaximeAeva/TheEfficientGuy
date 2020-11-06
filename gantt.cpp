@@ -63,29 +63,38 @@ void gantt::build(QStringList lst, int col, int dayLength[7])
     {
 
         da = QDate::currentDate().addDays(i).dayOfWeek();
-        if(this->table->width()/(col+1)<(50*dayLength[da-1])) w = 50*dayLength[da-1];
-        if (dayLength[da-1] == 0) w = 50;
-        tableDelegate *delegate = new tableDelegate(dayLength[da-1], w, this->table);
+        if(this->table->width()/(col+1)<(20*dayLength[da-1])) w = 20*dayLength[da-1];
+        if (dayLength[da-1] == 0) w = 20;
         this->table->setItemDelegate(new StarDelegate);
-
-
+        std::vector<int> vect;
+        for(int k = 0; k < dayLength[da-1]; k++) vect.push_back(0);
+        for(int j = 0; j<col; j++)
+        {
+            if(dayLength[da-1])
+            {
+                QTableWidgetItem *item3 = new QTableWidgetItem;
+                item3->setData(0, qVariantFromValue(StarRating(vect, dayLength[da-1])));
+                table->setItem(j, i, item3);
+            }
+        }
         this->table->setColumnWidth(i, w);
         this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     }
-
-    for(int i = 0; i<row; i++)
-    {
-        for(int j = 0; j<col; j++)
-        {
-            QTableWidgetItem *item3 = new QTableWidgetItem;
-            item3->setData(0,
-                           qVariantFromValue(StarRating(i)));
-            table->setItem(i, j, item3);
-        }
-    }
-
 }
 
+/*void gantt::mouseMoveEvent(QMouseEvent *event)
+{
+    QModelIndex indexPoint = this->table->indexAt(event->pos());
+    QPoint ind = event->pos();
+    this->table->openPersistentEditor(this->table->itemAt(ind));
+    if(this->table->indexAt(event->pos())!= indexPoint)
+    {
+        this->table->closePersistentEditor(this->table->itemAt(ind));
+        QPoint ind = event->pos();
+        this->table->openPersistentEditor(this->table->itemAt(ind));
+    }
+
+}*/
 
 void gantt::getter(const QModelIndex &index)
 {
