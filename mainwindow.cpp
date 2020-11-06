@@ -186,4 +186,3 @@ void MainWindow::rngGantt()
 
 
 
-

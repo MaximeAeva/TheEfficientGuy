@@ -10,6 +10,7 @@
 #include <QAbstractItemModel>
 #include <QItemDelegate>
 #include <QMouseEvent>
+#include <QCoreApplication>
 #include <vector>
 
 #include <iostream>
@@ -30,7 +31,7 @@ public:
     gantt(database *db);
     void build(QStringList lst, int col, int dayLength[7]);
     QTableWidget *table = new QTableWidget;
-    void mouseMoveEvent(QMouseEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
     void getter(const QModelIndex &);

@@ -4,6 +4,8 @@ gantt::gantt(database *db)
 {
     this->db = db;
     connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(getter(const QModelIndex &)));
+    this->table->setMouseTracking(true);
+    QCoreApplication::instance()->installEventFilter(this);
 }
 
 void gantt::build(QStringList lst, int col, int dayLength[7])
@@ -79,22 +81,27 @@ void gantt::build(QStringList lst, int col, int dayLength[7])
         }
         this->table->setColumnWidth(i, w);
         this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+
     }
 }
 
-/*void gantt::mouseMoveEvent(QMouseEvent *event)
+bool gantt::eventFilter(QObject *obj, QEvent *event)
 {
-    QModelIndex indexPoint = this->table->indexAt(event->pos());
-    QPoint ind = event->pos();
-    this->table->openPersistentEditor(this->table->itemAt(ind));
-    if(this->table->indexAt(event->pos())!= indexPoint)
+  if (event->type() == QEvent::MouseMove)
+  {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
+    QPoint p = mouseEvent->pos();
+    this->table->openPersistentEditor(this->table->itemAt(p));
+    QModelIndex ind = this->table->indexAt(mouseEvent->pos());
+    if(this->table->indexAt(mouseEvent->pos()) != ind)
     {
-        this->table->closePersistentEditor(this->table->itemAt(ind));
-        QPoint ind = event->pos();
-        this->table->openPersistentEditor(this->table->itemAt(ind));
+        this->table->closePersistentEditor(this->table->itemAt(p));
     }
 
-}*/
+  }
+  return false;
+}
+
 
 void gantt::getter(const QModelIndex &index)
 {
