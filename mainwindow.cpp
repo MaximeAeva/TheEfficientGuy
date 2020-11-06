@@ -157,8 +157,8 @@ void MainWindow::designGanttPage()
     ui->page_2->setLayout(l);
     l->addItem(lh);
     rngGantt();
-    l->addWidget(this->g->tableView);
-    this->g->tableView->show();
+    l->addWidget(this->g->table);
+    this->g->table->show();
 }
 
 void MainWindow::rngGantt()

@@ -23,6 +23,9 @@ SOURCES += \
     gantt.cpp \
     main.cpp \
     mainwindow.cpp \
+    stardelegate.cpp \
+    stareditor.cpp \
+    starrating.cpp \
     target.cpp \
     task.cpp \
     tray.cpp
@@ -32,6 +35,9 @@ HEADERS += \
     delegate.h \
     gantt.h \
     mainwindow.h \
+    stardelegate.h \
+    stareditor.h \
+    starrating.h \
     target.h \
     task.h \
     tray.h

@@ -14,6 +14,8 @@
 
 #include "database.h"
 #include "delegate.h"
+#include "stardelegate.h"
+#include "starrating.h"
 
 
 
@@ -25,7 +27,6 @@ class gantt : public QObject
 public:
     gantt(database *db);
     void build(QStringList lst, int col, int dayLength[7]);
-    QTableView *tableView = new QTableView;
     QTableWidget *table = new QTableWidget;
 
 public slots:

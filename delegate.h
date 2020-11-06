@@ -2,23 +2,26 @@
 #define DELEGATE_H
 
 #include <QDateTime>
-#include <QTableWidget>
+#include <QTableView>
 #include <QHeaderView>
 #include <QString>
 #include <QObject>
 #include <QPainter>
-#include <QVariant>
+#include <QStyledItemDelegate>
 #include <QStandardItemModel>
 #include <QAbstractItemModel>
 #include <QItemDelegate>
 
 #include <iostream>
 
-class tableDelegate : public QItemDelegate
+class tableDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
 public:
+
+    using QStyledItemDelegate::QStyledItemDelegate;
+
     tableDelegate(int size, int w, QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
@@ -29,7 +32,9 @@ public:
 
     void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
-    const QTableView *innerOne = new QTableView;
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option,
+                             const QModelIndex &index) const;
 
 public slots:
     void update(const QModelIndex &);

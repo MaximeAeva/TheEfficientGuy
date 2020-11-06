@@ -3,18 +3,22 @@
 gantt::gantt(database *db)
 {
     this->db = db;
+    connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(getter(const QModelIndex &)));
 }
 
 void gantt::build(QStringList lst, int col, int dayLength[7])
 {
     int row = lst.length();
-    QStandardItemModel *model = new QStandardItemModel(row, col);
+    QStringList headerH;
+    QStringList headerV;
+    this->table->setRowCount(row);
+    this->table->setColumnCount(col);
     int day;
     for(int i = 0; i<row; i++)
     {
         std::string s = lst.at(i).toStdString();
         const char *a = s.c_str();
-        model->setHeaderData(i, Qt::Vertical, QObject::tr(a));
+        headerV << a;
     }
     for(int i = 0; i<col; i++)
     {
@@ -45,36 +49,38 @@ void gantt::build(QStringList lst, int col, int dayLength[7])
             break;
         }
         const char *a = k.c_str();
-        model->setHeaderData(i, Qt::Horizontal, QObject::tr(a));
+        headerH << a;
     }
 
-    this->tableView->setModel(model);
+    this->table->setHorizontalHeaderLabels(headerH);
+    this->table->setVerticalHeaderLabels(headerV);
+
 
     int da;
-    int w = this->tableView->width()/(col+1);
+    int w = this->table->width()/(col+1);
 
     for(int i = 0; i<col; i++)
     {
 
         da = QDate::currentDate().addDays(i).dayOfWeek();
-        if(this->tableView->width()/(col+1)<(50*dayLength[da-1])) w = 50*dayLength[da-1];
+        if(this->table->width()/(col+1)<(50*dayLength[da-1])) w = 50*dayLength[da-1];
         if (dayLength[da-1] == 0) w = 50;
-        tableDelegate *delegate = new tableDelegate(dayLength[da-1], w, this->tableView);
-        this->tableView->setItemDelegateForColumn(i, delegate);
+        tableDelegate *delegate = new tableDelegate(dayLength[da-1], w, this->table);
+        this->table->setItemDelegate(new StarDelegate);
 
-        this->tableView->setColumnWidth(i, w);
-        this->tableView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+
+        this->table->setColumnWidth(i, w);
+        this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     }
 
     for(int i = 0; i<row; i++)
     {
         for(int j = 0; j<col; j++)
         {
-            QWidget *chil = this->tableView->childAt(i+1, j+1);
-            QTableView *mt = static_cast<QTableView*>(chil);
-            connect(mt , SIGNAL(pressed(const QModelIndex &)), this, SLOT(getter(const QModelIndex &)));
-            QModelIndex index = model->index(i, j, QModelIndex());
-            this->tableView->openPersistentEditor(index);
+            QTableWidgetItem *item3 = new QTableWidgetItem;
+            item3->setData(0,
+                           qVariantFromValue(StarRating(i)));
+            table->setItem(i, j, item3);
         }
     }
 
@@ -83,8 +89,9 @@ void gantt::build(QStringList lst, int col, int dayLength[7])
 
 void gantt::getter(const QModelIndex &index)
 {
-    int col = this->tableView->currentIndex().column();
-    int row = this->tableView->currentIndex().row();
+    int col = this->table->currentIndex().column();
+    int row = this->table->currentIndex().row();
+
     std::cout << col << ", " << row << ": " << index.column() << std::endl;
 }
 

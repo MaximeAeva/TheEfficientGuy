@@ -1,7 +1,7 @@
 #include "delegate.h"
 
 tableDelegate::tableDelegate(int size, int w, QObject *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
 {
     this->size = size;
     this->w = w;
@@ -50,6 +50,13 @@ void tableDelegate::updateEditorGeometry(QWidget *editor,
     const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
 {
     editor->setGeometry(option.rect);
+}
+
+void tableDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
+                         const QModelIndex &index) const
+{
+
+        QStyledItemDelegate::paint(painter, option, index);
 }
 
 
