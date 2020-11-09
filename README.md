@@ -1,7 +1,8 @@
 ﻿# The Efficient Guy
 > A full integrated task management and optimization tool
 
-![ThisIsIt](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.PNG)
+![KanbanView](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellokanban.PNG)
+![GanttView](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellogantt.PNG)
 
 ## Installation
 Windows:
