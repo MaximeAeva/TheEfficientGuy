@@ -18,7 +18,7 @@ public:
     enum EditMode { Editable, ReadOnly };
 
     StarRating(std::vector<int> myStarCount = {}, int maxStarCount = 10,
-               QDateTime task = QDateTime::currentDateTime(), QDateTime day = QDateTime::currentDateTime());
+               QDateTime task = QDateTime::currentDateTime(), QDateTime day = QDateTime::currentDateTime(), QColor star = Qt::red);
 
     void paint(QPainter *painter, const QRect &rect,
                const QPalette &palette, EditMode mode) const;
@@ -35,6 +35,7 @@ public:
 
 private:
     QPolygonF starPolygon;
+    QColor colorStar;
     std::vector<int> myStarCount;
     int myMaxStarCount;
 };

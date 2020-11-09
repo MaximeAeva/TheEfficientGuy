@@ -90,7 +90,7 @@ void MainWindow::load(tray *t)
     QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
     QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
     modelTaskCount->setQuery(str, db->db);
-    QString str1 = "SELECT number, priority, duration, tray, itemCount, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
+    QString str1 = "SELECT number, priority, duration, tray, itemCount, color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery(str1, db->db);
     for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
@@ -102,6 +102,7 @@ void MainWindow::load(tray *t)
                    modelTask->record(i).value("duration").toInt(),
                    modelTask->record(i).value("tray").toInt(),
                    modelTask->record(i).value("itemCount").toInt(),
+                   modelTask->record(i).value("color").toString(),
                    modelTask->record(i).value("deadline").toDateTime(),
                    modelTask->record(i).value("title").toString());
         QString str2 ="SELECT COUNT(*) as cnt1 FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();

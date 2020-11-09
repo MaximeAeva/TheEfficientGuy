@@ -11,7 +11,13 @@ task::task()
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
     completion->setRange(0, 1);
+    this->labelColor->setStyleSheet("background-color:"+this->colorTask.name());
+    this->labelColor->show();
+    this->labelColor->setMaximumHeight(20);
+    this->labelColor->setMaximumWidth(20);
+    this->layout->addWidget(this->labelColor);
     this->layout->addWidget(completion);
+    this->layout->addStretch(1);
     completion->show();
     lab->setLayout(layout);
     this->setWidget(lab);
@@ -23,7 +29,7 @@ task::task(database *db, QWidget *parent) :
 {
     wdwId = QDateTime::currentDateTime();
     this->db = db;
-    db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
+    db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
     this->setStyleSheet( "QWidget{ background-color : #546670; border-radius : 7px;border : 1px solid black;}" );
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
     lab->setStyleSheet("background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;");
@@ -33,7 +39,13 @@ task::task(database *db, QWidget *parent) :
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
     completion->setRange(0, 1);
+    this->labelColor->setStyleSheet("background-color:"+this->colorTask.name());
+    this->labelColor->show();
+    this->labelColor->setMaximumHeight(20);
+    this->labelColor->setMaximumWidth(20);
+    this->layout->addWidget(this->labelColor);
     this->layout->addWidget(completion);
+    this->layout->addStretch(1);
     completion->show();
     lab->setLayout(layout);
     this->setWidget(lab);
@@ -69,6 +81,9 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     QSlider *slide = new QSlider;
     QLabel *slideVal = new QLabel;
     QSpinBox *spin = new QSpinBox;
+    QColorDialog *colorD = new QColorDialog;
+    QPushButton *opCol = new QPushButton;
+    colorD->setCurrentColor(this->colorTask);
     spin->setValue(this->duration);
     spin->setMinimum(1);
     connect(slide, SIGNAL(valueChanged(int)), slideVal, SLOT(setNum(int)));
@@ -78,11 +93,12 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     slide->setMaximum(5);
     slide->setMinimum(0);
     slide->setOrientation(Qt::Horizontal);
-    t1->setText("Titre");
-    t2->setText("Tâche");
-    t3->setText("Priorité");
-    t4->setText("Durée");
-    button->setText("Valider");
+    t1->setText("Title");
+    t2->setText("Task");
+    t3->setText("Priority");
+    t4->setText("Duration");
+    opCol->setText("Color");
+    button->setText("OK");
     layout->addWidget(t1, 0, 0);
     layout->addWidget(title, 0, 1);
     layout->addWidget(t2, 1, 0);
@@ -91,13 +107,18 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     layout->addItem(secondLay, 2, 1);
     layout->addWidget(t4, 3, 0);
     layout->addWidget(spin, 3, 1);
-    layout->addWidget(button, 4, 0);
+    layout->addWidget(opCol, 4, 0);
+    layout->addWidget(button, 5, 0);
+    connect(opCol, SIGNAL(clicked()), colorD, SLOT(open()));
     d->setLayout(layout);
-    d->setWindowTitle("Contenu");
+    d->setWindowTitle("Content");
     connect(button, SIGNAL(clicked()), d, SLOT(accept()));
     int dialogCode = d->exec();
     if(dialogCode == QDialog::Accepted)
     {
+        if(colorD->currentColor()!=this->colorTask) this->colorTask = colorD->selectedColor();
+        this->labelColor->setStyleSheet("background-color:"+this->colorTask.name());
+        qDebug() << colorTask;
         if(!title->text().isEmpty())
         {
             this->setWindowTitle(title->text());
@@ -116,7 +137,7 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         this->duration = spin->value();
         color();
     }
-    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
 void task::completionVal(int i)
@@ -130,7 +151,7 @@ void task::deleteTarget()
     itemCount--;
     completionVal(0);
     if(itemCount) completion->setMaximum(itemCount);
-    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
 void task::color()
@@ -184,12 +205,14 @@ void task::mouseMoveEvent(QMouseEvent *event)
 void task::dropEvent(QDropEvent *event)
 {
     event->accept();
-    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title);
+    this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
 void task::set(QDateTime number, database *db, int priority, int duration,
-               int tray, int itemCount, QDateTime deadline, QString title)
+               int tray, int itemCount, QString color, QDateTime deadline, QString title)
 {
+    this->colorTask = QColor(color);
+    this->labelColor->setStyleSheet("background-color:"+this->colorTask.name());
     this->wdwId = number;
     this->priority = priority;
     this->duration = duration;

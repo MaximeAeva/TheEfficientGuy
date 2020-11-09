@@ -26,6 +26,7 @@
 #include <QSlider>
 #include <QSpinBox>
 #include <QDateTime>
+#include <QColorDialog>
 
 #include "target.h"
 #include "database.h"
@@ -38,9 +39,10 @@ public:
     explicit task(database *db, QWidget *parent = 0);
     ~task();
     int group = 1;
-    void set(QDateTime number, database *db, int priority = 0, int duration = 1, int tray = 1, int itemCount = 0, QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
+    void set(QDateTime number, database *db, int priority = 0, int duration = 1, int tray = 1, int itemCount = 0, QString color = "#000000", QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
     QVBoxLayout *layout = new QVBoxLayout;
     QProgressBar *completion = new QProgressBar;
+    QLabel *labelColor = new QLabel;
     inline QDateTime get(){return this->wdwId;};
     int itemCount = 0;
     int priority = 0;
@@ -48,6 +50,7 @@ public:
     QDateTime wdwId;
     QDateTime deadLine = QDateTime::currentDateTime();
     QString title = "New task";
+    QColor colorTask = Qt::green;
 
 public slots:
     void completionVal(int i);

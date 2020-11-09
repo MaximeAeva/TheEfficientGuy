@@ -2,12 +2,13 @@
 
 const int PaintingScaleFactor = 20;
 
-StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime task, QDateTime day)
+StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime task, QDateTime day, QColor colorStar)
 {
     myStarCount = starCount;
     myMaxStarCount = maxStarCount;
     this->task = task;
     this->day = day;
+    this->colorStar = colorStar;
 
     starPolygon << QPointF(0.1, 0.0) << QPointF(0.9, 0.0) <<
                    QPointF(0.9, 1.0) << QPointF(0.1, 1.0) << QPointF(0.1, 0.0);
@@ -27,8 +28,6 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::NoPen);
 
-    painter->setBrush(Qt::red);
-
 
     int yOffset = (rect.height() - PaintingScaleFactor) / 2;
     painter->translate(rect.x(), rect.y() + yOffset);
@@ -37,7 +36,7 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
     for (int i = 0; i < myMaxStarCount; ++i) {
         if (myStarCount[i])
         {
-            painter->setBrush(Qt::red);
+            painter->setBrush(this->colorStar);
             painter->drawPolygon(starPolygon, Qt::WindingFill);
         }
         else

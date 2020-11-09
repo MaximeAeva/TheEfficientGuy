@@ -28,5 +28,5 @@ void tray::dropEvent(QDropEvent *event)
     task *object = static_cast<task *>(event->source());
     this->layout->addWidget(object);
     object->group = this->id;
-    this->db->updateTask(object->wdwId, object->priority, object->duration, object->group, object->itemCount, object->deadLine, object->title);
+    this->db->updateTask(object->wdwId, object->priority, object->duration, object->group, object->itemCount, object->deadLine, object->title, object->colorTask.name());
 }

@@ -5,6 +5,11 @@ gantt::gantt(database *db)
     this->db = db;
     connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(getter(const QModelIndex &)));
     this->table->setMouseTracking(true);
+    this->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->table->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    this->table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    this->table->verticalHeader ()->setDefaultSectionSize(20);
     QCoreApplication::instance()->installEventFilter(this);
 }
 
@@ -75,6 +80,11 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
             {
                 std::vector<int> vect = {};
                 for(int k = 0; k < dayLength[da-1]; k++) vect.push_back(0);
+                QSqlQueryModel *colo = new QSqlQueryModel;
+                QString stcol = "SELECT color as cl FROM task WHERE number="
+                        +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz");
+
+                colo->setQuery(stcol, db->db);
                 QSqlQueryModel *ct = new QSqlQueryModel;
                 QString st = "SELECT COUNT(*) as ct FROM allocation WHERE parentTask="
                         +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz")+
@@ -87,13 +97,17 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                         " AND day="+QDateTime::currentDateTime().addDays(i).toString("yyyyMMdd");
 
                 mod->setQuery(str, db->db);
+                QColor starColor = QColor(colo->record(0).value("cl").toString());
+                qDebug() << starColor;
                 if(ct->record(0).value("ct").toInt())
-                    for(int l = 0; l<ct->record(0).value("ct").toInt(); l++) vect[mod->record(l).value("val").toInt()]++;
+                    for(int l = 0; l<ct->record(0).value("ct").toInt(); l++)
+                        if(mod->record(l).value("val").toInt()<dayLength[da-1])
+                            vect[mod->record(l).value("val").toInt()]++;
                 QTableWidgetItem *item = new QTableWidgetItem;
                 StarRating sR(vect, dayLength[da-1],
-                        QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime::currentDateTime().addDays(i));
+                        QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime::currentDateTime().addDays(i), starColor);
                 sR.setDB(this->db);
-                item->setData(0, qVariantFromValue(sR));
+                item->setData(0, QVariant::fromValue(sR));
                 table->setItem(j, i, item);
             }
         }

@@ -53,6 +53,7 @@ void database::Model()
                    "duration INT, "
                    "tray INT, "
                    "itemCount INT, "
+                   "color VARCHAR(10), "
                    "deadline DATETIME, "
                    "title VARCHAR(255)"
                    ")");
@@ -95,16 +96,17 @@ void database::Model()
         query->exec("INSERT INTO parms(monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES (0, 0, 0, 0, 0, 0, 0)");
 }
 
-void database::addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
+void database::addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color)
 {
     QSqlQuery *query = new QSqlQuery(db);
-    query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, deadline, title) "
-                   "VALUES (:number, :priority, :duration, :tray, :itemCount, :deadline, :title)");
+    query->prepare("INSERT INTO task(number, priority, duration, tray, itemCount, color, deadline, title) "
+                   "VALUES (:number, :priority, :duration, :tray, :itemCount, :color, :deadline, :title)");
     query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->bindValue(":priority", priority);
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
+    query->bindValue(":color", color);
     query->bindValue(":deadline", deadline);
     query->bindValue(":title", title);
     query->exec();
@@ -134,16 +136,17 @@ void database::deleteTarget(QDateTime id)
     query->exec("DELETE FROM target WHERE number="+id.toString("yyyyMMddhhmmssz"));
 }
 
-void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title)
+void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color)
 {
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("UPDATE task "
-                   "SET priority=:priority, duration=:duration, tray=:tray, itemCount=:itemCount, deadline=:deadline, title=:title "
+                   "SET priority=:priority, duration=:duration, tray=:tray, itemCount=:itemCount, color=:color, deadline=:deadline, title=:title "
                    "WHERE number=:number");
     query->bindValue(":priority", priority);
     query->bindValue(":duration", duration);
     query->bindValue(":tray", tray);
     query->bindValue(":itemCount", itemCount);
+    query->bindValue(":color", color);
     query->bindValue(":deadline", deadline);
     query->bindValue(":title", title);
     query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
