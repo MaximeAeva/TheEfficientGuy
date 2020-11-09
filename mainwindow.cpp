@@ -165,6 +165,7 @@ void MainWindow::rngGantt()
 {
     int dayLength[7];
     QStringList lst;
+    QStringList lstNumb;
     QSqlQuery *query = new QSqlQuery(db->db);
     query->exec("SELECT COUNT(*) FROM task");
     query->first();
@@ -175,13 +176,14 @@ void MainWindow::rngGantt()
         dayLength[i] = modelTask->record(0).value(i).toInt();
     }
     QSqlQueryModel *titles = new QSqlQueryModel;
-    titles->setQuery("SELECT title as title FROM task", db->db);
+    titles->setQuery("SELECT title as title, number as numb FROM task", db->db);
     for(int i = 0; i<query->value(0).toInt(); i++)
     {
         lst << titles->record(i).value("title").toString();
+        lstNumb << titles->record(i).value("numb").toString();
     }
 
-    this->g->build(lst, QDate::currentDate().daysTo(ui->displayTo->date())+1, dayLength);
+    this->g->build(lst, lstNumb, QDate::currentDate().daysTo(ui->displayTo->date())+1, dayLength);
 }
 
 

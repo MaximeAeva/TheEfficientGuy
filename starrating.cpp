@@ -1,14 +1,13 @@
-#include <QtGui>
-#include <math.h>
-
 #include "starrating.h"
 
 const int PaintingScaleFactor = 20;
 
-StarRating::StarRating(std::vector<int> starCount, int maxStarCount)
+StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime task, QDateTime day)
 {
     myStarCount = starCount;
     myMaxStarCount = maxStarCount;
+    this->task = task;
+    this->day = day;
 
     starPolygon << QPointF(0.1, 0.0) << QPointF(0.9, 0.0) <<
                    QPointF(0.9, 1.0) << QPointF(0.1, 1.0) << QPointF(0.1, 0.0);

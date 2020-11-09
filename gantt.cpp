@@ -8,7 +8,7 @@ gantt::gantt(database *db)
     QCoreApplication::instance()->installEventFilter(this);
 }
 
-void gantt::build(QStringList lst, int col, int dayLength[7])
+void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7])
 {
     int row = lst.length();
     QStringList headerH;
@@ -68,15 +68,33 @@ void gantt::build(QStringList lst, int col, int dayLength[7])
         if(this->table->width()/(col+1)<(20*dayLength[da-1])) w = 20*dayLength[da-1];
         if (dayLength[da-1] == 0) w = 20;
         this->table->setItemDelegate(new StarDelegate);
-        std::vector<int> vect;
-        for(int k = 0; k < dayLength[da-1]; k++) vect.push_back(0);
-        for(int j = 0; j<col; j++)
+
+        for(int j = 0; j<row; j++)
         {
             if(dayLength[da-1])
             {
-                QTableWidgetItem *item3 = new QTableWidgetItem;
-                item3->setData(0, qVariantFromValue(StarRating(vect, dayLength[da-1])));
-                table->setItem(j, i, item3);
+                std::vector<int> vect = {};
+                for(int k = 0; k < dayLength[da-1]; k++) vect.push_back(0);
+                QSqlQueryModel *ct = new QSqlQueryModel;
+                QString st = "SELECT COUNT(*) as ct FROM allocation WHERE parentTask="
+                        +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz")+
+                        " AND day="+QDateTime::currentDateTime().addDays(i).toString("yyyyMMdd");
+
+                ct->setQuery(st, db->db);
+                QSqlQueryModel *mod = new QSqlQueryModel;
+                QString str = "SELECT value as val FROM allocation WHERE parentTask="
+                        +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz")+
+                        " AND day="+QDateTime::currentDateTime().addDays(i).toString("yyyyMMdd");
+
+                mod->setQuery(str, db->db);
+                if(ct->record(0).value("ct").toInt())
+                    for(int l = 0; l<ct->record(0).value("ct").toInt(); l++) vect[mod->record(l).value("val").toInt()]++;
+                QTableWidgetItem *item = new QTableWidgetItem;
+                StarRating sR(vect, dayLength[da-1],
+                        QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime::currentDateTime().addDays(i));
+                sR.setDB(this->db);
+                item->setData(0, qVariantFromValue(sR));
+                table->setItem(j, i, item);
             }
         }
         this->table->setColumnWidth(i, w);
@@ -97,7 +115,6 @@ bool gantt::eventFilter(QObject *obj, QEvent *event)
     {
         this->table->closePersistentEditor(this->table->itemAt(p));
     }
-
   }
   return false;
 }

@@ -79,6 +79,16 @@ void database::Model()
                    "sunday INT "
                    ")");
 
+    QSqlQuery *query3 = new QSqlQuery(db);
+    query3->exec("CREATE TABLE IF NOT EXISTS allocation"
+                   "("
+                   "number INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "value INTEGER, "
+                   "day DATETIME, "
+                   "parentTask DATETIME, "
+                   "FOREIGN KEY(parentTask) REFERENCES task(number)"
+                   ")");
+
     query->exec("SELECT COUNT(*) FROM parms");
     query->first();
     if(!query->value(0).toInt())
@@ -149,6 +159,26 @@ void database::updateTarget(QDateTime number, bool state)
     query->bindValue(":state", state);
     query->bindValue(":number", number.toString("yyyyMMddhhmmssz"));
     query->exec();
+}
+
+void database::addAllocation(QDateTime task, QDateTime day, int value)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("INSERT INTO allocation(value, day, parentTask) "
+                   "VALUES (:value, :day, :parentTask)");
+    query->bindValue(":value", value);
+    query->bindValue(":day", day.toString("yyyyMMdd"));
+    query->bindValue(":parentTask", task.toString("yyyyMMddhhmmssz"));
+    query->exec();
+}
+
+void database::deleteAllocation(QDateTime task, QDateTime day, int value)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    QString str = "DELETE FROM allocation WHERE parentTask="+task.toString("yyyyMMddhhmmssz")+
+            " AND day="+day.toString("yyyyMMdd")+" AND value="+QString::fromStdString(std::to_string(value));
+    query->exec(str);
+    qDebug() << str;
 }
 
 

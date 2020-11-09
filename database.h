@@ -31,6 +31,8 @@ public:
     void deleteTarget(QDateTime id);
     void updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title);
     void updateTarget(QDateTime number, bool state);
+    void addAllocation(QDateTime task, QDateTime day, int value);
+    void deleteAllocation(QDateTime task, QDateTime day, int value);
     QSqlDatabase db;
 
 private:

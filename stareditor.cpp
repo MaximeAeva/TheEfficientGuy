@@ -26,10 +26,14 @@
  {
     int star = starAtPosition(event->x());
     myStarRating.setStar(star-1);
+    if(myStarRating.getVect().at(star-1))
+        myStarRating.db->addAllocation(myStarRating.task, myStarRating.day, star-1);
+    else
+        myStarRating.db->deleteAllocation(myStarRating.task, myStarRating.day, star-1);
     update();
  }
 
- void StarEditor::mouseDoubleClickEvent(QMouseEvent * /* event */)
+ void StarEditor::mouseClickEvent(QMouseEvent * /* event */)
  {
      emit editingFinished();
  }
