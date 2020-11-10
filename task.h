@@ -27,6 +27,7 @@
 #include <QSpinBox>
 #include <QDateTime>
 #include <QColorDialog>
+#include <QDateEdit>
 
 #include "target.h"
 #include "database.h"
@@ -40,6 +41,7 @@ public:
     ~task();
     int group = 1;
     void set(QDateTime number, database *db, int priority = 0, int duration = 1, int tray = 1, int itemCount = 0, QString color = "#000000", QDateTime deadline = QDateTime::currentDateTime(), QString title = "");
+    QHBoxLayout *stateBar = new QHBoxLayout;
     QVBoxLayout *layout = new QVBoxLayout;
     QProgressBar *completion = new QProgressBar;
     QLabel *labelColor = new QLabel;
@@ -47,7 +49,7 @@ public:
     int itemCount = 0;
     int priority = 0;
     int duration = 1;
-    QDateTime wdwId;
+    QDateTime wdwId = QDateTime::currentDateTime();
     QDateTime deadLine = QDateTime::currentDateTime();
     QString title = "New task";
     QColor colorTask = Qt::green;
@@ -57,10 +59,13 @@ public slots:
     void deleteTarget();
     void color();
 
+
 private:
 
     database *db;
 
+    QProgressBar *projTim = new QProgressBar;
+    QProgressBar *alloc = new QProgressBar;
 
     QWidget *lab = new QWidget;
     QString description = "Empty";

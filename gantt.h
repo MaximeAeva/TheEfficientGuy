@@ -29,7 +29,7 @@ class gantt : public QObject
     Q_OBJECT
 public:
     gantt(database *db);
-    void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7]);
+    void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom);
     QTableWidget *table = new QTableWidget;
     bool eventFilter(QObject *obj, QEvent *event);
 

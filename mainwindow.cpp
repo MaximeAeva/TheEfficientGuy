@@ -31,6 +31,9 @@ void MainWindow::designConnections()
     connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
+    connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
+    connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
+    connect(ui->toolBox, SIGNAL(currentChange(int)), this, SLOT(rngGantt()));
 }
 
 void MainWindow::designPage()
@@ -90,7 +93,9 @@ void MainWindow::load(tray *t)
     QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
     QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
     modelTaskCount->setQuery(str, db->db);
-    QString str1 = "SELECT number, priority, duration, tray, itemCount, color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
+    QString str1 = "SELECT number, priority, duration, tray, itemCount, "
+                   "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()))+
+            " ORDER BY priority DESC";
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery(str1, db->db);
     for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
@@ -152,9 +157,11 @@ void MainWindow::designGanttPage()
 
     QHBoxLayout *lh = new QHBoxLayout;
     QVBoxLayout *l = new QVBoxLayout;
+    lh->addWidget(ui->displayFrom);
     lh->addWidget(ui->displayTo);
     lh->addStretch(1);
-    ui->displayTo->setDate(QDate::currentDate().addDays(7));
+    ui->displayFrom->setDate(QDate::currentDate());
+    ui->displayTo->setDate(QDate::currentDate().addDays(14));
     ui->page_2->setLayout(l);
     l->addItem(lh);
     rngGantt();
@@ -177,14 +184,14 @@ void MainWindow::rngGantt()
         dayLength[i] = modelTask->record(0).value(i).toInt();
     }
     QSqlQueryModel *titles = new QSqlQueryModel;
-    titles->setQuery("SELECT title as title, number as numb FROM task", db->db);
+    titles->setQuery("SELECT title as title, number as numb FROM task ORDER BY priority DESC", db->db);
     for(int i = 0; i<query->value(0).toInt(); i++)
     {
         lst << titles->record(i).value("title").toString();
         lstNumb << titles->record(i).value("numb").toString();
     }
 
-    this->g->build(lst, lstNumb, QDate::currentDate().daysTo(ui->displayTo->date())+1, dayLength);
+    this->g->build(lst, lstNumb, ui->displayFrom->date().daysTo(ui->displayTo->date())+1, dayLength, ui->displayFrom->date());
 }
 
 

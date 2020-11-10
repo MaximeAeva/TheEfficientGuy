@@ -13,14 +13,15 @@ gantt::gantt(database *db)
     QCoreApplication::instance()->installEventFilter(this);
 }
 
-void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7])
+void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
 {
     int row = lst.length();
     QStringList headerH;
     QStringList headerV;
-    this->table->setRowCount(row);
+    this->table->setRowCount(row+1);
     this->table->setColumnCount(col);
     int day;
+    headerV << "Availability";
     for(int i = 0; i<row; i++)
     {
         std::string s = lst.at(i).toStdString();
@@ -29,9 +30,9 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
     }
     for(int i = 0; i<col; i++)
     {
-        std::string s = QDate::currentDate().addDays(i).toString("dd-MM-yyyy").toStdString();
+        std::string s = displayFrom.addDays(i).toString("dd-MM-yyyy").toStdString();
         std::string k;
-        day = QDate::currentDate().addDays(i).dayOfWeek();
+        day = displayFrom.addDays(i).dayOfWeek();
         switch (day) {
         case 1:
             k = "Mon "+s;
@@ -69,11 +70,22 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
     for(int i = 0; i<col; i++)
     {
 
-        da = QDate::currentDate().addDays(i).dayOfWeek();
+        da = displayFrom.addDays(i).dayOfWeek();
         if(this->table->width()/(col+1)<(20*dayLength[da-1])) w = 20*dayLength[da-1];
         if (dayLength[da-1] == 0) w = 20;
         this->table->setItemDelegate(new StarDelegate);
-
+        std::vector<int> vect = {};
+        for(int k = 0; k < dayLength[da-1]; k++)
+        {
+            if(db->isAllocated(QDateTime(displayFrom.addDays(i)), k)) vect.push_back(1);
+            else vect.push_back(0);
+        }
+        QTableWidgetItem *item = new QTableWidgetItem;
+        StarRating sR(vect, dayLength[da-1],
+                 QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::transparent);
+        sR.setDB(this->db);
+        item->setData(0, QVariant::fromValue(sR));
+        table->setItem(0, i, item);
         for(int j = 0; j<row; j++)
         {
             if(dayLength[da-1])
@@ -88,27 +100,26 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                 QSqlQueryModel *ct = new QSqlQueryModel;
                 QString st = "SELECT COUNT(*) as ct FROM allocation WHERE parentTask="
                         +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz")+
-                        " AND day="+QDateTime::currentDateTime().addDays(i).toString("yyyyMMdd");
+                        " AND day="+displayFrom.addDays(i).toString("yyyyMMdd");
 
                 ct->setQuery(st, db->db);
                 QSqlQueryModel *mod = new QSqlQueryModel;
                 QString str = "SELECT value as val FROM allocation WHERE parentTask="
                         +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz")+
-                        " AND day="+QDateTime::currentDateTime().addDays(i).toString("yyyyMMdd");
+                        " AND day="+displayFrom.addDays(i).toString("yyyyMMdd");
 
                 mod->setQuery(str, db->db);
                 QColor starColor = QColor(colo->record(0).value("cl").toString());
-                qDebug() << starColor;
                 if(ct->record(0).value("ct").toInt())
                     for(int l = 0; l<ct->record(0).value("ct").toInt(); l++)
                         if(mod->record(l).value("val").toInt()<dayLength[da-1])
                             vect[mod->record(l).value("val").toInt()]++;
                 QTableWidgetItem *item = new QTableWidgetItem;
                 StarRating sR(vect, dayLength[da-1],
-                        QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime::currentDateTime().addDays(i), starColor);
+                        QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime(displayFrom.addDays(i)), starColor);
                 sR.setDB(this->db);
                 item->setData(0, QVariant::fromValue(sR));
-                table->setItem(j, i, item);
+                table->setItem(j+1, i, item);
             }
         }
         this->table->setColumnWidth(i, w);
