@@ -33,7 +33,7 @@ void MainWindow::designConnections()
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
-    connect(ui->toolBox, SIGNAL(currentChange(int)), this, SLOT(rngGantt()));
+    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(rngGantt()));
 }
 
 void MainWindow::designPage()
