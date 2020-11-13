@@ -68,24 +68,29 @@ void MainWindow::designPage()
                                        "border-color: #66767A;}");
     col->addWidget(t1);
     col->addSpacing(10);
-    t1->setVisible(true);
+
     col->addWidget(t2);
     col->addSpacing(10);
-    t2->setVisible(true);
+
     col->addWidget(t3);
     col->addSpacing(10);
-    t3->setVisible(true);
+
     col->addWidget(t4);
-    t4->setVisible(true);
+
     pageL->addItem(col);
     ui->page->setLayout(pageL);
+    /*t1->setVisible(true);
+    t2->setVisible(true);
+    t3->setVisible(true);
+    t4->setVisible(true);*/
 }
 
 void MainWindow::createTask()
 {
     task *w = new task(db, this);
-    w->setVisible(true);
+
     t2->layout->addWidget(w);
+    //w->setVisible(true);
 }
 
 void MainWindow::load(tray *t)
@@ -129,12 +134,13 @@ void MainWindow::load(tray *t)
                 aTask->completion->setValue(aTask->completion->value()+1);
             connect(targ->c, SIGNAL(stateChanged(int)), aTask, SLOT(completionVal(int)));
             connect(targ->b, SIGNAL(clicked()), aTask, SLOT(deleteTarget()));
-            targ->setVisible(true);
+            //targ->setVisible(true);
             aTask->layout->addWidget(targ);
         }
-        aTask->setVisible(true);
+
         aTask->color();
         t->layout->addWidget(aTask);
+        //aTask->setVisible(true);
     }
 }
 
@@ -166,7 +172,7 @@ void MainWindow::designGanttPage()
     l->addItem(lh);
     rngGantt();
     l->addWidget(this->g->table);
-    this->g->table->show();
+    //this->g->table->show();
 }
 
 void MainWindow::rngGantt()

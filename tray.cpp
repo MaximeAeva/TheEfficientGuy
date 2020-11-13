@@ -12,7 +12,7 @@ tray::tray(QString title, int id, database *db)
     this->content->setLayout(this->layout);
     this->setWidget(this->content);
     this->setAcceptDrops(true);
-    this->show();
+    //this->show();
 }
 
 void tray::dragEnterEvent(QDragEnterEvent *event)

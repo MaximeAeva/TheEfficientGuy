@@ -12,7 +12,7 @@ target::target()
     layout->addWidget(b);
     c->setStyleSheet("background-color :#A6C0C6;border : 1px solid black;");
     this->setLayout(layout);
-    this->show();
+    //this->show();
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
@@ -32,7 +32,7 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     layout->addWidget(b);
     c->setStyleSheet("background-color :#A6C0C6;border : 1px solid black;");
     this->setLayout(layout);
-    this->show();
+    //this->show();
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }

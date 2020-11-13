@@ -2,13 +2,13 @@
 
 task::task()
 {
-    this->time->setText("Time: ");
+    this->time->setText("Remain: ");
     this->aloc->setText("Alloc: ");
-    alloc->setFormat("%v");
-    projTim->setFormat("%v");
+    alloc->setFormat("%vhours (%p%)");
+    projTim->setFormat("%vdays (%p%)");
 
     this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
-    this->labelColor->show();
+    //this->labelColor->show();
     this->labelColor->setMinimumHeight(20);
     this->labelColor->setMinimumWidth(20);
     this->stateBar->addWidget(this->labelColor);
@@ -20,8 +20,8 @@ task::task()
     this->stateBar->addWidget(alloc);
     aloc->setStyleSheet("border : none");
     time->setStyleSheet("border : none");
-    projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
-    alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
+    projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+    alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
     lab->setStyleSheet("QWidget{background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;}");
     this->setWindowTitle(title);
@@ -34,23 +34,23 @@ task::task()
     this->layout->addItem(this->stateBar);
     this->layout->addWidget(completion);
     this->layout->addStretch(1);
-    completion->show();
+    //completion->show();
     lab->setLayout(layout);
     this->setWidget(lab);
-    this->show();
+    //this->show();
 }
 
 task::task(database *db, QWidget *parent) :
     QDockWidget(parent)
 {
-    this->time->setText("Time: ");
+    this->time->setText("Remain: ");
     this->aloc->setText("Alloc: ");
-    alloc->setFormat("%v");
-    projTim->setFormat("%v");
+    alloc->setFormat("%vhours (%p%)");
+    projTim->setFormat("%vdays (%p%)");
     aloc->setStyleSheet("border : none");
     time->setStyleSheet("border : none");
-    this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
-    this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
+    this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+    this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
     this->db = db;
     db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
@@ -66,7 +66,7 @@ task::task(database *db, QWidget *parent) :
     alloc->setMaximum(this->duration);
     alloc->setValue(this->db->getAlloc(this->wdwId));
     this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
-    this->labelColor->show();
+    //this->labelColor->show();
     this->labelColor->setMinimumHeight(20);
     this->labelColor->setMinimumWidth(20);
     this->stateBar->addWidget(this->labelColor);
@@ -80,10 +80,10 @@ task::task(database *db, QWidget *parent) :
     this->layout->addItem(this->stateBar);
     this->layout->addWidget(completion);
     this->layout->addStretch(1);
-    completion->show();
+    //completion->show();
     lab->setLayout(layout);
     this->setWidget(lab);
-    this->show();
+    //this->show();
     color();
 }
 
@@ -184,6 +184,14 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
         alloc->setValue(this->db->getAlloc(this->wdwId));
         this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
+        if(projTim->value()<= 0.1*projTim->maximum())
+            this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
+        else this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+        if(alloc->value()> alloc->maximum())
+            this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
+        else if (alloc->value()>= 0.8*alloc->maximum())
+            this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+        else this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
         color();
     }
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
@@ -277,5 +285,12 @@ void task::set(QDateTime number, database *db, int priority, int duration,
     alloc->setMinimum(0);
     alloc->setMaximum(this->duration);
     projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
+    if(projTim->value()<= 0.1*projTim->maximum())
+        this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
     alloc->setValue(this->db->getAlloc(this->wdwId));
+    if(alloc->value()> alloc->maximum())
+        this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
+    else if (alloc->value()>= 0.8*alloc->maximum())
+        this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+
 }
