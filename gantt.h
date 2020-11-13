@@ -31,12 +31,13 @@ public:
     gantt(database *db);
     void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom);
     QTableWidget *table = new QTableWidget;
-    bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
+    void openPers(int row, int col);
     void getter(const QModelIndex &);
 
 private:
+    QTableWidgetItem* targetItem;
     database *db;
 };
 

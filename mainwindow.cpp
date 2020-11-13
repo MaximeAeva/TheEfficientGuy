@@ -34,6 +34,12 @@ void MainWindow::designConnections()
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(rngGantt()));
+    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(reloadPage()));
+}
+
+void MainWindow::reloadPage()
+{
+
 }
 
 void MainWindow::designPage()
@@ -79,10 +85,6 @@ void MainWindow::designPage()
 
     pageL->addItem(col);
     ui->page->setLayout(pageL);
-    /*t1->setVisible(true);
-    t2->setVisible(true);
-    t3->setVisible(true);
-    t4->setVisible(true);*/
 }
 
 void MainWindow::createTask()

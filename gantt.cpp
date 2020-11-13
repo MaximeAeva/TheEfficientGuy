@@ -11,6 +11,8 @@ gantt::gantt(database *db)
     this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->table->verticalHeader ()->setDefaultSectionSize(20);
     QCoreApplication::instance()->installEventFilter(this);
+    QPoint p(1, 0);
+    this->targetItem = this->table->itemAt(p);
 }
 
 void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
@@ -124,33 +126,20 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         }
         this->table->setColumnWidth(i, w);
         this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-
+        connect(this->table, SIGNAL(cellEntered(int, int)), this, SLOT(openPers(int, int)));
     }
 }
-
-bool gantt::eventFilter(QObject *obj, QEvent *event)
-{
-  if (event->type() == QEvent::MouseMove)
-  {
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
-    QPoint p = mouseEvent->pos();
-    this->table->openPersistentEditor(this->table->itemAt(p));
-    QModelIndex ind = this->table->indexAt(mouseEvent->pos());
-    if(this->table->indexAt(mouseEvent->pos()) != ind)
-    {
-        this->table->closePersistentEditor(this->table->itemAt(p));
-    }
-  }
-  return false;
-}
-
 
 void gantt::getter(const QModelIndex &index)
 {
     int col = this->table->currentIndex().column();
     int row = this->table->currentIndex().row();
-
-    std::cout << col << ", " << row << ": " << index.column() << std::endl;
 }
 
-
+void gantt::openPers(int row, int col)
+{
+    this->table->closePersistentEditor(targetItem);
+    QPoint p(row, col);
+    this->targetItem = this->table->itemAt(p);
+    this->table->openPersistentEditor(targetItem);
+}

@@ -29,7 +29,7 @@ task::task()
     this->setAttribute(Qt::WA_DeleteOnClose);
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
-    completion->setRange(0, 1);
+    completion->setRange(0, 0);
 
     this->layout->addItem(this->stateBar);
     this->layout->addWidget(completion);
@@ -59,12 +59,9 @@ task::task(database *db, QWidget *parent) :
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setAttribute(Qt::WA_DeleteOnClose);
     completion->setOrientation(Qt::Horizontal);
-    completion->setValue(0);
-    completion->setRange(0, 1);
-    projTim->setMinimum(0);
-    alloc->setMinimum(0);
-    alloc->setMaximum(this->duration);
-    alloc->setValue(this->db->getAlloc(this->wdwId));
+    completion->setRange(0, 0);
+    projTim->setRange(0, 0);
+    alloc->setRange(0, 0);
     this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
     //this->labelColor->show();
     this->labelColor->setMinimumHeight(20);
@@ -177,12 +174,11 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         this->priority = slide->value();
         this->duration = spin->value();
         this->deadLine = QDateTime(deadl->date());
-        projTim->setMinimum(0);
         projTim->setMaximum(this->wdwId.daysTo(deadLine));
-        alloc->setMinimum(0);
         alloc->setMaximum(this->duration);
         projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
-        alloc->setValue(this->db->getAlloc(this->wdwId));
+        if(this->db->getAlloc(this->wdwId))
+            alloc->setValue(this->db->getAlloc(this->wdwId));
         this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
         if(projTim->value()<= 0.1*projTim->maximum())
             this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
@@ -280,14 +276,13 @@ void task::set(QDateTime number, database *db, int priority, int duration,
     this->db = db;
 
     setWindowTitle(title);
-    projTim->setMinimum(0);
     projTim->setMaximum(this->wdwId.daysTo(deadLine));
-    alloc->setMinimum(0);
     alloc->setMaximum(this->duration);
     projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
     if(projTim->value()<= 0.1*projTim->maximum())
         this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
-    alloc->setValue(this->db->getAlloc(this->wdwId));
+    if(this->db->getAlloc(this->wdwId))
+        alloc->setValue(this->db->getAlloc(this->wdwId));
     if(alloc->value()> alloc->maximum())
         this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
     else if (alloc->value()>= 0.8*alloc->maximum())

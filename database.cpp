@@ -114,16 +114,20 @@ void database::addTask(QDateTime number, int priority, int duration, int tray, i
 
 void database::deleteTask(QDateTime id)
 {
+    if(db.isOpen()){
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("DELETE FROM task WHERE number="+id.toString("yyyyMMddhhmmssz"));
     deleteTarget(id);
     deleteAllocation(id);
+    }
 }
 
 void database::deleteAllocation(QDateTime id)
 {
+    if(db.isOpen()){
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("DELETE FROM allocation WHERE parentTask="+id.toString("yyyyMMddhhmmssz"));
+    }
 }
 
 void database::addTarget(QDateTime number, QString title, bool state, QDateTime parentTask)
@@ -140,8 +144,10 @@ void database::addTarget(QDateTime number, QString title, bool state, QDateTime 
 
 void database::deleteTarget(QDateTime id)
 {
+    if(db.isOpen()){
     QSqlQuery *query = new QSqlQuery(db);
     query->exec("DELETE FROM target WHERE number="+id.toString("yyyyMMddhhmmssz"));
+    }
 }
 
 void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color)
@@ -185,10 +191,12 @@ void database::addAllocation(QDateTime task, QDateTime day, int value)
 
 void database::deleteAllocation(QDateTime task, QDateTime day, int value)
 {
+    if(db.isOpen()){
     QSqlQuery *query = new QSqlQuery(db);
     QString str = "DELETE FROM allocation WHERE parentTask="+task.toString("yyyyMMddhhmmssz")+
             " AND day="+day.toString("yyyyMMdd")+" AND value="+QString::fromStdString(std::to_string(value));
     query->exec(str);
+    }
 }
 
 bool database::isAllocated(QDateTime day, int value)
