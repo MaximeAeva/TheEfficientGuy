@@ -33,7 +33,7 @@ public:
     QTableWidget *table = new QTableWidget;
 
 public slots:
-    void openPers(int row, int col);
+    void openPers(QTableWidgetItem* i);
     void getter(const QModelIndex &);
 
 private:

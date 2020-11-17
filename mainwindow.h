@@ -9,6 +9,9 @@
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QtCharts>
+#include <QLineSeries>
+#include <QGraphicsView>
 #include <QTableWidget>
 #include <iostream>
 #include <iostream>
@@ -44,6 +47,7 @@ public slots:
     inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
     void rngGantt();
+    void loadPage();
 
 private:
     Ui::MainWindow *ui;
@@ -51,6 +55,7 @@ private:
     void designParms();
     void designGanttPage();
     void designConnections();
+    void designChargePage();
     void load(tray *t);
     QPushButton *adder = new QPushButton;
     gantt *g = new gantt(db);

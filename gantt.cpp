@@ -11,8 +11,10 @@ gantt::gantt(database *db)
     this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->table->verticalHeader ()->setDefaultSectionSize(20);
     QCoreApplication::instance()->installEventFilter(this);
-    QPoint p(1, 0);
-    this->targetItem = this->table->itemAt(p);
+    this->targetItem = this->table->item(1, 0);
+    this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    this->table->setStyleSheet("QHeaderView::section{background-color: rgb(24, 26, 31); color : rgb(214,216,218);}");
+    connect(this->table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(openPers(QTableWidgetItem*)));
 }
 
 void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
@@ -21,7 +23,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
     QStringList headerH;
     QStringList headerV;
     this->table->setRowCount(row+1);
-    this->table->setColumnCount(col);
+    this->table->setColumnCount(col+1);
     int day;
     headerV << "Availability";
     for(int i = 0; i<row; i++)
@@ -30,6 +32,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         const char *a = s.c_str();
         headerV << a;
     }
+    headerH << "Completion";
     for(int i = 0; i<col; i++)
     {
         std::string s = displayFrom.addDays(i).toString("dd-MM-yyyy").toStdString();
@@ -68,7 +71,28 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
 
     int da;
     int w = this->table->width()/(col+1);
+    this->table->setColumnWidth(0, 5*20);
+    for(int j = 0; j<row; j++)
+    {
+        QSqlQueryModel *q = new QSqlQueryModel;
+        QString stcol = "SELECT duration as d FROM task WHERE number="
+                +QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz").toString("yyyyMMddhhmmssz");
 
+        q->setQuery(stcol, db->db);
+        float ratio = float(db->getAlloc(QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz")))/float(q->record(0).value("d").toInt());
+        std::vector<int> vect = {};
+        for(int k = 1; k < 6; k++)
+        {
+            if(ratio >= float(k)/float(5)) vect.push_back(0);
+            else vect.push_back(1);
+        }
+        QTableWidgetItem *item = new QTableWidgetItem;
+        StarRating sR(vect, 5,
+                 QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::transparent);
+        sR.setDB(this->db);
+        item->setData(0, QVariant::fromValue(sR));
+        table->setItem(j+1, 0, item);
+    }
     for(int i = 0; i<col; i++)
     {
 
@@ -87,7 +111,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                  QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::transparent);
         sR.setDB(this->db);
         item->setData(0, QVariant::fromValue(sR));
-        table->setItem(0, i, item);
+        table->setItem(0, i+1, item);
         for(int j = 0; j<row; j++)
         {
             if(dayLength[da-1])
@@ -121,12 +145,15 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                         QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz") , QDateTime(displayFrom.addDays(i)), starColor);
                 sR.setDB(this->db);
                 item->setData(0, QVariant::fromValue(sR));
-                table->setItem(j+1, i, item);
+                table->setItem(j+1, i+1, item);
+                this->targetItem = this->table->item(j+1, i+1);
+                this->table->openPersistentEditor(targetItem);
+
             }
         }
-        this->table->setColumnWidth(i, w);
+        this->table->setColumnWidth(i+1, w);
         this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-        connect(this->table, SIGNAL(cellEntered(int, int)), this, SLOT(openPers(int, int)));
+
     }
 }
 
@@ -136,10 +163,7 @@ void gantt::getter(const QModelIndex &index)
     int row = this->table->currentIndex().row();
 }
 
-void gantt::openPers(int row, int col)
+void gantt::openPers(QTableWidgetItem* i)
 {
-    this->table->closePersistentEditor(targetItem);
-    QPoint p(row, col);
-    this->targetItem = this->table->itemAt(p);
-    this->table->openPersistentEditor(targetItem);
+    qDebug() << "1";
 }

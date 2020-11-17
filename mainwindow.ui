@@ -14,18 +14,19 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(48, 56, 58);</string>
+   <string notr="true">background-color: rgb(24, 26, 31);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(166, 192, 198);
+       <string notr="true">background-color: rgb(36, 41, 46);
+color : rgb(214, 216, 218);
 </string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -91,6 +92,26 @@
        <attribute name="label">
         <string>Charge</string>
        </attribute>
+       <widget class="QWidget" name="verticalWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>-1</x>
+          <y>-11</y>
+          <width>781</width>
+          <height>451</height>
+         </rect>
+        </property>
+        <widget class="QChartView" name="graphicsView">
+         <property name="geometry">
+          <rect>
+           <x>1</x>
+           <y>1</y>
+           <width>256</width>
+           <height>192</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_4">
        <property name="geometry">
@@ -357,6 +378,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QGraphicsView</extends>
+   <header>QtCharts</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

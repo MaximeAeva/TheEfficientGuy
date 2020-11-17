@@ -8,7 +8,7 @@ tray::tray(QString title, int id, database *db)
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetClosable);
     this->setWindowTitle(this->title);
-    setStyleSheet( "QWidget{ background-color : rgba( 160, 160, 160, 255); border-radius : 7px;  }" );
+    setStyleSheet( "QWidget{ color: rgb(214, 216, 218); background-color : rgba( 24, 26, 31, 255); border-radius : 7px;  }" );
     this->content->setLayout(this->layout);
     this->setWidget(this->content);
     this->setAcceptDrops(true);

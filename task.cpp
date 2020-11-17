@@ -23,7 +23,7 @@ task::task()
     projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
     alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
-    lab->setStyleSheet("QWidget{background-color :#66767A;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;}");
+    lab->setStyleSheet("QWidget{color: black;background-color :rgb( 49, 54, 63);border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;}");
     this->setWindowTitle(title);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -54,7 +54,7 @@ task::task(database *db, QWidget *parent) :
     this->db = db;
     db->addTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
     completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #05B8CC;}");
-    lab->setStyleSheet("QWidget{background-color :#66767A;border-radius : 7px;border : 1px solid black;}");
+    lab->setStyleSheet("QWidget{color: black; background-color :rgb( 49, 54, 63);border-radius : 7px;border : 1px solid black;}");
     this->setWindowTitle(title);
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -212,22 +212,22 @@ void task::color()
     switch (priority)
     {
         case 1:
-        this->setStyleSheet("QWidget::title {background: #235B66; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600; background-color: #235B66; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
         case 2:
-        this->setStyleSheet("QWidget::title {background: #11AEBF; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #11AEBF; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
         case 3:
-        this->setStyleSheet("QWidget::title {background: #A0BF30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #A0BF30; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
         case 4:
-        this->setStyleSheet("QWidget::title {background: #F2AE30; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #F2AE30; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
         case 5:
-        this->setStyleSheet("QWidget::title {background: #F25244; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #F25244; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
         default:
-        this->setStyleSheet("QWidget::title {background: #546670; color: black;} QWidget{background : rgba( 160, 160, 160, 255); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #546670; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
         break;
     }
 }

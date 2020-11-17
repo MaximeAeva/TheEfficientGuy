@@ -217,5 +217,41 @@ int database::getAlloc(QDateTime task)
     return query->value(0).toInt();
 }
 
+int database::dayOccupation(QDateTime day)
+{
+    QString d;
+    switch(day.date().dayOfWeek())
+    {
+        case 1:
+            d = "monday";
+        break;
+        case 2:
+            d = "tuesday";
+        break;
+        case 3:
+            d = "wednesday";
+        break;
+        case 4:
+            d = "thursday";
+        break;
+        case 5:
+            d = "friday";
+        break;
+        case 6:
+            d = "saturday";
+        break;
+        case 7:
+            d = "sunday";
+        break;
+    }
+
+    QSqlQuery *query = new QSqlQuery(db);
+    QString str = "SELECT 100*(SELECT COUNT(*) FROM allocation WHERE day="+day.date().toString("yyyyMMdd")+
+            ") / (SELECT "+d+" FROM parms)";
+    query->exec(str);
+    query->first();
+    return query->value(0).toInt();
+}
+
 
 

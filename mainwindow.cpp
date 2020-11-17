@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     designParms();
     designGanttPage();
     designConnections();
+    designChargePage();
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +35,8 @@ void MainWindow::designConnections()
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(rngGantt()));
+    connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(loadPage()));
+    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(loadPage()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(reloadPage()));
 }
 
@@ -201,6 +204,57 @@ void MainWindow::rngGantt()
 
     this->g->build(lst, lstNumb, ui->displayFrom->date().daysTo(ui->displayTo->date())+1, dayLength, ui->displayFrom->date());
 }
+
+void MainWindow::loadPage()
+{
+    QLineSeries *lines = new QLineSeries();
+    for(int i = 0; i<ui->displayFrom->date().daysTo(ui->displayTo->date()); i++)
+        lines->append(QDateTime(ui->displayFrom->date().addDays(i)).toMSecsSinceEpoch(),
+                      db->dayOccupation(QDateTime(ui->displayFrom->date().addDays(i))));
+
+
+    QPen pen = lines->pen();
+    pen.setWidth(5);
+    pen.setBrush(QBrush(QColor("#F25244")));
+    lines->setPen(pen);
+
+    QBrush brush;
+    brush.setColor(QColor::fromRgb(49, 54, 63));
+
+    QChart *chart = new QChart();
+    chart->addSeries(lines);
+    chart->legend()->hide();
+    chart->setTitle("Charge in %");
+    chart->setBackgroundBrush(brush);
+
+    QDateTimeAxis *axisX = new QDateTimeAxis;
+    axisX->setTickCount(ui->displayFrom->date().daysTo(ui->displayTo->date()));
+    axisX->setFormat("dd MMM");
+    axisX->setTitleText("Date");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    lines->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setRange(0, 100);
+    axisY->setTickCount(11);
+    axisY->setLabelFormat("%i");
+    axisY->setTitleText("Amount (%)");
+    chart->addAxis(axisY, Qt::AlignLeft);
+    lines->attachAxis(axisY);
+
+    ui->graphicsView->setChart(chart);
+    ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+}
+
+void MainWindow::designChargePage()
+{
+    QVBoxLayout *l = new QVBoxLayout;
+    l->addWidget(ui->graphicsView);
+    ui->page_3->setLayout(l);
+    loadPage();
+}
+
+
 
 
 

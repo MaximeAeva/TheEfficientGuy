@@ -37,6 +37,7 @@ public:
     void deleteAllocation(QDateTime task, QDateTime day, int value);
     bool isAllocated(QDateTime day, int value);
     int getAlloc(QDateTime task);
+    int dayOccupation(QDateTime day);
     QSqlDatabase db;
 
 private:

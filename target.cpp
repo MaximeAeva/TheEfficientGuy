@@ -10,7 +10,6 @@ target::target()
     layout->addWidget(c);
     layout->addStretch(1);
     layout->addWidget(b);
-    c->setStyleSheet("background-color :#A6C0C6;border : 1px solid black;");
     this->setLayout(layout);
     //this->show();
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
@@ -30,7 +29,6 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     layout->addWidget(c);
     layout->addStretch(1);
     layout->addWidget(b);
-    c->setStyleSheet("background-color :#A6C0C6;border : 1px solid black;");
     this->setLayout(layout);
     //this->show();
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
