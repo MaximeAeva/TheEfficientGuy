@@ -209,25 +209,28 @@ void task::deleteTarget()
 
 void task::color()
 {
+    this->setStyleSheet(" QDockWidget{font-weight : 600;color: black;"
+                        "background-color : rgb( 49, 54, 63); border-radius : 7px;"
+                        "border : 1px solid black;font-size : 12pt;}");
     switch (priority)
     {
         case 1:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600; background-color: #235B66; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title { background-color: #235B66; text-align: center;}"));
         break;
         case 2:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #11AEBF; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title { background-color: #11AEBF; text-align: center;}"));
         break;
         case 3:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #A0BF30; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title {background-color: #A0BF30; text-align: center;}"));
         break;
         case 4:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #F2AE30; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title {  background-color: #F2AE30; text-align: center;}"));
         break;
         case 5:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #F25244; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title {  background-color: #F25244; text-align: center;}"));
         break;
         default:
-        this->setStyleSheet("QWidget::title { color: black; font-weight : 600;background-color: #546670; } QWidget{background-color : rgb( 49, 54, 63); border-radius : 7px;border : 1px solid black;}");
+        this->setStyleSheet(this->styleSheet().append("QWidget::title {  background-color: #546670; text-align: center;}"));
         break;
     }
 }

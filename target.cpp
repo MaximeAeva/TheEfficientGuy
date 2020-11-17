@@ -5,10 +5,11 @@ target::target()
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
+    b->setMaximumWidth(20);
     b->setStyleSheet("QPushButton{background-color : rgba( 200, 0, 0, 255); border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
     layout->addWidget(c);
-    layout->addStretch(1);
+    //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
     //this->show();
@@ -24,10 +25,11 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     QHBoxLayout *layout = new QHBoxLayout;
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
+    b->setMaximumWidth(20);
     b->setStyleSheet("QPushButton{background-color : rgba( 200, 0, 0, 255); border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
     layout->addWidget(c);
-    layout->addStretch(1);
+    //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
     //this->show();
