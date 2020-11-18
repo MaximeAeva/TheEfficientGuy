@@ -7,8 +7,10 @@ task::task()
     alloc->setFormat("%vhours (%p%)");
     projTim->setFormat("%vdays (%p%)");
 
+    projTim->setRange(0, 0);
+    alloc->setRange(0, 0);
     this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
-    //this->labelColor->show();
+
     this->labelColor->setMinimumHeight(20);
     this->labelColor->setMinimumWidth(20);
     this->stateBar->addWidget(this->labelColor);
@@ -34,10 +36,10 @@ task::task()
     this->layout->addItem(this->stateBar);
     this->layout->addWidget(completion);
     this->layout->addStretch(1);
-    //completion->show();
+
     lab->setLayout(layout);
     this->setWidget(lab);
-    //this->show();
+
 }
 
 task::task(database *db, QWidget *parent) :
@@ -63,7 +65,7 @@ task::task(database *db, QWidget *parent) :
     projTim->setRange(0, 0);
     alloc->setRange(0, 0);
     this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
-    //this->labelColor->show();
+
     this->labelColor->setMinimumHeight(20);
     this->labelColor->setMinimumWidth(20);
     this->stateBar->addWidget(this->labelColor);
@@ -77,10 +79,10 @@ task::task(database *db, QWidget *parent) :
     this->layout->addItem(this->stateBar);
     this->layout->addWidget(completion);
     this->layout->addStretch(1);
-    //completion->show();
+
     lab->setLayout(layout);
     this->setWidget(lab);
-    //this->show();
+
     color();
 }
 
@@ -176,18 +178,46 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
         this->deadLine = QDateTime(deadl->date());
         projTim->setMaximum(this->wdwId.daysTo(deadLine));
         alloc->setMaximum(this->duration);
-        projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
-        if(this->db->getAlloc(this->wdwId))
-            alloc->setValue(this->db->getAlloc(this->wdwId));
-        this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
-        if(projTim->value()<= 0.1*projTim->maximum())
+        if(projTim->maximum()<=0)
+        {
+            projTim->setValue(0);
+            projTim->setFormat("illimited");
+            this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+        }
+        else if(QDate::currentDate().daysTo(deadLine.date())>0)
+        {
+            projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
+            projTim->setFormat("%vdays (%p%)");
+            if(projTim->value()<= 0.1*projTim->maximum())
+                this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+            else this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+        }
+        else
+        {
+            projTim->setValue(projTim->maximum());
+            projTim->setFormat(QString::number(QDate::currentDate().daysTo(deadLine.date()))+"days ("+
+                               QString::number(100*(QDate::currentDate().daysTo(deadLine.date())/projTim->maximum()))+"%)");
             this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
-        else this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
-        if(alloc->value()> alloc->maximum())
+        }
+        if(this->db->isOverkilled(this->wdwId)<=0)
+        {
+            alloc->setValue(this->db->getAlloc(this->wdwId));
+            alloc->setFormat("%vhours (%p%)");
+            if (alloc->value()>= 0.8*alloc->maximum())
+                this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+            else this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+        }
+        else
+        {
+            alloc->setValue(alloc->maximum());
+            alloc->setFormat(QString::number(this->db->getAlloc(this->wdwId))+"hours ("
+                             +QString::number(100*this->db->getAlloc(this->wdwId)/alloc->maximum())+"%)");
             this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
-        else if (alloc->value()>= 0.8*alloc->maximum())
-            this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
-        else this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+        }
+
+        this->labelColor->setStyleSheet("border-radius : none; border : none; background-color:"+this->colorTask.name());
+
+
         color();
     }
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
@@ -281,14 +311,40 @@ void task::set(QDateTime number, database *db, int priority, int duration,
     setWindowTitle(title);
     projTim->setMaximum(this->wdwId.daysTo(deadLine));
     alloc->setMaximum(this->duration);
-    projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
-    if(projTim->value()<= 0.1*projTim->maximum())
+    if(projTim->maximum()<=0)
+    {
+        projTim->setValue(0);
+        projTim->setFormat("illimited");
+        this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+    }
+    else if(QDate::currentDate().daysTo(deadLine.date())>0)
+    {
+        projTim->setValue(QDate::currentDate().daysTo(deadLine.date()));
+        projTim->setFormat("%vdays (%p%)");
+        if(projTim->value()<= 0.1*projTim->maximum())
+            this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+        else this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+    }
+    else
+    {
+        projTim->setValue(projTim->maximum());
+        projTim->setFormat(QString::number(QDate::currentDate().daysTo(deadLine.date()))+"days ("+
+                           QString::number(100*(QDate::currentDate().daysTo(deadLine.date())/projTim->maximum()))+"%)");
         this->projTim->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
-    if(this->db->getAlloc(this->wdwId))
+    }
+    if(this->db->isOverkilled(this->wdwId)<=0)
+    {
         alloc->setValue(this->db->getAlloc(this->wdwId));
-    if(alloc->value()> alloc->maximum())
+        if (alloc->value()>= 0.8*alloc->maximum())
+            this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+        else this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");
+    }
+    else
+    {
+        alloc->setValue(alloc->maximum());
+        alloc->setFormat(QString::number(this->db->getAlloc(this->wdwId))+"hours ("
+                         +QString::number(100*this->db->getAlloc(this->wdwId)/alloc->maximum())+"%)");
         this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FF6861;}");
-    else if (alloc->value()>= 0.8*alloc->maximum())
-        this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
+    }
 
 }

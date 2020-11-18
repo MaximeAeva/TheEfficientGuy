@@ -32,6 +32,10 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
     int yOffset = (rect.height() - PaintingScaleFactor) / 2;
     painter->translate(rect.x(), rect.y() + yOffset);
     painter->scale(PaintingScaleFactor, PaintingScaleFactor);
+    bool isdeadline = false;
+
+    if(this->colorStar != Qt::transparent)
+        if(db->isDead(this->task, this->day)<=0) isdeadline = true;
 
     for (int i = 0; i < myMaxStarCount; ++i) {
         if (myStarCount[i])
@@ -41,7 +45,8 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
         }
         else
         {
-            painter->setBrush(Qt::black);
+            if(isdeadline) painter->setBrush(QColor::fromRgb(36, 41, 46));
+            else painter->setBrush(Qt::black);
             painter->drawPolygon(starPolygon, Qt::WindingFill);
         }
         painter->translate(1.0, 0.0);

@@ -6,13 +6,16 @@ target::target()
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
     b->setMaximumWidth(20);
-    b->setStyleSheet("QPushButton{background-color : rgba( 200, 0, 0, 255); border-radius : 3px; height : 1em; width : 1em;}");
+    b->setMaximumHeight(20);
+    b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
+                     "background-color : #F25244; border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
+    c->setMinimumHeight(20);
     layout->addWidget(c);
     //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
-    //this->show();
+    this->setStyleSheet("QWidget{color: rgb(214, 216, 218); background-color : rgba( 24, 26, 31, 255); border-radius : 3px; border : none;}");
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
@@ -26,13 +29,16 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     this->setAttribute(Qt::WA_DeleteOnClose);
     b->setText("X");
     b->setMaximumWidth(20);
-    b->setStyleSheet("QPushButton{background-color : rgba( 200, 0, 0, 255); border-radius : 3px; height : 1em; width : 1em;}");
+    b->setMaximumHeight(20);
+    b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
+                     "background-color :#F25244; border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
+    c->setMinimumHeight(20);
     layout->addWidget(c);
     //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
-    //this->show();
+    this->setStyleSheet("QWidget{color: rgb(214, 216, 218); background-color : rgba( 24, 26, 31, 255); border-radius : 3px; border : none;}");
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }

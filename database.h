@@ -38,6 +38,8 @@ public:
     bool isAllocated(QDateTime day, int value);
     int getAlloc(QDateTime task);
     int dayOccupation(QDateTime day);
+    int isDead(QDateTime task, QDateTime day);
+    int isOverkilled(QDateTime task);
     QSqlDatabase db;
 
 private:

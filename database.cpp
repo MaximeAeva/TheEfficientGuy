@@ -253,5 +253,23 @@ int database::dayOccupation(QDateTime day)
     return query->value(0).toInt();
 }
 
+int database::isDead(QDateTime task, QDateTime day)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    QString str = "SELECT deadline as dl FROM task WHERE number="+task.toString("yyyyMMddhhmmssz");
+    query->exec(str);
+    query->first();
+    QDateTime dl = query->value("dl").toDateTime();
+    return day.date().daysTo(dl.date());
+}
 
+int database::isOverkilled(QDateTime task)
+{
+    int al = getAlloc(task);
+    QSqlQuery *query = new QSqlQuery(db);
+    QString str = "SELECT duration FROM task WHERE number="+task.toString("yyyyMMddhhmmssz");
+    query->exec(str);
+    query->first();
+    return al - query->value(0).toInt();
+}
 
