@@ -22,7 +22,7 @@
 class database: public QObject
 {
 public:
-    database();
+    database(QString name);
     void CloseDB();
     QStringList Connections();
     void addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color);

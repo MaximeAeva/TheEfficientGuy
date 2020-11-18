@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    database *db = new database();
+    database *db = new database("Sidel.db");
 
 public slots:
     void createTask();

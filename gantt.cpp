@@ -13,7 +13,8 @@ gantt::gantt(database *db)
     QCoreApplication::instance()->installEventFilter(this);
     this->targetItem = this->table->item(1, 0);
     this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    this->table->setStyleSheet("QHeaderView::section{background-color: rgb(24, 26, 31); color : rgb(214,216,218);}");
+    this->table->setStyleSheet("QHeaderView::section{background-color: rgb(24, 26, 31); "
+                               "color : rgb(214,216,218);} QTableWidget {gridline-color: rgb(170,170,170);}");
     connect(this->table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(openPers(QTableWidgetItem*)));
 }
 

@@ -1,9 +1,9 @@
 #include "database.h"
 
-database::database()
+database::database(QString name)
 {
         db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE3");
-        db.setDatabaseName(Readconfig("NAME"));
+        db.setDatabaseName(name);
         if(!db.open())
         {
             qDebug() << db.isOpen();

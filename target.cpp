@@ -15,7 +15,11 @@ target::target()
     //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
-    this->setStyleSheet("QWidget{color: rgb(214, 216, 218); background-color : rgba( 24, 26, 31, 255); border-radius : 3px; border : none;}");
+    QString q;
+    QString col;
+    if(c->isChecked()) {q = "#6AE68D"; col = "black";}
+    else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
@@ -38,7 +42,11 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     //layout->addStretch(1);
     layout->addWidget(b);
     this->setLayout(layout);
-    this->setStyleSheet("QWidget{color: rgb(214, 216, 218); background-color : rgba( 24, 26, 31, 255); border-radius : 3px; border : none;}");
+    QString q;
+    QString col;
+    if(c->isChecked()) {q = "#6AE68D"; col = "black";}
+    else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
@@ -62,11 +70,21 @@ void target::set(QDateTime id, bool check, QString title, QDateTime parent, data
     this->targetDesc = title;
     this->db = db;
     c->setText(targetDesc);
+    QString q;
+    QString col;
+    if(c->isChecked()) {q = "#6AE68D"; col = "black";}
+    else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
 }
 
 void target::up()
 {
     this->db->updateTarget(this->wdwId, this->c->checkState());
+    QString q;
+    QString col;
+    if(c->isChecked()) {q = "#6AE68D"; col = "black";}
+    else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
 }
 
