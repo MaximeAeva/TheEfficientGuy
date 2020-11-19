@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    database *db = new database("Sidel.db");
+    database *db = new database();
 
 public slots:
     void createTask();
@@ -46,17 +46,23 @@ public slots:
     inline void setFri(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET friday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
+    void designPage();
     void rngGantt();
     void loadPage();
+    void prevDb();
+    void nextDb();
 
 private:
     Ui::MainWindow *ui;
-    void designPage();
     void designParms();
     void designGanttPage();
     void designConnections();
     void designChargePage();
     void load(tray *t);
+    void kill();
+    QLabel *crtDb = new QLabel;
+    QPushButton *bef = new QPushButton;
+    QPushButton *aft = new QPushButton;
     QPushButton *adder = new QPushButton;
     gantt *g = new gantt(db);
     tray *t1 = new tray("Ideas", 0, db);

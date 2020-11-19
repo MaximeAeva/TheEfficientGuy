@@ -22,6 +22,7 @@
 class database: public QObject
 {
 public:
+    database();
     database(QString name);
     void CloseDB();
     QStringList Connections();
@@ -40,10 +41,14 @@ public:
     int dayOccupation(QDateTime day);
     int isDead(QDateTime task, QDateTime day);
     int isOverkilled(QDateTime task);
+    QStringList getDbNames();
     QSqlDatabase db;
+    void nextDb();
+    void prevDb();
 
 private:
 
+    QStringList dbNames;
     QString Readconfig(std::string paramName);
     void Model();
 };

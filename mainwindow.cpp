@@ -24,6 +24,8 @@ MainWindow::~MainWindow()
 void MainWindow::designConnections()
 {
     connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
+    connect(this->bef, SIGNAL(clicked()), this, SLOT(prevDb()));
+    connect(this->aft, SIGNAL(clicked()), this, SLOT(nextDb()));
     connect(ui->spinMonday, SIGNAL(valueChanged(int)), this, SLOT(setMon(int)));
     connect(ui->spinTuesday, SIGNAL(valueChanged(int)), this, SLOT(setTue(int)));
     connect(ui->spinWednesday, SIGNAL(valueChanged(int)), this, SLOT(setWed(int)));
@@ -35,18 +37,99 @@ void MainWindow::designConnections()
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(rngGantt()));
-    connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(loadPage()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(loadPage()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(reloadPage()));
 }
 
 void MainWindow::reloadPage()
 {
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
 
+        QList<task *> tasks = T->findChildren<task *>();
+
+
+        foreach(task* t, tasks)
+        {
+            QString str1 = "SELECT number, priority, duration, tray, itemCount, "
+                        "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(T->getId()))+
+                 " AND number="+t->wdwId.toString("yyyyMMddhhmmssz")+ " ORDER BY priority DESC";
+            QSqlQueryModel *modelTask = new QSqlQueryModel;
+            modelTask->setQuery(str1, db->db);
+            t->set(QDateTime::fromString(modelTask->record(0).value("number").toString(),"yyyyMMddhhmmssz"),
+                       this->db,
+                       modelTask->record(0).value("priority").toInt(),
+                       modelTask->record(0).value("duration").toInt(),
+                       modelTask->record(0).value("tray").toInt(),
+                       modelTask->record(0).value("itemCount").toInt(),
+                       modelTask->record(0).value("color").toString(),
+                       modelTask->record(0).value("deadline").toDateTime(),
+                       modelTask->record(0).value("title").toString());
+        }
+    }
+}
+
+void MainWindow::kill()
+{
+    db->db.close();
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
+
+        QList<task *> tasks = T->findChildren<task *>();
+
+
+        foreach(task* t, tasks)
+        {
+            QString str1 = "SELECT number, priority, duration, tray, itemCount, "
+                        "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(T->getId()))+
+                 " AND number="+t->wdwId.toString("yyyyMMddhhmmssz")+ " ORDER BY priority DESC";
+            QSqlQueryModel *modelTask = new QSqlQueryModel;
+            modelTask->setQuery(str1, db->db);
+            t->~task();
+        }
+    }
+    db->db.open();
+}
+
+void MainWindow::nextDb()
+{
+    db->nextDb();
+    kill();
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
+        load(T);
+    }
+    crtDb->setText(db->db.databaseName().remove(".db"));
+}
+
+void MainWindow::prevDb()
+{
+    db->prevDb();
+    kill();
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
+        load(T);
+    }
+    crtDb->setText(db->db.databaseName().remove(".db"));
 }
 
 void MainWindow::designPage()
 {
+    bef->setText("<");
+    bef->setMaximumSize(40, 40);
+    aft->setText(">");
+    aft->setMaximumSize(40, 40);
+
+    crtDb->setStyleSheet("QLabel{font-weight : 600;font-size : 18pt;"
+                         "color: rgb(200, 200, 200);}");
+    crtDb->setAlignment(Qt::AlignCenter);
+    crtDb->setText(db->db.databaseName().remove(".db"));
+    crtDb->setMinimumWidth(100);
+    crtDb->setMinimumHeight(40);
     load(this->t1);
     load(this->t2);
     load(this->t3);
@@ -56,6 +139,10 @@ void MainWindow::designPage()
     QHBoxLayout *col = new QHBoxLayout;
     pageL->addItem(b);
     b->addWidget(this->adder);
+    b->addStretch(1);
+    b->addWidget(bef);
+    b->addWidget(crtDb);
+    b->addWidget(aft);
     b->addStretch(1);
     this->adder->setText("+");
     this->adder->setStyleSheet("QPushButton{"

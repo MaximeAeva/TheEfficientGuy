@@ -1,7 +1,29 @@
 #include "database.h"
 
-database::database(QString name)
+database::database()
 {
+        if(db.isOpen()) db.close();
+        this->dbNames = getDbNames();
+        if(dbNames.isEmpty()) dbNames.append("Default");
+        db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE3");
+        db.setDatabaseName(dbNames.first());
+        if(!db.open())
+        {
+            qDebug() << db.isOpen();
+            qDebug() << db.lastError().databaseText();
+            qDebug() << db.lastError().driverText();
+            qDebug() << QSqlDatabase::isDriverAvailable("QSQLITE");
+         }
+        else
+        {
+            qDebug() << "Connected";
+            Model();
+        }
+}
+
+database::database(QString name)
+{ 
+        if(db.isOpen()) db.close();
         db = QSqlDatabase::addDatabase("QSQLITE", "SQLITE3");
         db.setDatabaseName(name);
         if(!db.open())
@@ -16,6 +38,41 @@ database::database(QString name)
             qDebug() << "Connected";
             Model();
         }
+}
+
+QStringList database::getDbNames()
+{
+    QDir directory(QDir::currentPath());
+    QStringList dbNames = directory.entryList(QStringList() << "*.db" << "*.db",QDir::Files);
+    return dbNames;
+}
+
+void database::nextDb()
+{
+    if(dbNames.length()>1)
+    {
+        int i = 0;
+        while(i < dbNames.length())
+        {
+            if(dbNames.at(i)==db.databaseName()) break;
+            i++;
+        }
+        database(dbNames.at(i%dbNames.length()));
+    }
+}
+
+void database::prevDb()
+{
+    if(dbNames.length()>1)
+    {
+        int i = dbNames.length()-1;
+        while(i >= 0)
+        {
+            if(dbNames.at(i)==db.databaseName()) break;
+            i--;
+        }
+        database(dbNames.at(i%dbNames.length()));
+    }
 }
 
 QString database::Readconfig(std::string paramName)
