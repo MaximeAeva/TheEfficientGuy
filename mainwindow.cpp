@@ -72,7 +72,7 @@ void MainWindow::reloadPage()
 
 void MainWindow::kill()
 {
-    db->db.close();
+    db->CloseDB();
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
@@ -82,39 +82,52 @@ void MainWindow::kill()
 
         foreach(task* t, tasks)
         {
-            QString str1 = "SELECT number, priority, duration, tray, itemCount, "
-                        "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(T->getId()))+
-                 " AND number="+t->wdwId.toString("yyyyMMddhhmmssz")+ " ORDER BY priority DESC";
-            QSqlQueryModel *modelTask = new QSqlQueryModel;
-            modelTask->setQuery(str1, db->db);
             t->~task();
         }
     }
-    db->db.open();
 }
 
 void MainWindow::nextDb()
 {
-    db->nextDb();
+    QString nameDb = db->nextDb();
     kill();
+    this->db = new database(nameDb);
+    t1 = new tray("Ideas", 0, db);
+    t2 = new tray("ToDo", 1, db);
+    t3 = new tray("InProgress", 2, db);
+    t4 = new tray("StandBy", 3, db);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
         load(T);
     }
-    crtDb->setText(db->db.databaseName().remove(".db"));
+    crtDb->setText(nameDb);
+    ganttDisp->removeWidget(this->g->table);
+    this->g = new gantt(db);
+    rngGantt();
+    ganttDisp->addWidget(this->g->table);
+    qDebug() << db->db;
 }
 
 void MainWindow::prevDb()
 {
-    db->prevDb();
+    QString nameDb = db->prevDb();
     kill();
+    this->db = new database(nameDb);
+    t1 = new tray("Ideas", 0, db);
+    t2 = new tray("ToDo", 1, db);
+    t3 = new tray("InProgress", 2, db);
+    t4 = new tray("StandBy", 3, db);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
         load(T);
     }
-    crtDb->setText(db->db.databaseName().remove(".db"));
+    crtDb->setText(nameDb);
+    ganttDisp->removeWidget(this->g->table);
+    this->g = new gantt(db);
+    rngGantt();
+    ganttDisp->addWidget(this->g->table);
 }
 
 void MainWindow::designPage()
@@ -254,16 +267,15 @@ void MainWindow::designGanttPage()
 {
 
     QHBoxLayout *lh = new QHBoxLayout;
-    QVBoxLayout *l = new QVBoxLayout;
     lh->addWidget(ui->displayFrom);
     lh->addWidget(ui->displayTo);
     lh->addStretch(1);
     ui->displayFrom->setDate(QDate::currentDate());
     ui->displayTo->setDate(QDate::currentDate().addDays(14));
-    ui->page_2->setLayout(l);
-    l->addItem(lh);
+    ui->page_2->setLayout(ganttDisp);
+    ganttDisp->addItem(lh);
     rngGantt();
-    l->addWidget(this->g->table);
+    ganttDisp->addWidget(this->g->table);
     //this->g->table->show();
 }
 

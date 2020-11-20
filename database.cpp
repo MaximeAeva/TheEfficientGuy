@@ -47,32 +47,38 @@ QStringList database::getDbNames()
     return dbNames;
 }
 
-void database::nextDb()
+QString database::nextDb()
 {
+    dbNames = getDbNames();
+    if(dbNames.isEmpty()) dbNames.append("Default");
     if(dbNames.length()>1)
     {
         int i = 0;
         while(i < dbNames.length())
         {
-            if(dbNames.at(i)==db.databaseName()) break;
+            if(dbNames.at(i)==db.databaseName()) return dbNames.at((i+1)%dbNames.length());
             i++;
         }
-        database(dbNames.at(i%dbNames.length()));
+        return 0;
     }
+    else return 0;
 }
 
-void database::prevDb()
+QString database::prevDb()
 {
+    dbNames = getDbNames();
+    if(dbNames.isEmpty()) dbNames.append("Default");
     if(dbNames.length()>1)
     {
         int i = dbNames.length()-1;
         while(i >= 0)
         {
-            if(dbNames.at(i)==db.databaseName()) break;
+            if(dbNames.at(i)==db.databaseName()) return dbNames.at(abs((i-1)%dbNames.length()));
             i--;
         }
-        database(dbNames.at(i%dbNames.length()));
+        return 0;
     }
+    else return 0;
 }
 
 QString database::Readconfig(std::string paramName)
@@ -312,21 +318,27 @@ int database::dayOccupation(QDateTime day)
 
 int database::isDead(QDateTime task, QDateTime day)
 {
+    if(db.isOpen()){
     QSqlQuery *query = new QSqlQuery(db);
     QString str = "SELECT deadline as dl FROM task WHERE number="+task.toString("yyyyMMddhhmmssz");
     query->exec(str);
     query->first();
     QDateTime dl = query->value("dl").toDateTime();
     return day.date().daysTo(dl.date());
+    }
+    return 0;
 }
 
 int database::isOverkilled(QDateTime task)
 {
+    if(db.isOpen()){
     int al = getAlloc(task);
     QSqlQuery *query = new QSqlQuery(db);
     QString str = "SELECT duration FROM task WHERE number="+task.toString("yyyyMMddhhmmssz");
     query->exec(str);
     query->first();
     return al - query->value(0).toInt();
+    }
+    return 0;
 }
 

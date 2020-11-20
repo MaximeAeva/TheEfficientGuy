@@ -65,6 +65,7 @@ private:
     QPushButton *aft = new QPushButton;
     QPushButton *adder = new QPushButton;
     gantt *g = new gantt(db);
+    QVBoxLayout *ganttDisp = new QVBoxLayout;
     tray *t1 = new tray("Ideas", 0, db);
     tray *t2 = new tray("ToDo", 1, db);
     tray *t3 = new tray("InProgress", 2, db);

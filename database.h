@@ -43,8 +43,8 @@ public:
     int isOverkilled(QDateTime task);
     QStringList getDbNames();
     QSqlDatabase db;
-    void nextDb();
-    void prevDb();
+    QString nextDb();
+    QString prevDb();
 
 private:
 
