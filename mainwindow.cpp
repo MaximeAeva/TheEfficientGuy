@@ -103,7 +103,7 @@ void MainWindow::nextDb()
     }
     crtDb->setText(nameDb.remove(".db"));
     ganttDisp->removeWidget(this->g->table);
-    this->g = new gantt(db);
+    this->g->changeDb(db);
     rngGantt();
     ganttDisp->addWidget(this->g->table);
     update();
@@ -125,7 +125,7 @@ void MainWindow::prevDb()
     }
     crtDb->setText(nameDb.remove(".db"));
     ganttDisp->removeWidget(this->g->table);
-    this->g = new gantt(db);
+    this->g->changeDb(db);
     rngGantt();
     ganttDisp->addWidget(this->g->table);
     update();
@@ -133,6 +133,7 @@ void MainWindow::prevDb()
 
 void MainWindow::designPage()
 {
+    ui->toolBox->setCurrentIndex(0);
     bef->setText("<");
     bef->setMaximumSize(40, 40);
     aft->setText(">");

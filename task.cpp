@@ -335,7 +335,7 @@ void task::set(QDateTime number, database *db, int priority, int duration,
     if(this->db->isOverkilled(this->wdwId)<=0)
     {
         alloc->setValue(this->db->getAlloc(this->wdwId));
-        alloc->setFormat("%vdays (%p%)");
+        alloc->setFormat("%vhours (%p%)");
         if (alloc->value()>= 0.8*alloc->maximum())
             this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #FAB96F;}");
         else this->alloc->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: #6AE68D;}");

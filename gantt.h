@@ -31,6 +31,7 @@ public:
     gantt(database *db);
     void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom);
     QTableWidget *table = new QTableWidget;
+    inline void changeDb(database *db){this->db = db;};
 
 public slots:
     void openPers(QTableWidgetItem* i);
