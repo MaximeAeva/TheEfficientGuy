@@ -18,6 +18,7 @@ public:
     tray(QString title, int id, database *db);
     QVBoxLayout *layout = new QVBoxLayout;
     inline int getId(){return this->id;};
+    inline void changeDb(database *db){this->db = db;};
 
 private:
     QString title;

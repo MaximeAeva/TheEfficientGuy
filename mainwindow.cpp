@@ -92,21 +92,21 @@ void MainWindow::nextDb()
     QString nameDb = db->nextDb();
     kill();
     this->db = new database(nameDb);
-    t1 = new tray("Ideas", 0, db);
-    t2 = new tray("ToDo", 1, db);
-    t3 = new tray("InProgress", 2, db);
-    t4 = new tray("StandBy", 3, db);
+    t1->changeDb(db);
+    t2->changeDb(db);
+    t3->changeDb(db);
+    t4->changeDb(db);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
         load(T);
     }
-    crtDb->setText(nameDb);
+    crtDb->setText(nameDb.remove(".db"));
     ganttDisp->removeWidget(this->g->table);
     this->g = new gantt(db);
     rngGantt();
     ganttDisp->addWidget(this->g->table);
-    qDebug() << db->db;
+    update();
 }
 
 void MainWindow::prevDb()
@@ -114,20 +114,21 @@ void MainWindow::prevDb()
     QString nameDb = db->prevDb();
     kill();
     this->db = new database(nameDb);
-    t1 = new tray("Ideas", 0, db);
-    t2 = new tray("ToDo", 1, db);
-    t3 = new tray("InProgress", 2, db);
-    t4 = new tray("StandBy", 3, db);
+    t1->changeDb(db);
+    t2->changeDb(db);
+    t3->changeDb(db);
+    t4->changeDb(db);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
         load(T);
     }
-    crtDb->setText(nameDb);
+    crtDb->setText(nameDb.remove(".db"));
     ganttDisp->removeWidget(this->g->table);
     this->g = new gantt(db);
     rngGantt();
     ganttDisp->addWidget(this->g->table);
+    update();
 }
 
 void MainWindow::designPage()
@@ -195,7 +196,6 @@ void MainWindow::createTask()
     task *w = new task(db, this);
 
     t2->layout->addWidget(w);
-    //w->setVisible(true);
 }
 
 void MainWindow::load(tray *t)
