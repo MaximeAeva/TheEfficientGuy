@@ -72,7 +72,7 @@ private:
     QWidget *lab = new QWidget;
     QString description = "Empty";
 
-    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

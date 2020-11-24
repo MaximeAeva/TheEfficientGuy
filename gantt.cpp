@@ -3,8 +3,6 @@
 gantt::gantt(database *db)
 {
     this->db = db;
-    connect(table, SIGNAL(pressed(const QModelIndex &)), this, SLOT(getter(const QModelIndex &)));
-    this->table->setMouseTracking(true);
     this->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     this->table->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -15,7 +13,6 @@ gantt::gantt(database *db)
     this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->table->setStyleSheet("QHeaderView::section{background-color: rgb(24, 26, 31); "
                                "color : rgb(214,216,218);} QTableWidget {gridline-color: rgb(170,170,170);}");
-    connect(this->table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(openPers(QTableWidgetItem*)));
 }
 
 void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
@@ -154,17 +151,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         }
         this->table->setColumnWidth(i+1, w);
         this->table->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-
     }
+    this->table->update();
 }
 
-void gantt::getter(const QModelIndex &index)
-{
-    int col = this->table->currentIndex().column();
-    int row = this->table->currentIndex().row();
-}
-
-void gantt::openPers(QTableWidgetItem* i)
-{
-    qDebug() << "1";
-}

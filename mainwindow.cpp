@@ -102,10 +102,8 @@ void MainWindow::nextDb()
         load(T);
     }
     crtDb->setText(nameDb.remove(".db"));
-    ganttDisp->removeWidget(this->g->table);
     this->g->changeDb(db);
     rngGantt();
-    ganttDisp->addWidget(this->g->table);
     update();
 }
 
@@ -124,10 +122,8 @@ void MainWindow::prevDb()
         load(T);
     }
     crtDb->setText(nameDb.remove(".db"));
-    ganttDisp->removeWidget(this->g->table);
     this->g->changeDb(db);
     rngGantt();
-    ganttDisp->addWidget(this->g->table);
     update();
 }
 
@@ -149,9 +145,7 @@ void MainWindow::designPage()
     load(this->t2);
     load(this->t3);
     load(this->t4);
-    QHBoxLayout *b = new QHBoxLayout;
-    QVBoxLayout *pageL = new QVBoxLayout;
-    QHBoxLayout *col = new QHBoxLayout;
+
     pageL->addItem(b);
     b->addWidget(this->adder);
     b->addStretch(1);
@@ -277,7 +271,7 @@ void MainWindow::designGanttPage()
     ganttDisp->addItem(lh);
     rngGantt();
     ganttDisp->addWidget(this->g->table);
-    //this->g->table->show();
+    update();
 }
 
 void MainWindow::rngGantt()
@@ -303,6 +297,7 @@ void MainWindow::rngGantt()
     }
 
     this->g->build(lst, lstNumb, ui->displayFrom->date().daysTo(ui->displayTo->date())+1, dayLength, ui->displayFrom->date());
+    ganttDisp->update();
 }
 
 void MainWindow::loadPage()
@@ -353,6 +348,7 @@ void MainWindow::designChargePage()
     ui->page_3->setLayout(l);
     loadPage();
 }
+
 
 
 

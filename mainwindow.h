@@ -54,6 +54,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
     void designParms();
     void designGanttPage();
     void designConnections();
@@ -65,10 +66,14 @@ private:
     QPushButton *aft = new QPushButton;
     QPushButton *adder = new QPushButton;
     gantt *g = new gantt(db);
-    QVBoxLayout *ganttDisp = new QVBoxLayout;
     tray *t1 = new tray("Ideas", 0, db);
     tray *t2 = new tray("ToDo", 1, db);
     tray *t3 = new tray("InProgress", 2, db);
     tray *t4 = new tray("StandBy", 3, db);
+
+    QVBoxLayout *ganttDisp = new QVBoxLayout;
+    QHBoxLayout *b = new QHBoxLayout;
+    QVBoxLayout *pageL = new QVBoxLayout;
+    QHBoxLayout *col = new QHBoxLayout;
 };
 #endif // MAINWINDOW_H

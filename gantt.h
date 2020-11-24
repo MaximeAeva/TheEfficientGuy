@@ -33,10 +33,6 @@ public:
     QTableWidget *table = new QTableWidget;
     inline void changeDb(database *db){this->db = db;};
 
-public slots:
-    void openPers(QTableWidgetItem* i);
-    void getter(const QModelIndex &);
-
 private:
     QTableWidgetItem* targetItem;
     database *db;

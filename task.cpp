@@ -99,7 +99,7 @@ task::~task()
     delete this->completion;
 }
 
-void task::mouseDoubleClickEvent(QMouseEvent *event)
+void task::mouseReleaseEvent(QMouseEvent *event)
 {
     event->accept();
     QDialog *d = new QDialog;
@@ -119,6 +119,8 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     QColorDialog *colorD = new QColorDialog;
     QPushButton *opCol = new QPushButton;
     QDateEdit *deadl = new QDateEdit;
+    opCol->setFocusPolicy(Qt::NoFocus);
+    task->setFocus();
     deadl->setDate(this->deadLine.date());
     deadl->setCalendarPopup(true);
     colorD->setCurrentColor(this->colorTask);
@@ -138,10 +140,10 @@ void task::mouseDoubleClickEvent(QMouseEvent *event)
     t5->setText("Deadline");
     opCol->setText("Color");
     button->setText("OK");
-    layout->addWidget(t1, 0, 0);
-    layout->addWidget(title, 0, 1);
     layout->addWidget(t2, 1, 0);
     layout->addWidget(task, 1, 1);
+    layout->addWidget(t1, 0, 0);
+    layout->addWidget(title, 0, 1);
     layout->addWidget(t3, 2, 0);
     layout->addItem(secondLay, 2, 1);
     layout->addWidget(t4, 3, 0);

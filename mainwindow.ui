@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>791</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <string notr="true">background-color: rgb(24, 26, 31);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="styleSheet">
@@ -26,15 +26,15 @@ color : rgb(214, 216, 218);
 </string>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>782</width>
-         <height>427</height>
+         <width>773</width>
+         <height>387</height>
         </rect>
        </property>
        <attribute name="label">
@@ -357,7 +357,7 @@ color : rgb(214, 216, 218);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>791</width>
      <height>21</height>
     </rect>
    </property>
