@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowState(Qt::WindowMaximized);
     this->setWindowTitle("The Efficient Guy !");
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
     designPage();
@@ -171,6 +172,7 @@ void MainWindow::designPage()
                                        "background-color: #A6C0C6;"
                                        "color: #66767A;"
                                        "border-color: #66767A;}");
+
     col->addWidget(t1);
     col->addSpacing(10);
 
@@ -240,7 +242,7 @@ void MainWindow::load(tray *t)
 
         aTask->color();
         t->layout->addWidget(aTask);
-        //aTask->setVisible(true);
+        t->layout->setAlignment(Qt::AlignTop);
     }
 }
 

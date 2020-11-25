@@ -7,6 +7,8 @@ target::target()
     b->setText("X");
     b->setMaximumWidth(20);
     b->setMaximumHeight(20);
+    b->setMinimumWidth(20);
+    b->setMinimumHeight(20);
     b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
                      "background-color : #F25244; border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
@@ -19,7 +21,7 @@ target::target()
     QString col;
     if(c->isChecked()) {q = "#6AE68D"; col = "black";}
     else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
-    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none; font-weight : 200;}");
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
 
@@ -34,6 +36,8 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     b->setText("X");
     b->setMaximumWidth(20);
     b->setMaximumHeight(20);
+    b->setMinimumWidth(20);
+    b->setMinimumHeight(20);
     b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
                      "background-color :#F25244; border-radius : 3px; height : 1em; width : 1em;}");
     c->setText(targetDesc);
@@ -46,7 +50,7 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     QString col;
     if(c->isChecked()) {q = "#6AE68D"; col = "black";}
     else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
-    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none; font-weight : 200;}");
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
     connect(b, SIGNAL(clicked()), this, SLOT(close()));
 }
@@ -74,7 +78,8 @@ void target::set(QDateTime id, bool check, QString title, QDateTime parent, data
     QString col;
     if(c->isChecked()) {q = "#6AE68D"; col = "black";}
     else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
-    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; "
+                                "font-weight : 200; font-size: 14px; border : none;}");
     connect(c, SIGNAL(stateChanged(int)), this, SLOT(up()));
 }
 
@@ -85,6 +90,7 @@ void target::up()
     QString col;
     if(c->isChecked()) {q = "#6AE68D"; col = "black";}
     else {q = "rgba( 24, 26, 31, 255)"; col = "rgb(214, 216, 218)";}
-    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; border : none;}");
+    this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; "
+                                                "font-weight : 200; font-size: 14px; border : none;}");
 }
 

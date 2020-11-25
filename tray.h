@@ -19,10 +19,11 @@ public:
     QVBoxLayout *layout = new QVBoxLayout;
     inline int getId(){return this->id;};
     inline void changeDb(database *db){this->db = db;};
+    QWidget *content = new QWidget;
 
 private:
     QString title;
-    QWidget *content = new QWidget;
+
     int id;
     database *db;
     void dragEnterEvent(QDragEnterEvent *event);

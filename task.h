@@ -7,6 +7,7 @@
 #include <string.h>
 #include <QLabel>
 #include <QString>
+#include <QStyle>
 #include <QWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -58,20 +59,24 @@ public slots:
     void completionVal(int i);
     void deleteTarget();
     void color();
+    void hideShowWid();
+    void dlTask();
 
 
 private:
 
     database *db;
-
+    int hh;
     QProgressBar *projTim = new QProgressBar;
     QProgressBar *alloc = new QProgressBar;
     QLabel *aloc = new QLabel;
     QLabel *time = new QLabel;
-
+    QWidget *titleBar = new QWidget;
+    QLabel *windowTitle = new QLabel;
     QWidget *lab = new QWidget;
     QString description = "Empty";
 
+    void designTitleBar();
     void mouseReleaseEvent(QMouseEvent *event) override;
     QPoint dragStartPosition;
     void mousePressEvent(QMouseEvent *event) override;
