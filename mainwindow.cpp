@@ -223,7 +223,10 @@ void MainWindow::load(tray *t)
         QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
         QSqlQueryModel *modelTarget = new QSqlQueryModel;
         modelTarget->setQuery(str3, db->db);
-        aTask->completion->setMaximum(aTask->itemCount);
+        if(aTask->itemCount)
+            aTask->completion->setMaximum(aTask->itemCount);
+        else
+            aTask->completion->setMaximum(1);
         for(int k = 0; k<modelTargetCount->record(0).value("cnt1").toInt(); k++)//through target
         {
             target *targ = new target;

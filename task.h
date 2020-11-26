@@ -66,13 +66,11 @@ public slots:
 private:
 
     database *db;
-    int hh;
     QProgressBar *projTim = new QProgressBar;
     QProgressBar *alloc = new QProgressBar;
     QLabel *aloc = new QLabel;
     QLabel *time = new QLabel;
     QWidget *titleBar = new QWidget;
-    QLabel *windowTitle = new QLabel;
     QWidget *lab = new QWidget;
     QString description = "Empty";
 
