@@ -50,6 +50,8 @@ public:
     int itemCount = 0;
     int priority = 0;
     int duration = 1;
+    bool active = 1;
+    void setArchived();
     QDateTime wdwId = QDateTime::currentDateTime();
     QDateTime deadLine = QDateTime::currentDateTime();
     QString title = "New task";
@@ -61,6 +63,7 @@ public slots:
     void color();
     void hideShowWid();
     void dlTask();
+    void archi();
 
 
 private:

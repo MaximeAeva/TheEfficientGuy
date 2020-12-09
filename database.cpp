@@ -117,6 +117,7 @@ void database::Model()
                    "tray INT, "
                    "itemCount INT, "
                    "color VARCHAR(10), "
+                   "active BOOL DEFAULT 1, "
                    "deadline DATETIME, "
                    "title VARCHAR(255)"
                    ")");
@@ -342,3 +343,13 @@ int database::isOverkilled(QDateTime task)
     return 0;
 }
 
+void database::archive(QDateTime task, bool active)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("UPDATE task "
+                   "SET  active=:active "
+                   "WHERE number=:number");
+    query->bindValue(":active", active);
+    query->bindValue(":number", task.toString("yyyyMMddhhmmssz"));
+    query->exec();
+}

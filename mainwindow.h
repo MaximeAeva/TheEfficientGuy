@@ -46,7 +46,9 @@ public slots:
     inline void setFri(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET friday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
+    void refreshSelector(int);
     void designPage();
+    void loadArchive();
     void rngGantt();
     void loadPage();
     void prevDb();
@@ -55,6 +57,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
+    void designArchive();
     void designParms();
     void designGanttPage();
     void designConnections();
@@ -70,6 +73,7 @@ private:
     tray *t2 = new tray("ToDo", 1, db);
     tray *t3 = new tray("InProgress", 2, db);
     tray *t4 = new tray("StandBy", 3, db);
+    tray *t5 = new tray("Archive", 4, db);
 
     QVBoxLayout *ganttDisp = new QVBoxLayout;
     QHBoxLayout *b = new QHBoxLayout;

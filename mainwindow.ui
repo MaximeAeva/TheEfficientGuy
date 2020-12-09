@@ -34,7 +34,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>773</width>
-         <height>387</height>
+         <height>359</height>
         </rect>
        </property>
        <attribute name="label">
@@ -46,8 +46,8 @@ color : rgb(214, 216, 218);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>782</width>
-         <height>427</height>
+         <width>773</width>
+         <height>359</height>
         </rect>
        </property>
        <attribute name="label">
@@ -85,8 +85,8 @@ color : rgb(214, 216, 218);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>782</width>
-         <height>427</height>
+         <width>773</width>
+         <height>359</height>
         </rect>
        </property>
        <attribute name="label">
@@ -113,13 +113,18 @@ color : rgb(214, 216, 218);
         </widget>
        </widget>
       </widget>
+      <widget class="QWidget" name="page_5">
+       <attribute name="label">
+        <string>Archive</string>
+       </attribute>
+      </widget>
       <widget class="QWidget" name="page_4">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>782</width>
-         <height>427</height>
+         <width>773</width>
+         <height>359</height>
         </rect>
        </property>
        <attribute name="label">

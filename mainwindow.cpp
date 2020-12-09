@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     designParms();
     designGanttPage();
     designConnections();
+    designArchive();
     designChargePage();
 }
 
@@ -37,9 +38,26 @@ void MainWindow::designConnections()
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
-    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(rngGantt()));
-    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(loadPage()));
-    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(reloadPage()));
+    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
+}
+
+void MainWindow::refreshSelector(int i)
+{
+    switch(i)
+    {
+        case 0 :
+            reloadPage();
+        break;
+        case 1 :
+            rngGantt();
+        break;
+        case 2:
+            loadPage();
+        break;
+        case 3:
+            loadArchive();
+        break;
+    }
 }
 
 void MainWindow::reloadPage()
@@ -47,27 +65,10 @@ void MainWindow::reloadPage()
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
-
         QList<task *> tasks = T->findChildren<task *>();
-
-
         foreach(task* t, tasks)
-        {
-            QString str1 = "SELECT number, priority, duration, tray, itemCount, "
-                        "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(T->getId()))+
-                 " AND number="+t->wdwId.toString("yyyyMMddhhmmssz")+ " ORDER BY priority DESC";
-            QSqlQueryModel *modelTask = new QSqlQueryModel;
-            modelTask->setQuery(str1, db->db);
-            t->set(QDateTime::fromString(modelTask->record(0).value("number").toString(),"yyyyMMddhhmmssz"),
-                       this->db,
-                       modelTask->record(0).value("priority").toInt(),
-                       modelTask->record(0).value("duration").toInt(),
-                       modelTask->record(0).value("tray").toInt(),
-                       modelTask->record(0).value("itemCount").toInt(),
-                       modelTask->record(0).value("color").toString(),
-                       modelTask->record(0).value("deadline").toDateTime(),
-                       modelTask->record(0).value("title").toString());
-        }
+            t->close();
+        load(T);
     }
 }
 
@@ -197,12 +198,12 @@ void MainWindow::createTask()
 
 void MainWindow::load(tray *t)
 {
-    QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()));
+    QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()))+" AND active=1";
     QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
     modelTaskCount->setQuery(str, db->db);
     QString str1 = "SELECT number, priority, duration, tray, itemCount, "
                    "color, deadline, title FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()))+
-            " ORDER BY priority DESC";
+            " AND active=1 ORDER BY priority DESC";
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery(str1, db->db);
     for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
@@ -285,7 +286,7 @@ void MainWindow::rngGantt()
     QStringList lst;
     QStringList lstNumb;
     QSqlQuery *query = new QSqlQuery(db->db);
-    query->exec("SELECT COUNT(*) FROM task");
+    query->exec("SELECT COUNT(*) FROM task WHERE active=1");
     query->first();
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery("SELECT * FROM parms", db->db);
@@ -294,7 +295,7 @@ void MainWindow::rngGantt()
         dayLength[i] = modelTask->record(0).value(i).toInt();
     }
     QSqlQueryModel *titles = new QSqlQueryModel;
-    titles->setQuery("SELECT title as title, number as numb FROM task ORDER BY priority DESC", db->db);
+    titles->setQuery("SELECT title as title, number as numb FROM task WHERE active=1 ORDER BY priority DESC", db->db);
     for(int i = 0; i<query->value(0).toInt(); i++)
     {
         lst << titles->record(i).value("title").toString();
@@ -352,6 +353,73 @@ void MainWindow::designChargePage()
     l->addWidget(ui->graphicsView);
     ui->page_3->setLayout(l);
     loadPage();
+}
+
+void MainWindow::loadArchive()
+{
+
+    QList<task *> tasks = t5->findChildren<task *>();
+    foreach(task* t, tasks)
+        t->close();
+
+    QString str = "SELECT COUNT(*) as cnt FROM task WHERE active=0";
+    QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
+    modelTaskCount->setQuery(str, db->db);
+    QString str1 = "SELECT number, priority, duration, tray, itemCount, "
+                   "color, deadline, title FROM task WHERE active=0 ORDER BY priority DESC";
+    QSqlQueryModel *modelTask = new QSqlQueryModel;
+    modelTask->setQuery(str1, db->db);
+    for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
+    {
+        task *aTask = new task;
+        aTask->set(QDateTime::fromString(modelTask->record(i).value("number").toString(),"yyyyMMddhhmmssz"),
+                   this->db,
+                   modelTask->record(i).value("priority").toInt(),
+                   modelTask->record(i).value("duration").toInt(),
+                   modelTask->record(i).value("tray").toInt(),
+                   modelTask->record(i).value("itemCount").toInt(),
+                   modelTask->record(i).value("color").toString(),
+                   modelTask->record(i).value("deadline").toDateTime(),
+                   modelTask->record(i).value("title").toString());
+        QString str2 ="SELECT COUNT(*) as cnt1 FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
+        QSqlQueryModel *modelTargetCount = new QSqlQueryModel;
+        modelTargetCount->setQuery(str2, db->db);
+        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
+        QSqlQueryModel *modelTarget = new QSqlQueryModel;
+        modelTarget->setQuery(str3, db->db);
+        if(aTask->itemCount)
+            aTask->completion->setMaximum(aTask->itemCount);
+        else
+            aTask->completion->setMaximum(1);
+        for(int k = 0; k<modelTargetCount->record(0).value("cnt1").toInt(); k++)//through target
+        {
+            target *targ = new target;
+            targ->set(QDateTime::fromString(modelTarget->record(k).value("number").toString(),"yyyyMMddhhmmssz"),
+                modelTarget->record(k).value("state").toBool(),
+                modelTarget->record(k).value("title").toString(),
+                aTask->get(),
+                    this->db);
+            if(modelTarget->record(k).value("state").toBool())
+                aTask->completion->setValue(aTask->completion->value()+1);
+            connect(targ->c, SIGNAL(stateChanged(int)), aTask, SLOT(completionVal(int)));
+            connect(targ->b, SIGNAL(clicked()), aTask, SLOT(deleteTarget()));
+            //targ->setVisible(true);
+            aTask->layout->addWidget(targ);
+        }
+
+        aTask->color();
+        aTask->setArchived();
+        t5->layout->addWidget(aTask);
+        t5->layout->setAlignment(Qt::AlignTop);
+    }
+}
+
+void MainWindow::designArchive()
+{
+    QHBoxLayout *lay = new QHBoxLayout;
+    lay->addWidget(t5);
+    ui->page_5->setLayout(lay);
+    loadArchive();
 }
 
 

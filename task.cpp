@@ -30,7 +30,7 @@ task::task()
     lab->setStyleSheet("QWidget{color: black;background-color :rgb( 49, 54, 63);"
                        "font-weight :300; font-size : 14px;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;}");
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
-    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setAttribute(Qt::WA_DeleteOnClose);
     this->layout->addItem(this->stateBar);
     this->layout->setAlignment(Qt::AlignTop);
     lab->setLayout(layout);
@@ -58,7 +58,6 @@ task::task(database *db, QWidget *parent) :
     lab->setStyleSheet("QWidget{color: black; background-color :rgb( 49, 54, 63);"
                        "font-weight : 300; font-size : 14px;border-radius : 7px;border : 1px solid black;}");
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
-    this->setAttribute(Qt::WA_DeleteOnClose);
 
     this->completion->setFormat(this->title + " : %p%");
     projTim->setRange(0, 0);
@@ -367,21 +366,32 @@ void task::dlTask()
     this->~task();
 }
 
+void task::archi()
+{
+    this->db->archive(this->wdwId, (this->active+1)%2);
+    this->close();
+}
+
 void task::designTitleBar()
 {
     QHBoxLayout* layout = new QHBoxLayout();
     QPushButton *hideShow = new QPushButton;
+    QPushButton *archive = new QPushButton;
     QPushButton *quit = new QPushButton;
     connect(hideShow, SIGNAL(clicked()), this, SLOT(hideShowWid()));
+    connect(archive, SIGNAL(clicked()), this, SLOT(archi()));
     connect(quit, SIGNAL(clicked()), this, SLOT(dlTask()));
 
     QIcon icon = titleBar->style()->standardIcon(QStyle::SP_TitleBarMaxButton, 0, titleBar);
     QIcon icon2 = titleBar->style()->standardIcon(QStyle::SP_TitleBarCloseButton, 0, titleBar);
     hideShow->setStyleSheet("QPushButton::hover{background-color : rgba(255, 255, 255, 200);border-radius : none;}");
+    archive->setStyleSheet("QPushButton::hover{background-color : rgba(255, 255, 255, 200);border-radius : none;}");
     quit->setStyleSheet("QPushButton::hover{background-color : rgba(255, 50, 50, 200);border-radius : none;}");
     hideShow->setIcon( icon );
+    archive->setText(">");
     quit->setIcon( icon2 );
     hideShow->adjustSize();
+    archive->adjustSize();
     quit->adjustSize();
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
@@ -391,7 +401,13 @@ void task::designTitleBar()
     layout->addWidget(completion);
     layout->addStretch(1);
     layout->addWidget(hideShow);
+    layout->addWidget(archive);
     layout->addWidget(quit);
     this->titleBar->setLayout(layout);
     this->setTitleBarWidget(titleBar);
+}
+
+void task::setArchived()
+{
+    this->active = 0;
 }
