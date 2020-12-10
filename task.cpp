@@ -415,7 +415,7 @@ void task::resizeIt(int s)
 {
     this->titleBar->setMaximumWidth(s);
     this->lab->setMaximumWidth(s);
-    this->completion->setMaximumWidth(3*s/4);
+    this->completion->setMaximumWidth(2*s/3);
     QList<target *> trays = this->findChildren<target *>();
     foreach(target* T, trays)
     {

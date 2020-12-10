@@ -426,10 +426,10 @@ void MainWindow::designArchive()
 
 void MainWindow::resizeEvent(QResizeEvent*)
 {
-    t1->setMinimumWidth((this->width()+30)/5);
-    t2->setMinimumWidth((this->width()+30)/5);
-    t3->setMinimumWidth((this->width()+30)/5);
-    t4->setMinimumWidth((this->width()+30)/5);
+    t1->setMinimumWidth((this->width()-50)/5);
+    t2->setMinimumWidth((this->width()-50)/5);
+    t3->setMinimumWidth((this->width()-50)/5);
+    t4->setMinimumWidth((this->width()-50)/5);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
