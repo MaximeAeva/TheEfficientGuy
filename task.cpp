@@ -388,16 +388,15 @@ void task::designTitleBar()
     archive->setStyleSheet("QPushButton::hover{background-color : rgba(255, 255, 255, 200);border-radius : none;}");
     quit->setStyleSheet("QPushButton::hover{background-color : rgba(255, 50, 50, 200);border-radius : none;}");
     hideShow->setIcon( icon );
-    archive->setText(">");
+    archive->setText("Ar");
     quit->setIcon( icon2 );
     hideShow->adjustSize();
-    archive->adjustSize();
     quit->adjustSize();
     completion->setOrientation(Qt::Horizontal);
     completion->setValue(0);
     completion->setRange(0, 1);
     this->completion->setFormat(this->title + " : %p%");
-    this->completion->setMinimumWidth(this->titleBar->width()/2);
+
     layout->addWidget(completion);
     layout->addStretch(1);
     layout->addWidget(hideShow);
@@ -410,4 +409,16 @@ void task::designTitleBar()
 void task::setArchived()
 {
     this->active = 0;
+}
+
+void task::resizeIt(int s)
+{
+    this->titleBar->setMaximumWidth(s);
+    this->lab->setMaximumWidth(s);
+    this->completion->setMaximumWidth(3*s/4);
+    QList<target *> trays = this->findChildren<target *>();
+    foreach(target* T, trays)
+    {
+        T->c->setMaximumWidth(s-30);
+    }
 }

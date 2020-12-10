@@ -137,11 +137,13 @@ void MainWindow::designPage()
     aft->setText(">");
     aft->setMaximumSize(40, 40);
 
+
+
     crtDb->setStyleSheet("QLabel{font-weight : 600;font-size : 18pt;"
                          "color: rgb(200, 200, 200);}");
     crtDb->setAlignment(Qt::AlignCenter);
     crtDb->setText(db->db.databaseName().remove(".db"));
-    crtDb->setMinimumWidth(100);
+    crtDb->setMaximumWidth((this->width()+30)/4);
     crtDb->setMinimumHeight(40);
     load(this->t1);
     load(this->t2);
@@ -366,7 +368,7 @@ void MainWindow::loadArchive()
     QSqlQueryModel *modelTaskCount = new QSqlQueryModel;
     modelTaskCount->setQuery(str, db->db);
     QString str1 = "SELECT number, priority, duration, tray, itemCount, "
-                   "color, deadline, title FROM task WHERE active=0 ORDER BY priority DESC";
+                   "color, deadline, title FROM task WHERE active=0 ORDER BY number DESC";
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery(str1, db->db);
     for(int i = 0; i<modelTaskCount->record(0).value("cnt").toInt(); i++)//through tasks
@@ -422,8 +424,20 @@ void MainWindow::designArchive()
     loadArchive();
 }
 
-
-
+void MainWindow::resizeEvent(QResizeEvent*)
+{
+    t1->setMinimumWidth((this->width()+30)/5);
+    t2->setMinimumWidth((this->width()+30)/5);
+    t3->setMinimumWidth((this->width()+30)/5);
+    t4->setMinimumWidth((this->width()+30)/5);
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
+        QList<task *> tasks = T->findChildren<task *>();
+        foreach(task* t, tasks)
+            t->resizeIt(T->width()-10);
+    }
+}
 
 
 

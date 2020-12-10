@@ -51,6 +51,7 @@ public:
     int priority = 0;
     int duration = 1;
     bool active = 1;
+    void resizeIt(int s);
     void setArchived();
     QDateTime wdwId = QDateTime::currentDateTime();
     QDateTime deadLine = QDateTime::currentDateTime();

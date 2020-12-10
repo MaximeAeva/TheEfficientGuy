@@ -64,6 +64,8 @@ private:
     void designChargePage();
     void load(tray *t);
     void kill();
+    void resizeEvent(QResizeEvent*);
+
     QLabel *crtDb = new QLabel;
     QPushButton *bef = new QPushButton;
     QPushButton *aft = new QPushButton;
