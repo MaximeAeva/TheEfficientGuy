@@ -19,12 +19,13 @@ public:
     QCheckBox *c = new QCheckBox;
     QPushButton *b = new QPushButton;
     void set(QDateTime id, bool check, QString title, QDateTime parent, database *db);
+    QString targetDesc;
 
 public slots:
     void up();
 
 private:
-    QString targetDesc;
+
     QDateTime parent;
     QDateTime wdwId;
     database *db;

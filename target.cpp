@@ -11,10 +11,12 @@ target::target()
     b->setMinimumHeight(20);
     b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
                      "background-color : #F25244; border-radius : 3px; height : 1em; width : 1em;}");
-    c->setText(targetDesc);
+    QString str = targetDesc;
+    str.truncate(c->width());
+    c->setText(str);
     c->setMinimumHeight(20);
     layout->addWidget(c);
-    //layout->addStretch(1);
+
     layout->addWidget(b);
     this->setLayout(layout);
     QString q;
@@ -40,10 +42,12 @@ target::target(QString targetDesc, database *db, QDateTime parentTime)
     b->setMinimumHeight(20);
     b->setStyleSheet("QPushButton{font-size : 12pt;font-weight : 600;color: black;"
                      "background-color :#F25244; border-radius : 3px; height : 1em; width : 1em;}");
-    c->setText(targetDesc);
+    QString str = targetDesc;
+    str.truncate(c->width());
+    c->setText(str);
     c->setMinimumHeight(20);
     layout->addWidget(c);
-    //layout->addStretch(1);
+
     layout->addWidget(b);
     this->setLayout(layout);
     QString q;
@@ -73,7 +77,9 @@ void target::set(QDateTime id, bool check, QString title, QDateTime parent, data
     this->c->setChecked(check);
     this->targetDesc = title;
     this->db = db;
-    c->setText(targetDesc);
+    QString str = targetDesc;
+    str.truncate(c->width());
+    c->setText(str);
     QString q;
     QString col;
     if(c->isChecked()) {q = "#6AE68D"; col = "black";}
@@ -93,4 +99,3 @@ void target::up()
     this->setStyleSheet("QWidget{color: "+col+"; background-color : "+q+"; border-radius : 3px; "
                                                 "font-weight : 200; font-size: 14px; border : none;}");
 }
-
