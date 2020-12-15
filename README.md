@@ -2,7 +2,7 @@
 > A full integrated task management and optimization tool
 
 <p align="center">
-  <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.GIF">
+  <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.gif">
 </p>
 
 ## Installation
