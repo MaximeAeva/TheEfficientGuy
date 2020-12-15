@@ -1,9 +1,9 @@
 ﻿# The Efficient Guy
 > A full integrated task management and optimization tool
 
-![KanbanView](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellokanban.PNG)
-![GanttView](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellogantt.PNG)
-![GanttView](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.PNG)
+<p align="center">
+  <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.GIF">
+</p>
 
 ## Installation
 Windows:
@@ -18,9 +18,9 @@ Just want to see when and how allocate my time to each task to be as efficient a
 
 ## Release History
 
-*0.1.0
+* 0.1.0
 |   Need improvement (such as criticity computation) but works fine
-*0.0.0
+* 0.0.0
 |   Currently first steps
 
 ## Meta
