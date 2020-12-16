@@ -30,7 +30,6 @@ task::task()
     lab->setStyleSheet("QWidget{color: black;background-color :rgb( 49, 54, 63);"
                        "font-weight :300; font-size : 14px;border-radius : 7px;border : 1px solid black;} QCheckBox{border:none;}");
     this->setFeatures(this->features() & ~QDockWidget::DockWidgetFloatable);
-
     this->layout->addItem(this->stateBar);
     this->layout->setAlignment(Qt::AlignTop);
     lab->setLayout(layout);

@@ -75,6 +75,7 @@ void MainWindow::reloadPage()
 void MainWindow::kill()
 {
     db->CloseDB();
+    db->db.removeDatabase(db->db.connectionName());
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
