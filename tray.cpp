@@ -1,5 +1,11 @@
 #include "tray.h"
 
+/**
+ * @brief Tray's constructor
+ * @param title
+ * @param id
+ * @param db
+ */
 tray::tray(QString title, int id, database *db)
 {
     this->layout->setAlignment(Qt::AlignBottom);
@@ -16,14 +22,28 @@ tray::tray(QString title, int id, database *db)
     this->setAcceptDrops(true);
 }
 
+/**
+ * @brief DragEvent enter accepted
+ * @param event
+ */
 void tray::dragEnterEvent(QDragEnterEvent *event)
 {
     event->accept();
 }
+
+/**
+ * @brief DragEvent leave accepted
+ * @param event
+ */
 void tray::dragLeaveEvent(QDragLeaveEvent *event)
 {
     event->accept();
 }
+
+/**
+ * @brief Drop event management
+ * @param event
+ */
 void tray::dropEvent(QDropEvent *event)
 {
     task *object = static_cast<task *>(event->source());

@@ -1,5 +1,8 @@
 #include "database.h"
 
+/**
+ * @brief Link first database on range
+ */
 database::database()
 {
         if(db.isOpen()) db.close();
@@ -21,6 +24,10 @@ database::database()
         }
 }
 
+/**
+ * @brief Link a specified database
+ * @param name
+ */
 database::database(QString name)
 { 
         if(db.isOpen()) db.close();
@@ -40,6 +47,10 @@ database::database(QString name)
         }
 }
 
+/**
+ * @brief Get Db names in folder
+ * @return
+ */
 QStringList database::getDbNames()
 {
     QDir directory(QDir::currentPath());
@@ -47,6 +58,10 @@ QStringList database::getDbNames()
     return dbNames;
 }
 
+/**
+ * @brief Get the next dbName
+ * @return
+ */
 QString database::nextDb()
 {
     dbNames = getDbNames();
@@ -59,11 +74,15 @@ QString database::nextDb()
             if(dbNames.at(i)==db.databaseName()) return dbNames.at((i+1)%dbNames.length());
             i++;
         }
-        return 0;
+        return dbNames.at(0);
     }
-    else return 0;
+    else return dbNames.at(0);
 }
 
+/**
+ * @brief Get the previous dBName
+ * @return
+ */
 QString database::prevDb()
 {
     dbNames = getDbNames();
@@ -71,41 +90,27 @@ QString database::prevDb()
     if(dbNames.length()>1)
     {
         int i = dbNames.length()-1;
-        while(i >= 0)
+        while(i > 0)
         {
             if(dbNames.at(i)==db.databaseName()) return dbNames.at(abs((i-1)%dbNames.length()));
             i--;
         }
-        return 0;
+        return dbNames.at(dbNames.length()-1);
     }
-    else return 0;
+    else return dbNames.at(0);
 }
 
-QString database::Readconfig(std::string paramName)
-{
-    std::ifstream cfg("config.txt");
-    if(!cfg.is_open())
-    {
-        return 0;
-    }
-    std::string parm, value;
-    while (cfg >> parm >> value)
-    {
-        if(parm== paramName){return QString::fromStdString(value);}
-    }
-    return 0;
-}
-
+/**
+ * @brief Close current dB
+ */
 void database::CloseDB()
 {
     if(db.isOpen()) db.close();
 }
 
-QStringList database::Connections()
-{
-    return db.connectionNames();
-}
-
+/**
+ * @brief Design DB on load
+ */
 void database::Model()
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -160,6 +165,17 @@ void database::Model()
         query->exec("INSERT INTO parms(monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES (0, 0, 0, 0, 0, 0, 0)");
 }
 
+/**
+ * @brief add a Task to current db
+ * @param number
+ * @param priority
+ * @param duration
+ * @param tray
+ * @param itemCount
+ * @param deadline
+ * @param title
+ * @param color
+ */
 void database::addTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -176,6 +192,10 @@ void database::addTask(QDateTime number, int priority, int duration, int tray, i
     query->exec();
 }
 
+/**
+ * @brief Delete a task on the current dB
+ * @param id
+ */
 void database::deleteTask(QDateTime id)
 {
     if(db.isOpen()){
@@ -186,6 +206,10 @@ void database::deleteTask(QDateTime id)
     }
 }
 
+/**
+ * @brief Remove all allocated hours from a task
+ * @param id
+ */
 void database::deleteAllocation(QDateTime id)
 {
     if(db.isOpen()){
@@ -194,6 +218,13 @@ void database::deleteAllocation(QDateTime id)
     }
 }
 
+/**
+ * @brief Add a target to a task
+ * @param number
+ * @param title
+ * @param state
+ * @param parentTask
+ */
 void database::addTarget(QDateTime number, QString title, bool state, QDateTime parentTask)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -206,6 +237,10 @@ void database::addTarget(QDateTime number, QString title, bool state, QDateTime 
     query->exec();
 }
 
+/**
+ * @brief Remove a target from a task
+ * @param id
+ */
 void database::deleteTarget(QDateTime id)
 {
     if(db.isOpen()){
@@ -214,6 +249,17 @@ void database::deleteTarget(QDateTime id)
     }
 }
 
+/**
+ * @brief Update fields from a task
+ * @param number
+ * @param priority
+ * @param duration
+ * @param tray
+ * @param itemCount
+ * @param deadline
+ * @param title
+ * @param color
+ */
 void database::updateTask(QDateTime number, int priority, int duration, int tray, int itemCount, QDateTime deadline, QString title, QString color)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -231,6 +277,11 @@ void database::updateTask(QDateTime number, int priority, int duration, int tray
     query->exec();
 }
 
+/**
+ * @brief Store check state
+ * @param number
+ * @param state
+ */
 void database::updateTarget(QDateTime number, bool state)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -242,6 +293,12 @@ void database::updateTarget(QDateTime number, bool state)
     query->exec();
 }
 
+/**
+ * @brief Allocate an hour to a task
+ * @param task
+ * @param day
+ * @param value
+ */
 void database::addAllocation(QDateTime task, QDateTime day, int value)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -253,6 +310,12 @@ void database::addAllocation(QDateTime task, QDateTime day, int value)
     query->exec();
 }
 
+/**
+ * @brief delete an allocated hour from a task
+ * @param task
+ * @param day
+ * @param value
+ */
 void database::deleteAllocation(QDateTime task, QDateTime day, int value)
 {
     if(db.isOpen()){
@@ -263,6 +326,12 @@ void database::deleteAllocation(QDateTime task, QDateTime day, int value)
     }
 }
 
+/**
+ * @brief Return true if this hour is allocated, false otherwise
+ * @param day
+ * @param value
+ * @return
+ */
 bool database::isAllocated(QDateTime day, int value)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -272,6 +341,11 @@ bool database::isAllocated(QDateTime day, int value)
     return query->value(0).toBool();
 }
 
+/**
+ * @brief Get the number of allocated hours from a task
+ * @param task
+ * @return
+ */
 int database::getAlloc(QDateTime task)
 {
     QSqlQuery *query = new QSqlQuery(db);
@@ -281,6 +355,11 @@ int database::getAlloc(QDateTime task)
     return query->value(0).toInt();
 }
 
+/**
+ * @brief return the daylength from the specified day
+ * @param day
+ * @return
+ */
 int database::dayOccupation(QDateTime day)
 {
     QString d;
@@ -317,6 +396,12 @@ int database::dayOccupation(QDateTime day)
     return query->value(0).toInt();
 }
 
+/**
+ * @brief Return if the deadline is over
+ * @param task
+ * @param day
+ * @return
+ */
 int database::isDead(QDateTime task, QDateTime day)
 {
     if(db.isOpen()){
@@ -330,6 +415,11 @@ int database::isDead(QDateTime task, QDateTime day)
     return 0;
 }
 
+/**
+ * @brief Return if allocated time is over
+ * @param task
+ * @return
+ */
 int database::isOverkilled(QDateTime task)
 {
     if(db.isOpen()){
@@ -343,6 +433,11 @@ int database::isOverkilled(QDateTime task)
     return 0;
 }
 
+/**
+ * @brief Send a task to archive
+ * @param task
+ * @param active
+ */
 void database::archive(QDateTime task, bool active)
 {
     QSqlQuery *query = new QSqlQuery(db);

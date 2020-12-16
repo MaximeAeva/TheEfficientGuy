@@ -21,7 +21,7 @@ public:
                QDateTime task = QDateTime::currentDateTime(), QDateTime day = QDateTime::currentDateTime(), QColor star = Qt::red);
 
     void paint(QPainter *painter, const QRect &rect,
-               const QPalette &palette, EditMode mode) const;
+               const QPalette, EditMode) const;
     QSize sizeHint() const;
     int starCount() const { int k=0; for(int i = 0; i < myMaxStarCount; i++) k += myStarCount[i]; return k; }
     inline void setDB(database *db){this->db = db;};

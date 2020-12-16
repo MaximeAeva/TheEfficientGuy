@@ -3,54 +3,86 @@
 #include "stareditor.h"
 #include "starrating.h"
 
- StarEditor::StarEditor(QWidget *parent)
-     : QWidget(parent)
- {
-     setMouseTracking(true);
-     setAutoFillBackground(true);
- }
+/**
+* @brief Constructor
+* @param parent
+*/
+StarEditor::StarEditor(QWidget *parent)
+ : QWidget(parent)
+{
+    setAutoFillBackground(true);
+}
 
- QSize StarEditor::sizeHint() const
- {
-     return myStarRating.sizeHint();
- }
+/**
+ * @brief Resize
+ * @return
+ */
+QSize StarEditor::sizeHint() const
+{
+    return myStarRating.sizeHint();
+}
 
- void StarEditor::paintEvent(QPaintEvent *)
- {
-     QPainter painter(this);
-     myStarRating.paint(&painter, rect(), this->palette(),
-                        StarRating::Editable);
- }
+/**
+ * @brief Painter
+ */
+void StarEditor::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    myStarRating.paint(&painter, rect(), this->palette(),
+                    StarRating::Editable);
+}
 
- void StarEditor::mousePressEvent(QMouseEvent *event)
- {
-    int star = starAtPosition(event->x());
+/**
+ * @brief Catch position
+ * @param event
+ */
+void StarEditor::mousePressEvent(QMouseEvent *event)
+{
+    this->start = starAtPosition(event->x());
+}
 
-    if(myStarRating.getVect().at(star-1))
-        myStarRating.setStar(star-1);
-    else if(!myStarRating.db->isAllocated(myStarRating.day, star-1))
-        myStarRating.setStar(star-1);
-
-    if(myStarRating.getVect().at(star-1))
+/**
+ * @brief Catch release and edit
+ * @param event
+ */
+void StarEditor::mouseReleaseEvent(QMouseEvent *event)
+{
+    int end = starAtPosition(event->x());
+    if(end<start)
     {
-        myStarRating.db->addAllocation(myStarRating.task, myStarRating.day, star-1);
+        int a = start;
+        this->start = end;
+        end = a;
     }
-    else
-        myStarRating.db->deleteAllocation(myStarRating.task, myStarRating.day, star-1);
-    update();
- }
+    for(int star = this->start; star<=end; star++)
+    {
+        if(myStarRating.getVect().at(star-1))
+            myStarRating.setStar(star-1);
+        else if(!myStarRating.db->isAllocated(myStarRating.day, star-1))
+            myStarRating.setStar(star-1);
 
- void StarEditor::mouseClickEvent(QMouseEvent * /* event */)
- {
-     emit editingFinished();
- }
+        if(myStarRating.getVect().at(star-1))
+        {
+            myStarRating.db->addAllocation(myStarRating.task, myStarRating.day, star-1);
+        }
+        else
+            myStarRating.db->deleteAllocation(myStarRating.task, myStarRating.day, star-1);
+        update();
+    }
+    emit editingFinished();
+}
 
- int StarEditor::starAtPosition(int x)
- {
-     int star = (x / (myStarRating.sizeHint().width()
-                      / myStarRating.maxStarCount())) + 1;
-     if (star <= 0 || star > myStarRating.maxStarCount())
-         return -1;
+/**
+ * @brief Give item from x position
+ * @param x
+ * @return
+ */
+int StarEditor::starAtPosition(int x)
+{
+    int star = (x / (myStarRating.sizeHint().width()
+                  / myStarRating.maxStarCount())) + 1;
+    if (star <= 0 || star > myStarRating.maxStarCount())
+     return -1;
 
-     return star;
- }
+    return star;
+}

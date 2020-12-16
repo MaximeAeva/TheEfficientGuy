@@ -50,7 +50,6 @@ public:
 private:
 
     QStringList dbNames;
-    QString Readconfig(std::string paramName);
     void Model();
 };
 

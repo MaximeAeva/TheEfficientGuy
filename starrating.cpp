@@ -1,7 +1,18 @@
 #include "starrating.h"
 
+/**
+ * @brief PaintingScaleFactor
+ */
 const int PaintingScaleFactor = 20;
 
+/**
+ * @brief Constructor (form, color, number to paint ...)
+ * @param starCount
+ * @param maxStarCount
+ * @param task
+ * @param day
+ * @param colorStar
+ */
 StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime task, QDateTime day, QColor colorStar)
 {
     myStarCount = starCount;
@@ -15,13 +26,24 @@ StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime t
 
 }
 
+/**
+ * @brief Resize
+ * @return
+ */
 QSize StarRating::sizeHint() const
 {
     return PaintingScaleFactor * QSize(myMaxStarCount, 1);
 }
 
+/**
+ * @brief Paint it
+ * @param painter
+ * @param rect
+ * @param palette
+ * @param mode
+ */
 void StarRating::paint(QPainter *painter, const QRect &rect,
-                       const QPalette &palette, EditMode mode) const
+                       const QPalette, EditMode) const
 {
     painter->save();
 

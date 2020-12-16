@@ -17,12 +17,18 @@ MainWindow::MainWindow(QWidget *parent)
     designChargePage();
 }
 
+/**
+ * @brief MainWindow::~MainWindow
+ */
 MainWindow::~MainWindow()
 {
     db->CloseDB();
     delete ui;
 }
 
+/**
+ * @brief Edit links between buttons and actions
+ */
 void MainWindow::designConnections()
 {
     connect(this->adder, SIGNAL(clicked()), this, SLOT(createTask()));
@@ -41,6 +47,10 @@ void MainWindow::designConnections()
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
 }
 
+/**
+ * @brief Refresh the asked page (on screen swap)
+ * @param i
+ */
 void MainWindow::refreshSelector(int i)
 {
     switch(i)
@@ -60,6 +70,9 @@ void MainWindow::refreshSelector(int i)
     }
 }
 
+/**
+ * @brief Refresh kanban
+ */
 void MainWindow::reloadPage()
 {
     QList<tray *> trays = this->findChildren<tray *>();
@@ -72,6 +85,9 @@ void MainWindow::reloadPage()
     }
 }
 
+/**
+ * @brief Close DB and clean trays
+ */
 void MainWindow::kill()
 {
     db->CloseDB();
@@ -90,6 +106,9 @@ void MainWindow::kill()
     }
 }
 
+/**
+ * @brief Go to the next DB
+ */
 void MainWindow::nextDb()
 {
     QString nameDb = db->nextDb();
@@ -110,6 +129,9 @@ void MainWindow::nextDb()
     update();
 }
 
+/**
+ * @brief Go to the previous Db
+ */
 void MainWindow::prevDb()
 {
     QString nameDb = db->prevDb();
@@ -130,6 +152,9 @@ void MainWindow::prevDb()
     update();
 }
 
+/**
+ * @brief Design Kanban page
+ */
 void MainWindow::designPage()
 {
     ui->toolBox->setCurrentIndex(0);
@@ -137,8 +162,6 @@ void MainWindow::designPage()
     bef->setMaximumSize(40, 40);
     aft->setText(">");
     aft->setMaximumSize(40, 40);
-
-
 
     crtDb->setStyleSheet("QLabel{font-weight : 600;font-size : 18pt;"
                          "color: rgb(200, 200, 200);}");
@@ -192,6 +215,9 @@ void MainWindow::designPage()
     ui->page->setLayout(pageL);
 }
 
+/**
+ * @brief Add a task to the Todo list
+ */
 void MainWindow::createTask()
 {
     task *w = new task(db, this);
@@ -199,6 +225,10 @@ void MainWindow::createTask()
     t2->layout->addWidget(w);
 }
 
+/**
+ * @brief Charge trays of task (mainly on app load)
+ * @param t
+ */
 void MainWindow::load(tray *t)
 {
     QString str = "SELECT COUNT(*) as cnt FROM task WHERE tray="+QString::fromStdString(std::to_string(t->getId()))+" AND active=1";
@@ -231,6 +261,7 @@ void MainWindow::load(tray *t)
             aTask->completion->setMaximum(aTask->itemCount);
         else
             aTask->completion->setMaximum(1);
+
         for(int k = 0; k<modelTargetCount->record(0).value("cnt1").toInt(); k++)//through target
         {
             target *targ = new target;
@@ -242,8 +273,7 @@ void MainWindow::load(tray *t)
             if(modelTarget->record(k).value("state").toBool())
                 aTask->completion->setValue(aTask->completion->value()+1);
             connect(targ->c, SIGNAL(stateChanged(int)), aTask, SLOT(completionVal(int)));
-            connect(targ->b, SIGNAL(clicked()), aTask, SLOT(deleteTarget()));
-            //targ->setVisible(true);
+            connect(targ->b, SIGNAL(clicked(bool)), aTask, SLOT(deleteTarget(bool)));
             aTask->layout->addWidget(targ);
         }
 
@@ -253,6 +283,9 @@ void MainWindow::load(tray *t)
     }
 }
 
+/**
+ * @brief Design the parameters page
+ */
 void MainWindow::designParms()
 {
     QSqlQuery *query = new QSqlQuery(db->db);
@@ -267,6 +300,9 @@ void MainWindow::designParms()
     ui->spinSunday->setValue(query->value("sunday").toInt());
 }
 
+/**
+ * @brief Design the Gantt page
+ */
 void MainWindow::designGanttPage()
 {
 
@@ -283,6 +319,9 @@ void MainWindow::designGanttPage()
     update();
 }
 
+/**
+ * @brief Refresh a Gantt in the specified time range
+ */
 void MainWindow::rngGantt()
 {
     int dayLength[7];
@@ -309,6 +348,9 @@ void MainWindow::rngGantt()
     ganttDisp->update();
 }
 
+/**
+ * @brief Refresh Charge page
+ */
 void MainWindow::loadPage()
 {
     QLineSeries *lines = new QLineSeries();
@@ -358,6 +400,9 @@ void MainWindow::designChargePage()
     loadPage();
 }
 
+/**
+ * @brief Refresh archive page (kill all, recreate)
+ */
 void MainWindow::loadArchive()
 {
 
@@ -405,7 +450,7 @@ void MainWindow::loadArchive()
             if(modelTarget->record(k).value("state").toBool())
                 aTask->completion->setValue(aTask->completion->value()+1);
             connect(targ->c, SIGNAL(stateChanged(int)), aTask, SLOT(completionVal(int)));
-            connect(targ->b, SIGNAL(clicked()), aTask, SLOT(deleteTarget()));
+            connect(targ->b, SIGNAL(clicked(bool)), aTask, SLOT(deleteTarget(bool)));
             //targ->setVisible(true);
             aTask->layout->addWidget(targ);
         }
@@ -417,6 +462,9 @@ void MainWindow::loadArchive()
     }
 }
 
+/**
+ * @brief Design Archive page
+ */
 void MainWindow::designArchive()
 {
     QHBoxLayout *lay = new QHBoxLayout;
@@ -425,6 +473,9 @@ void MainWindow::designArchive()
     loadArchive();
 }
 
+/**
+ * @brief Handle resize event to ensure adaptability
+ */
 void MainWindow::resizeEvent(QResizeEvent*)
 {
     t1->setMinimumWidth((this->width()-50)/5);

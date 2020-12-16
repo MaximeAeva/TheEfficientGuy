@@ -24,7 +24,8 @@ signals:
 protected:
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void mouseClickEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    int start;
 
 private:
     int starAtPosition(int x);

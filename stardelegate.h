@@ -1,8 +1,10 @@
 #ifndef STARDELEGATE_H
- #define STARDELEGATE_H
+#define STARDELEGATE_H
 
- #include <QStyledItemDelegate>
+#include <QStyledItemDelegate>
+#include <QtGui>
 #include "starrating.h"
+#include "stareditor.h"
 
  class StarDelegate : public QStyledItemDelegate
  {

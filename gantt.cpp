@@ -1,5 +1,9 @@
 #include "gantt.h"
 
+/**
+ * @brief Create a Gantt object
+ * @param db
+ */
 gantt::gantt(database *db)
 {
     this->db = db;
@@ -15,6 +19,14 @@ gantt::gantt(database *db)
                                "color : rgb(214,216,218);} QTableWidget {gridline-color: rgb(170,170,170);}");
 }
 
+/**
+ * @brief Build Gantt (item delegate painting)
+ * @param lst
+ * @param lstNumb
+ * @param col
+ * @param dayLength
+ * @param displayFrom
+ */
 void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
 {
     int row = lst.length();

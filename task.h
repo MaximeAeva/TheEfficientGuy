@@ -60,7 +60,7 @@ public:
 
 public slots:
     void completionVal(int i);
-    void deleteTarget();
+    void deleteTarget(bool s);
     void color();
     void hideShowWid();
     void dlTask();

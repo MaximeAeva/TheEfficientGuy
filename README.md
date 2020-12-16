@@ -18,6 +18,8 @@ Just want to see when and how allocate my time to each task to be as efficient a
 
 ## Release History
 
+* 0.2.0
+|   Archive management, slide gantt edit, commented code, size adaptive
 * 0.1.0
 |   Need improvement (such as criticity computation) but works fine
 * 0.0.0

@@ -1,5 +1,8 @@
 #include "task.h"
 
+/**
+ * @brief Create a new empty task
+ */
 task::task()
 {
     designTitleBar();
@@ -38,6 +41,11 @@ task::task()
 
 }
 
+/**
+ * @brief Create a new task
+ * @param db
+ * @param parent
+ */
 task::task(database *db, QWidget *parent) :
     QDockWidget(parent)
 {
@@ -80,6 +88,9 @@ task::task(database *db, QWidget *parent) :
     color();
 }
 
+/**
+ * @brief task::~task
+ */
 task::~task()
 {
     this->db->deleteTask(this->wdwId);
@@ -93,6 +104,10 @@ task::~task()
     delete this->completion;
 }
 
+/**
+ * @brief Task settings pop up on release
+ * @param event
+ */
 void task::mouseReleaseEvent(QMouseEvent *event)
 {
     event->accept();
@@ -168,7 +183,7 @@ void task::mouseReleaseEvent(QMouseEvent *event)
             this->layout->addWidget(t);
             completion->setMaximum(itemCount);
             connect(t->c, SIGNAL(stateChanged(int)), this, SLOT(completionVal(int)));
-            connect(t->b, SIGNAL(clicked()), this, SLOT(deleteTarget()));
+            connect(t->b, SIGNAL(clicked(bool)), this, SLOT(deleteTarget(bool)));
         }
         this->priority = slide->value();
         this->duration = spin->value();
@@ -220,20 +235,36 @@ void task::mouseReleaseEvent(QMouseEvent *event)
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
+/**
+ * @brief Update the completion progressbar
+ * @param i
+ */
 void task::completionVal(int i)
 {
     if(!i) completion->setValue(completion->value()-1);
     else completion->setValue(completion->value()+1);
 }
 
-void task::deleteTarget()
+/**
+ * @brief Update completion progressbar on target delete
+ */
+void task::deleteTarget(bool s)
 {
+    int u = 0;
+    QList<target *> targ = this->findChildren<target *>();
+    foreach(target* t, targ)
+        if(t->c->isChecked()) u++;
+    if(s) u--;
     itemCount--;
-    completionVal(0);
+    if(u>itemCount) u=itemCount;
+    completion->setValue(u);
     if(itemCount) completion->setMaximum(itemCount);
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
+/**
+ * @brief Color task bar from their priority
+ */
 void task::color()
 {
     QString s;
@@ -268,12 +299,20 @@ void task::color()
     this->completion->setStyleSheet("QProgressBar{border: none;} QProgressBar::chunk{background-color: "+c.name()+";}");
 }
 
+/**
+ * @brief Enter drag on move
+ * @param event
+ */
 void task::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
             dragStartPosition = event->pos();
 }
 
+/**
+ * @brief Drag this task !
+ * @param event
+ */
 void task::mouseMoveEvent(QMouseEvent *event)
 {
     if (!(event->buttons() & Qt::LeftButton))
@@ -291,12 +330,28 @@ void task::mouseMoveEvent(QMouseEvent *event)
        drag->exec();
 }
 
+/**
+ * @brief Drop it !
+ * @param event
+ */
 void task::dropEvent(QDropEvent *event)
 {
     event->accept();
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
+/**
+ * @brief Update task fields
+ * @param number
+ * @param db
+ * @param priority
+ * @param duration
+ * @param tray
+ * @param itemCount
+ * @param color
+ * @param deadline
+ * @param title
+ */
 void task::set(QDateTime number, database *db, int priority, int duration,
                int tray, int itemCount, QString color, QDateTime deadline, QString title)
 {
@@ -352,6 +407,9 @@ void task::set(QDateTime number, database *db, int priority, int duration,
     }
 }
 
+/**
+ * @brief Hide/show task body
+ */
 void task::hideShowWid()
 {
     if(this->lab->height() != 0)
@@ -360,17 +418,26 @@ void task::hideShowWid()
         this->lab->setMaximumHeight(50*(itemCount+1));
 }
 
+/**
+ * @brief Destroy a task
+ */
 void task::dlTask()
 {
     this->~task();
 }
 
+/**
+ * @brief Archive a task
+ */
 void task::archi()
 {
     this->db->archive(this->wdwId, (this->active+1)%2);
     this->close();
 }
 
+/**
+ * @brief Design the title bar
+ */
 void task::designTitleBar()
 {
     QHBoxLayout* layout = new QHBoxLayout();
@@ -404,11 +471,18 @@ void task::designTitleBar()
     this->setTitleBarWidget(titleBar);
 }
 
+/**
+ * @brief Active state (archived or not)
+ */
 void task::setArchived()
 {
     this->active = 0;
 }
 
+/**
+ * @brief Keep size below tray's one
+ * @param s
+ */
 void task::resizeIt(int s)
 {
     this->titleBar->setMaximumWidth(s);
