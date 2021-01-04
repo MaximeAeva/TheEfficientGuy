@@ -48,6 +48,7 @@ void StarEditor::mousePressEvent(QMouseEvent *event)
 void StarEditor::mouseReleaseEvent(QMouseEvent *event)
 {
     int end = starAtPosition(event->x());
+    qDebug() << event->x();
     if(end<start)
     {
         int a = start;
@@ -82,7 +83,7 @@ int StarEditor::starAtPosition(int x)
     int star = (x / (myStarRating.sizeHint().width()
                   / myStarRating.maxStarCount())) + 1;
     if (star <= 0 || star > myStarRating.maxStarCount())
-     return -1;
+     return myStarRating.maxStarCount();
 
     return star;
 }
