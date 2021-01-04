@@ -45,6 +45,8 @@ void MainWindow::designConnections()
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
+    connect(ui->addDb, SIGNAL(clicked()), this, SLOT(addDb()));
+    connect(ui->dlDb, SIGNAL(clicked()), this, SLOT(dlDb()));
 }
 
 /**
@@ -288,6 +290,22 @@ void MainWindow::load(tray *t)
  */
 void MainWindow::designParms()
 {
+    QStringList l = this->db->getDbNames();
+    ui->comboDb->addItem(" ");
+    ui->comboDb->addItems(l);
+    QVBoxLayout *mainLay = new QVBoxLayout;
+    QHBoxLayout *dbl = new QHBoxLayout;
+    QHBoxLayout *dbls = new QHBoxLayout;
+    QHBoxLayout *lhf = new QHBoxLayout;
+    QHBoxLayout *lhs = new QHBoxLayout;
+    QHBoxLayout *lht = new QHBoxLayout;
+    QHBoxLayout *lhfo = new QHBoxLayout;
+    /*mainLay->setAlignment(Qt::AlignCenter);
+    dbl->setAlignment(Qt::AlignCenter);
+    lhf->setAlignment(Qt::AlignCenter);
+    lhs->setAlignment(Qt::AlignCenter);
+    lht->setAlignment(Qt::AlignCenter);
+    lhfo->setAlignment(Qt::AlignCenter);*/
     QSqlQuery *query = new QSqlQuery(db->db);
     query->exec("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM parms");
     query->first();
@@ -298,6 +316,42 @@ void MainWindow::designParms()
     ui->spinFriday->setValue(query->value("friday").toInt());
     ui->spinSaturday->setValue(query->value("saturday").toInt());
     ui->spinSunday->setValue(query->value("sunday").toInt());
+
+    mainLay->addWidget(ui->labDb);
+
+    dbl->addWidget(ui->dbName);
+    dbl->addWidget(ui->addDb);
+    mainLay->addItem(dbl);
+
+    dbls->addWidget(ui->comboDb);
+    dbls->addWidget(ui->dlDb);
+    mainLay->addItem(dbls);
+
+    mainLay->addWidget(ui->labDay);
+
+    lhf->addWidget(ui->label);
+    lhf->addWidget(ui->spinMonday);
+    lhf->addWidget(ui->label_5);
+    lhf->addWidget(ui->spinFriday);
+    mainLay->addItem(lhf);
+
+    lhs->addWidget(ui->label_2);
+    lhs->addWidget(ui->spinTuesday);
+    lhs->addWidget(ui->label_6);
+    lhs->addWidget(ui->spinSaturday);
+    mainLay->addItem(lhs);
+
+    lht->addWidget(ui->label_3);
+    lht->addWidget(ui->spinWednesday);
+    lht->addWidget(ui->label_7);
+    lht->addWidget(ui->spinSunday);
+    mainLay->addItem(lht);
+
+    lhfo->addWidget(ui->label_4);
+    lhfo->addWidget(ui->spinThursday);
+    mainLay->addItem(lhfo);
+
+    ui->page_4->setLayout(mainLay);
 }
 
 /**
@@ -491,5 +545,40 @@ void MainWindow::resizeEvent(QResizeEvent*)
     }
 }
 
+/**
+ * @brief Add a database file
+ */
+void MainWindow::addDb()
+{
+    if(!ui->dbName->text().isEmpty())
+    {
+        std::string s = ui->dbName->text().toStdString();
+        std::ofstream file { s+".db" };
+    }
+    ui->dbName->clear();
+    ui->comboDb->clear();
+    QStringList l = this->db->getDbNames();
+    ui->comboDb->addItem(" ");
+    ui->comboDb->addItems(l);
+}
+
+/**
+ * @brief Remove a database file
+ */
+void MainWindow::dlDb()
+{
+    if(ui->comboDb->currentIndex())
+    {
+        if(ui->comboDb->currentText() == this->db->db.databaseName())
+            nextDb();
+        if(!QFile::remove(ui->comboDb->currentText()))
+            qDebug() << ui->comboDb->currentText();
+    }
+    ui->dbName->clear();
+    ui->comboDb->clear();
+    QStringList l = this->db->getDbNames();
+    ui->comboDb->addItem(" ");
+    ui->comboDb->addItems(l);
+}
 
 

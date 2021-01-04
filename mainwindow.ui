@@ -26,15 +26,15 @@ color : rgb(214, 216, 218);
 </string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>773</width>
-         <height>359</height>
+         <width>769</width>
+         <height>361</height>
         </rect>
        </property>
        <attribute name="label">
@@ -46,8 +46,8 @@ color : rgb(214, 216, 218);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>773</width>
-         <height>359</height>
+         <width>769</width>
+         <height>361</height>
         </rect>
        </property>
        <attribute name="label">
@@ -85,8 +85,8 @@ color : rgb(214, 216, 218);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>773</width>
-         <height>359</height>
+         <width>769</width>
+         <height>361</height>
         </rect>
        </property>
        <attribute name="label">
@@ -114,6 +114,14 @@ color : rgb(214, 216, 218);
        </widget>
       </widget>
       <widget class="QWidget" name="page_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>769</width>
+         <height>361</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Archive</string>
        </attribute>
@@ -123,235 +131,309 @@ color : rgb(214, 216, 218);
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>773</width>
-         <height>359</height>
+         <width>769</width>
+         <height>361</height>
         </rect>
        </property>
        <attribute name="label">
         <string>Parameters</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="5" column="1">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Tuesday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Wednesday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="7">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="4">
-         <widget class="QSpinBox" name="spinSaturday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="2">
-         <widget class="QSpinBox" name="spinThursday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QSpinBox" name="spinMonday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="4">
-         <widget class="QSpinBox" name="spinFriday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="4">
-         <widget class="QSpinBox" name="spinSunday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="3">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Saturday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Friday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="9" column="1">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Thursday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="7" column="3">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Sunday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Monday</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="QSpinBox" name="spinWednesday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QSpinBox" name="spinTuesday">
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>270</y>
+          <width>38</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Tuesday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>299</y>
+          <width>53</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Wednesday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinSaturday">
+        <property name="geometry">
+         <rect>
+          <x>721</x>
+          <y>270</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinThursday">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>328</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinMonday">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>241</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinFriday">
+        <property name="geometry">
+         <rect>
+          <x>721</x>
+          <y>241</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinSunday">
+        <property name="geometry">
+         <rect>
+          <x>721</x>
+          <y>299</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>634</x>
+          <y>270</y>
+          <width>41</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Saturday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>634</x>
+          <y>241</y>
+          <width>29</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Friday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>328</y>
+          <width>43</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Thursday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>634</x>
+          <y>299</y>
+          <width>35</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sunday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>241</y>
+          <width>37</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Monday</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinWednesday">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>299</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="spinTuesday">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>270</y>
+          <width>37</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="dbName">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>112</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="addDb">
+        <property name="geometry">
+         <rect>
+          <x>634</x>
+          <y>113</y>
+          <width>80</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="labDay">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>141</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Day length parameters</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="labDb">
+        <property name="geometry">
+         <rect>
+          <x>71</x>
+          <y>11</y>
+          <width>42</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Database creation</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboDb">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>130</y>
+          <width>75</width>
+          <height>24</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="dlDb">
+        <property name="geometry">
+         <rect>
+          <x>640</x>
+          <y>140</y>
+          <width>80</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -363,7 +445,7 @@ color : rgb(214, 216, 218);
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

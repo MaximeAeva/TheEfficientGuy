@@ -13,8 +13,9 @@
 #include <QLineSeries>
 #include <QGraphicsView>
 #include <QTableWidget>
+#include <QFile>
 #include <iostream>
-#include <iostream>
+#include <fstream>
 #include <cstring>
 
 #include "task.h"
@@ -53,6 +54,8 @@ public slots:
     void loadPage();
     void prevDb();
     void nextDb();
+    void addDb();
+    void dlDb();
 
 private:
     Ui::MainWindow *ui;
