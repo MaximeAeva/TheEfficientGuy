@@ -8,7 +8,6 @@
  */
 tray::tray(QString title, int id, database *db)
 {
-    this->layout->setAlignment(Qt::AlignBottom);
     this->title = title;
     this->db = db;
     this->id = id;

@@ -48,7 +48,6 @@ void StarEditor::mousePressEvent(QMouseEvent *event)
 void StarEditor::mouseReleaseEvent(QMouseEvent *event)
 {
     int end = starAtPosition(event->x());
-    qDebug() << event->x();
     if(end<start)
     {
         int a = start;

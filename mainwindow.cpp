@@ -442,14 +442,72 @@ void MainWindow::loadPage()
     chart->addAxis(axisY, Qt::AlignLeft);
     lines->attachAxis(axisY);
 
+    QFont font;
+    font.setPixelSize(18);
+    chart->setTitleFont(font);
+    chart->setTitleBrush(QBrush(Qt::white));
+    axisX->setTitleBrush(QBrush(Qt::white));
+    axisY->setTitleBrush(QBrush(Qt::white));
+
+    QBrush axisBrush(Qt::white);
+    axisX->setLabelsBrush(axisBrush);
+    axisY->setLabelsBrush(axisBrush);
+
     ui->graphicsView->setChart(chart);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+
+    QBarSet *set = new QBarSet("Count");
+    QStringList prio;
+    QSqlQueryModel *model3 = new QSqlQueryModel;
+    model3->setQuery("SELECT COUNT(*) as cnt, priority as pr FROM task WHERE active = 1 GROUP BY priority ORDER BY priority ASC", db->db);
+    for(int i = 0; i < 6; ++i)
+    {
+        if(model3->record(i).value("pr").toInt() == i)
+            *set << model3->record(i).value("cnt").toInt();
+        else
+            *set << 0;
+        prio << model3->record(i).value("pr").toString();
+
+    }
+
+    QBarSeries *barseries = new QBarSeries();
+    barseries->append(set);
+
+    QChart *chart2 = new QChart();
+    chart2->addSeries(barseries);
+    chart2->setTitle("Priority distribution");
+    chart2->setBackgroundBrush(brush);
+    chart2->legend()->hide();
+
+    QBarCategoryAxis *axisX1 = new QBarCategoryAxis();
+    axisX1->append(prio);
+    chart2->addAxis(axisX1, Qt::AlignBottom);
+    barseries->attachAxis(axisX1);
+    axisX1->setTitleText("Priority");
+
+    QValueAxis *axisY1 = new QValueAxis();
+    chart2->addAxis(axisY1, Qt::AlignLeft);
+    axisY1->setLabelFormat("%i");
+    barseries->attachAxis(axisY1);
+    axisY1->setTitleText("Count");
+
+    chart2->setTitleFont(font);
+    chart2->setTitleBrush(QBrush(Qt::white));
+    axisX1->setTitleBrush(QBrush(Qt::white));
+    axisY1->setTitleBrush(QBrush(Qt::white));
+
+    axisX1->setLabelsBrush(axisBrush);
+    axisY1->setLabelsBrush(axisBrush);
+
+    ui->graphicsView_2->setChart(chart2);
+    ui->graphicsView_2->setRenderHints(QPainter::Antialiasing);
 }
 
 void MainWindow::designChargePage()
 {
-    QVBoxLayout *l = new QVBoxLayout;
+    QHBoxLayout *l = new QHBoxLayout;
     l->addWidget(ui->graphicsView);
+    l->addWidget(ui->graphicsView_2);
     ui->page_3->setLayout(l);
     loadPage();
 }
