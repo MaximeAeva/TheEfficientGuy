@@ -456,18 +456,18 @@ void MainWindow::loadPage()
     ui->graphicsView->setChart(chart);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing);
 
+    int l[6] = {};
     QBarSet *set = new QBarSet("Count");
     QStringList prio;
     QSqlQueryModel *model3 = new QSqlQueryModel;
     model3->setQuery("SELECT COUNT(*) as cnt, priority as pr FROM task WHERE active = 1 GROUP BY priority ORDER BY priority ASC", db->db);
+    for(int i = 0; i < model3->rowCount(); ++i)
+        l[model3->record(i).value("pr").toInt()] = model3->record(i).value("cnt").toInt();
+
     for(int i = 0; i < 6; ++i)
     {
-        if(model3->record(i).value("pr").toInt() == i)
-            *set << model3->record(i).value("cnt").toInt();
-        else
-            *set << 0;
-        prio << model3->record(i).value("pr").toString();
-
+        *set << l[i];
+        prio << QString::number(i);
     }
 
     QBarSeries *barseries = new QBarSeries();
