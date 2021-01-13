@@ -501,13 +501,33 @@ void MainWindow::loadPage()
 
     ui->graphicsView_2->setChart(chart2);
     ui->graphicsView_2->setRenderHints(QPainter::Antialiasing);
+
+    QSqlQueryModel *model4 = new QSqlQueryModel;
+    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
+    QSqlQueryModel *model5 = new QSqlQueryModel;
+    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
+
+    ui->avgL->setFont(font);
+    ui->avgD->setFont(font);
+    ui->overL->setFont(font);
+    ui->overD->setFont(font);
+    ui->avgD->setText(model4->record(0).value("val").toString());
+    ui->overD->setText(model5->record(0).value("cnt").toString());
 }
 
 void MainWindow::designChargePage()
 {
+    QVBoxLayout *subl = new QVBoxLayout;
+    QGridLayout *ssubl = new QGridLayout;
     QHBoxLayout *l = new QHBoxLayout;
+    ssubl->addWidget(ui->avgL, 1, 0);
+    ssubl->addWidget(ui->avgD, 1, 1);
+    ssubl->addWidget(ui->overL, 2, 0);
+    ssubl->addWidget(ui->overD, 2, 1);
     l->addWidget(ui->graphicsView);
-    l->addWidget(ui->graphicsView_2);
+    subl->addItem(ssubl);
+    subl->addWidget(ui->graphicsView_2);
+    l->addItem(subl);
     ui->page_3->setLayout(l);
     loadPage();
 }
