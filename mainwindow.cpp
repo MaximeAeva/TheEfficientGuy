@@ -256,7 +256,7 @@ void MainWindow::load(tray *t)
         QString str2 ="SELECT COUNT(*) as cnt1 FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
         QSqlQueryModel *modelTargetCount = new QSqlQueryModel;
         modelTargetCount->setQuery(str2, db->db);
-        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
+        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString()+" ORDER BY state";
         QSqlQueryModel *modelTarget = new QSqlQueryModel;
         modelTarget->setQuery(str3, db->db);
         if(aTask->itemCount)
@@ -564,7 +564,7 @@ void MainWindow::loadArchive()
         QString str2 ="SELECT COUNT(*) as cnt1 FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
         QSqlQueryModel *modelTargetCount = new QSqlQueryModel;
         modelTargetCount->setQuery(str2, db->db);
-        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString();
+        QString str3 ="SELECT number, title, state FROM target WHERE parentTask="+modelTask->record(i).value("number").toString()+" ORDER BY state";
         QSqlQueryModel *modelTarget = new QSqlQueryModel;
         modelTarget->setQuery(str3, db->db);
         if(aTask->itemCount)
