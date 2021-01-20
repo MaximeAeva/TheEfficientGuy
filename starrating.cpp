@@ -67,7 +67,7 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
         }
         else
         {
-            if(isdeadline) painter->setBrush(QColor::fromRgb(36, 41, 46));
+            if(isdeadline) painter->setBrush(QColor::fromRgb(30, 30, 30));
             else painter->setBrush(Qt::black);
             painter->drawPolygon(starPolygon, Qt::WindingFill);
         }

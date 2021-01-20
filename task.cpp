@@ -86,6 +86,7 @@ task::task(database *db, QWidget *parent) :
     this->setWidget(lab);
     this->lab->setMaximumHeight(0);
     color();
+
 }
 
 /**
@@ -250,15 +251,22 @@ void task::completionVal(int i)
  */
 void task::deleteTarget(bool s)
 {
-    int u = 0;
+    int checked = 0;
+    int overall = 0;
     QList<target *> targ = this->findChildren<target *>();
     foreach(target* t, targ)
-        if(t->c->isChecked()) u++;
-    if(s) u--;
+    {
+        overall++;
+        if(t->c->isChecked()) checked++;
+    }
+
     itemCount--;
-    if(u>itemCount) u=itemCount;
-    completion->setValue(u);
-    if(itemCount) completion->setMaximum(itemCount);
+    if(s)
+        completion->setValue(checked-1);
+    else
+        completion->setValue(checked);
+    completion->setMaximum(itemCount);
+
     this->db->updateTask(this->wdwId, this->priority, this->duration, this->group, this->itemCount, this->deadLine, this->title, this->colorTask.name());
 }
 
@@ -416,6 +424,7 @@ void task::hideShowWid()
         this->lab->setMaximumHeight(0);
     else
         this->lab->setMaximumHeight(50*(itemCount+1));
+
 }
 
 /**
