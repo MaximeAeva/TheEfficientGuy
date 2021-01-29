@@ -86,5 +86,6 @@ private:
     QHBoxLayout *b = new QHBoxLayout;
     QVBoxLayout *pageL = new QVBoxLayout;
     QHBoxLayout *col = new QHBoxLayout;
+    QHBoxLayout *subdbl = new QHBoxLayout;
 };
 #endif // MAINWINDOW_H

@@ -59,15 +59,18 @@ void MainWindow::refreshSelector(int i)
     switch(i)
     {
         case 0 :
-            reloadPage();
+            loadHomePage();
         break;
         case 1 :
+            reloadPage();
+        break;
+        case 2 :
             rngGantt();
         break;
-        case 2:
+        case 3:
             loadPage();
         break;
-        case 3:
+        case 4:
             loadArchive();
         break;
     }
@@ -130,10 +133,12 @@ void MainWindow::nextDb()
     this->g->changeDb(db);
     rngGantt();
     update();
+    loadHomePage();
 }
 
 void MainWindow::designHomePage()
 {
+    QStringList dbNames = this->db->getDbNames();
     QVBoxLayout *ml = new QVBoxLayout;
     QHBoxLayout *dbl = new QHBoxLayout;
     QGridLayout *ssubl = new QGridLayout;
@@ -141,7 +146,17 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->avgD, 1, 1);
     ssubl->addWidget(ui->overL, 2, 0);
     ssubl->addWidget(ui->overD, 2, 1);
+    ssubl->addWidget(ui->actL, 3, 0);
+    ssubl->addWidget(ui->actD, 3, 1);
     ui->toolBox->setCurrentIndex(0);
+    subdbl->setAlignment(Qt::AlignHCenter);
+    for(int i = 0; i<dbNames.length(); i++)
+    {
+        QLabel *osefL = new QLabel;
+        osefL->setText(dbNames.at(i));
+        subdbl->addWidget(osefL);
+        subdbl->addSpacing(5);
+    }
     bef->setText("<");
     bef->setMaximumSize(40, 40);
     aft->setText(">");
@@ -152,6 +167,7 @@ void MainWindow::designHomePage()
     dbl->addWidget(aft);
     dbl->addStretch(1);
     ml->addItem(dbl);
+    ml->addItem(subdbl);
     ml->addItem(ssubl);
     ui->page_6->setLayout(ml);
     loadHomePage();
@@ -159,19 +175,36 @@ void MainWindow::designHomePage()
 
 void MainWindow::loadHomePage()
 {
+    QList<QLabel *> dbName = subdbl->findChildren<QLabel *>();
+    foreach(QLabel* L, dbName)
+        L->~QLabel();
+    QStringList dbNames = this->db->getDbNames();
+    for(int i = 0; i<dbNames.length(); i++)
+    {
+        QLabel *osefL = new QLabel;
+        osefL->setText(dbNames.at(i));
+        subdbl->addWidget(osefL);
+        subdbl->addSpacing(5);
+    }
     QFont font;
     font.setPixelSize(18);
     QSqlQueryModel *model4 = new QSqlQueryModel;
     model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
     QSqlQueryModel *model5 = new QSqlQueryModel;
     model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
+    QSqlQueryModel *model6 = new QSqlQueryModel;
+    model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
 
     ui->avgL->setFont(font);
     ui->avgD->setFont(font);
     ui->overL->setFont(font);
     ui->overD->setFont(font);
-    ui->avgD->setText(model4->record(0).value("val").toString());
+    ui->actL->setFont(font);
+    ui->actD->setFont(font);
+    QString value= QString::number(model4->record(0).value("val").toFloat(), 'f', 2);
+    ui->avgD->setText(value);
     ui->overD->setText(model5->record(0).value("cnt").toString());
+    ui->actD->setText(model6->record(0).value("cnt").toString());
 }
 
 /**
@@ -195,6 +228,7 @@ void MainWindow::prevDb()
     this->g->changeDb(db);
     rngGantt();
     update();
+    loadHomePage();
 }
 
 /**

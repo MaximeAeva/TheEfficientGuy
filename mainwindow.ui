@@ -84,6 +84,32 @@ color : rgb(214, 216, 218);
          <string>Overall task count</string>
         </property>
        </widget>
+       <widget class="QLabel" name="actL">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>120</y>
+          <width>181</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Active tasks count</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="actD">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>150</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page">
        <property name="geometry">
