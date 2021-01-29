@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowState(Qt::WindowMaximized);
     this->setWindowTitle("The Efficient Guy !");
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
+    designHomePage();
     designPage();
     designParms();
     designGanttPage();
@@ -131,6 +132,48 @@ void MainWindow::nextDb()
     update();
 }
 
+void MainWindow::designHomePage()
+{
+    QVBoxLayout *ml = new QVBoxLayout;
+    QHBoxLayout *dbl = new QHBoxLayout;
+    QGridLayout *ssubl = new QGridLayout;
+    ssubl->addWidget(ui->avgL, 1, 0);
+    ssubl->addWidget(ui->avgD, 1, 1);
+    ssubl->addWidget(ui->overL, 2, 0);
+    ssubl->addWidget(ui->overD, 2, 1);
+    ui->toolBox->setCurrentIndex(0);
+    bef->setText("<");
+    bef->setMaximumSize(40, 40);
+    aft->setText(">");
+    aft->setMaximumSize(40, 40);
+    dbl->addStretch(1);
+    dbl->addWidget(bef);
+    dbl->addWidget(crtDb);
+    dbl->addWidget(aft);
+    dbl->addStretch(1);
+    ml->addItem(dbl);
+    ml->addItem(ssubl);
+    ui->page_6->setLayout(ml);
+    loadHomePage();
+}
+
+void MainWindow::loadHomePage()
+{
+    QFont font;
+    font.setPixelSize(18);
+    QSqlQueryModel *model4 = new QSqlQueryModel;
+    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
+    QSqlQueryModel *model5 = new QSqlQueryModel;
+    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
+
+    ui->avgL->setFont(font);
+    ui->avgD->setFont(font);
+    ui->overL->setFont(font);
+    ui->overD->setFont(font);
+    ui->avgD->setText(model4->record(0).value("val").toString());
+    ui->overD->setText(model5->record(0).value("cnt").toString());
+}
+
 /**
  * @brief Go to the previous Db
  */
@@ -159,11 +202,6 @@ void MainWindow::prevDb()
  */
 void MainWindow::designPage()
 {
-    ui->toolBox->setCurrentIndex(0);
-    bef->setText("<");
-    bef->setMaximumSize(40, 40);
-    aft->setText(">");
-    aft->setMaximumSize(40, 40);
 
     crtDb->setStyleSheet("QLabel{font-weight : 600;font-size : 18pt;"
                          "color: rgb(200, 200, 200);}");
@@ -178,10 +216,6 @@ void MainWindow::designPage()
 
     pageL->addItem(b);
     b->addWidget(this->adder);
-    b->addStretch(1);
-    b->addWidget(bef);
-    b->addWidget(crtDb);
-    b->addWidget(aft);
     b->addStretch(1);
     this->adder->setText("+");
     this->adder->setStyleSheet("QPushButton{"
@@ -501,33 +535,14 @@ void MainWindow::loadPage()
 
     ui->graphicsView_2->setChart(chart2);
     ui->graphicsView_2->setRenderHints(QPainter::Antialiasing);
-
-    QSqlQueryModel *model4 = new QSqlQueryModel;
-    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
-    QSqlQueryModel *model5 = new QSqlQueryModel;
-    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
-
-    ui->avgL->setFont(font);
-    ui->avgD->setFont(font);
-    ui->overL->setFont(font);
-    ui->overD->setFont(font);
-    ui->avgD->setText(model4->record(0).value("val").toString());
-    ui->overD->setText(model5->record(0).value("cnt").toString());
 }
 
 void MainWindow::designChargePage()
 {
-    QVBoxLayout *subl = new QVBoxLayout;
-    QGridLayout *ssubl = new QGridLayout;
+
     QHBoxLayout *l = new QHBoxLayout;
-    ssubl->addWidget(ui->avgL, 1, 0);
-    ssubl->addWidget(ui->avgD, 1, 1);
-    ssubl->addWidget(ui->overL, 2, 0);
-    ssubl->addWidget(ui->overD, 2, 1);
     l->addWidget(ui->graphicsView);
-    subl->addItem(ssubl);
-    subl->addWidget(ui->graphicsView_2);
-    l->addItem(subl);
+    l->addWidget(ui->graphicsView_2);
     ui->page_3->setLayout(l);
     loadPage();
 }

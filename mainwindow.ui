@@ -26,15 +26,72 @@ color : rgb(214, 216, 218);
 </string>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="page_6">
+       <attribute name="label">
+        <string>Home</string>
+       </attribute>
+       <widget class="QLabel" name="avgD">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>230</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="avgL">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>220</y>
+          <width>141</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Average target per task</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="overD">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>290</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="overL">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>260</y>
+          <width>181</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Overall task count</string>
+        </property>
+       </widget>
+      </widget>
       <widget class="QWidget" name="page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>361</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -47,7 +104,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>361</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -86,7 +143,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>361</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -121,58 +178,6 @@ color : rgb(214, 216, 218);
           </rect>
          </property>
         </widget>
-        <widget class="QLabel" name="overL">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>310</y>
-           <width>181</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Overall task count</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="avgL">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>270</y>
-           <width>141</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Average target per task</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="avgD">
-         <property name="geometry">
-          <rect>
-           <x>330</x>
-           <y>280</y>
-           <width>55</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="overD">
-         <property name="geometry">
-          <rect>
-           <x>350</x>
-           <y>340</y>
-           <width>55</width>
-           <height>16</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="page_5">
@@ -181,7 +186,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>361</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -194,7 +199,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>361</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
