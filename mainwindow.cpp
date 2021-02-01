@@ -150,13 +150,6 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->actD, 3, 1);
     ui->toolBox->setCurrentIndex(0);
     subdbl->setAlignment(Qt::AlignHCenter);
-    for(int i = 0; i<dbNames.length(); i++)
-    {
-        QLabel *osefL = new QLabel;
-        osefL->setText(dbNames.at(i));
-        subdbl->addWidget(osefL);
-        subdbl->addSpacing(5);
-    }
     bef->setText("<");
     bef->setMaximumSize(40, 40);
     aft->setText(">");
@@ -175,19 +168,25 @@ void MainWindow::designHomePage()
 
 void MainWindow::loadHomePage()
 {
-    QList<QLabel *> dbName = subdbl->findChildren<QLabel *>();
-    foreach(QLabel* L, dbName)
-        L->~QLabel();
-    QStringList dbNames = this->db->getDbNames();
-    for(int i = 0; i<dbNames.length(); i++)
-    {
-        QLabel *osefL = new QLabel;
-        osefL->setText(dbNames.at(i));
-        subdbl->addWidget(osefL);
-        subdbl->addSpacing(5);
-    }
     QFont font;
     font.setPixelSize(18);
+
+    /*QList<QWidget *> dbName = subdbl->findChildren<QWidget *>();
+    foreach(QWidget* L, dbName)
+        subdbl->removeWidget(L);*/
+
+    QStringList dbNames = this->db->getDbNames();
+    qDebug() << dbNames;
+
+    for(int i = 0; i<dbNames.length(); i++)
+    {
+        qDebug() << dbNames.at(i);
+        QLabel *osefL = new QLabel;
+        osefL->setText(dbNames.at(i));
+        osefL->setFont(font);
+        subdbl->addWidget(osefL);
+        subdbl->addSpacing(10);
+    }
     QSqlQueryModel *model4 = new QSqlQueryModel;
     model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
     QSqlQueryModel *model5 = new QSqlQueryModel;
