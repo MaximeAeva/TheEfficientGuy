@@ -72,6 +72,7 @@ private:
     void resizeEvent(QResizeEvent*);
 
     QLabel *crtDb = new QLabel;
+    QLabel *subdbl = new QLabel;
     QPushButton *bef = new QPushButton;
     QPushButton *aft = new QPushButton;
     QPushButton *adder = new QPushButton;
@@ -86,6 +87,6 @@ private:
     QHBoxLayout *b = new QHBoxLayout;
     QVBoxLayout *pageL = new QVBoxLayout;
     QHBoxLayout *col = new QHBoxLayout;
-    QHBoxLayout *subdbl = new QHBoxLayout;
+
 };
 #endif // MAINWINDOW_H

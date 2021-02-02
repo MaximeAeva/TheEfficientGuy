@@ -138,7 +138,8 @@ void MainWindow::nextDb()
 
 void MainWindow::designHomePage()
 {
-    QStringList dbNames = this->db->getDbNames();
+
+
     QVBoxLayout *ml = new QVBoxLayout;
     QHBoxLayout *dbl = new QHBoxLayout;
     QGridLayout *ssubl = new QGridLayout;
@@ -160,7 +161,7 @@ void MainWindow::designHomePage()
     dbl->addWidget(aft);
     dbl->addStretch(1);
     ml->addItem(dbl);
-    ml->addItem(subdbl);
+    ml->addWidget(subdbl);
     ml->addItem(ssubl);
     ui->page_6->setLayout(ml);
     loadHomePage();
@@ -170,23 +171,16 @@ void MainWindow::loadHomePage()
 {
     QFont font;
     font.setPixelSize(18);
-
-    /*QList<QWidget *> dbName = subdbl->findChildren<QWidget *>();
-    foreach(QWidget* L, dbName)
-        subdbl->removeWidget(L);*/
-
     QStringList dbNames = this->db->getDbNames();
-    qDebug() << dbNames;
-
+    subdbl->clear();
+    subdbl->setFont(font);
+    QString dbNamesStr;
     for(int i = 0; i<dbNames.length(); i++)
     {
-        qDebug() << dbNames.at(i);
-        QLabel *osefL = new QLabel;
-        osefL->setText(dbNames.at(i));
-        osefL->setFont(font);
-        subdbl->addWidget(osefL);
-        subdbl->addSpacing(10);
+        dbNamesStr += dbNames.at(i);
+        dbNamesStr += "   ";
     }
+    subdbl->setText(dbNamesStr);
     QSqlQueryModel *model4 = new QSqlQueryModel;
     model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
     QSqlQueryModel *model5 = new QSqlQueryModel;
