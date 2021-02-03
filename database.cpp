@@ -124,6 +124,7 @@ void database::Model()
                    "color VARCHAR(10), "
                    "active BOOL DEFAULT 1, "
                    "deadline DATETIME, "
+                   "archive INT DEFAULT 0, "
                    "title VARCHAR(255)"
                    ")");
 
@@ -440,11 +441,15 @@ int database::isOverkilled(QDateTime task)
  */
 void database::archive(QDateTime task, bool active)
 {
+    if(db.isOpen()){
+    int archive = task.daysTo(QDateTime::currentDateTime());
     QSqlQuery *query = new QSqlQuery(db);
     query->prepare("UPDATE task "
-                   "SET  active=:active "
+                   "SET  active=:active, archive=:archive "
                    "WHERE number=:number");
     query->bindValue(":active", active);
+    query->bindValue(":archive", archive);
     query->bindValue(":number", task.toString("yyyyMMddhhmmssz"));
     query->exec();
+    }
 }
