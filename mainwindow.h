@@ -14,6 +14,7 @@
 #include <QGraphicsView>
 #include <QTableWidget>
 #include <QFile>
+#include <QElapsedTimer>
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -61,6 +62,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
+    bool event(QEvent * e);
+
     void designArchive();
     void designParms();
     void designGanttPage();
@@ -70,6 +73,7 @@ private:
     void load(tray *t);
     void kill();
     void resizeEvent(QResizeEvent*);
+    QString myTime(int timeElapse);
 
     QLabel *crtDb = new QLabel;
     QLabel *subdbl = new QLabel;
@@ -83,6 +87,7 @@ private:
     tray *t4 = new tray("StandBy", 3, db);
     tray *t5 = new tray("Archive", 4, db);
 
+    QElapsedTimer *timer = new QElapsedTimer();
     QVBoxLayout *ganttDisp = new QVBoxLayout;
     QHBoxLayout *b = new QHBoxLayout;
     QVBoxLayout *pageL = new QVBoxLayout;

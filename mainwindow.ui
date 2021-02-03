@@ -29,6 +29,14 @@ color : rgb(214, 216, 218);
        <number>0</number>
       </property>
       <widget class="QWidget" name="page_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>769</width>
+         <height>334</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Home</string>
        </attribute>
@@ -102,6 +110,29 @@ color : rgb(214, 216, 218);
          <rect>
           <x>460</x>
           <y>150</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QChartView" name="graphics_Time">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>120</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="testTimer">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>50</y>
           <width>55</width>
           <height>16</height>
          </rect>

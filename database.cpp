@@ -160,6 +160,15 @@ void database::Model()
                    "FOREIGN KEY(parentTask) REFERENCES task(number)"
                    ")");
 
+    QSqlQuery *query4 = new QSqlQuery(db);
+    query4->exec("CREATE TABLE IF NOT EXISTS miscellaneous"
+                   "("
+                   "id DATE PRIMARY KEY, "
+                   "avgTask REAL DEFAULT 0.0, "
+                   "activeTask INT DEFAULT 0, "
+                   "spentTime INT DEFAULT 0"
+                   ")");
+
     query->exec("SELECT COUNT(*) FROM parms");
     query->first();
     if(!query->value(0).toInt())
@@ -451,5 +460,42 @@ void database::archive(QDateTime task, bool active)
     query->bindValue(":archive", archive);
     query->bindValue(":number", task.toString("yyyyMMddhhmmssz"));
     query->exec();
+    }
+}
+
+void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
+{
+    if(db.isOpen()){
+        QSqlQuery *query = new QSqlQuery(db);
+        QString str = "SELECT id FROM miscellaneous ORDER BY id DESC LIMIT 1";
+        query->exec(str);
+        query->first();
+        if(QDate::currentDate().daysTo(query->value(0).toDate()))
+        {
+            QSqlQuery *query1 = new QSqlQuery(db);
+            query1->prepare("INSERT INTO miscellaneous(id, avgTask, activeTask, spentTime) "
+                           "VALUES (:id, :avgTask, :activeTask, :spentTime)");
+            query1->bindValue(":id", QDate::currentDate());
+            query1->bindValue(":avgTask", avgTask);
+            query1->bindValue(":activeTask", activeTask);
+            query1->bindValue(":spentTime", spentTime);
+            query1->exec();
+        } else
+        {
+            QSqlQuery *t = new QSqlQuery(db);
+            QString str = "SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1";
+            t->exec(str);
+            t->first();
+            spentTime += t->value(0).toInt();
+            QSqlQuery *query1 = new QSqlQuery(db);
+            query1->prepare("UPDATE miscellaneous "
+                           "SET  avgTask=:avgTask, activeTask=:activeTask,  spentTime=:spentTime "
+                           "WHERE id=:id");
+            query1->bindValue(":avgTask", avgTask);
+            query1->bindValue(":activeTask", activeTask);
+            query1->bindValue(":spentTime", spentTime);
+            query1->bindValue(":id", QDate::currentDate());
+            query1->exec();
+        }
     }
 }

@@ -149,6 +149,7 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->overD, 2, 1);
     ssubl->addWidget(ui->actL, 3, 0);
     ssubl->addWidget(ui->actD, 3, 1);
+    ssubl->addWidget(ui->testTimer, 4, 0);
     ui->toolBox->setCurrentIndex(0);
     subdbl->setAlignment(Qt::AlignHCenter);
     bef->setText("<");
@@ -701,4 +702,44 @@ void MainWindow::dlDb()
     ui->comboDb->addItems(l);
 }
 
+/**
+ * @brief Handle focus/unfocus to evaluate time spent on app
+ * @param e
+ * @return
+ */
+bool MainWindow::event(QEvent * e)
+{
+    switch(e->type())
+    {
+        case QEvent::WindowActivate :
+            this->timer->start();
+            break ;
 
+        case QEvent::WindowDeactivate :
+            ui->testTimer->setText(myTime(this->timer->elapsed()));
+            break ;
+    } ;
+    return QMainWindow::event(e) ;
+}
+
+/**
+ * @brief Transform in day, hours, minutes, secondes
+ * @param timeElapse
+ * @return
+ */
+QString MainWindow::myTime(int timeElapse)
+{
+    QString TimeElapseShow;
+    int s = round(float(timeElapse)/float(1000));
+    int d = s/86400;
+    TimeElapseShow = QString::number(d)+" days, ";
+    s %= 86400;
+    int h = s/3600;
+    TimeElapseShow += QString::number(h)+" hours, ";
+    s %= 3600;
+    int m = s/60;
+    TimeElapseShow += QString::number(m)+" minutes, ";
+    s %= 60;
+    TimeElapseShow += QString::number(s)+" secondes.";
+    return TimeElapseShow;
+}

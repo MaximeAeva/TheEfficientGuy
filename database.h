@@ -42,6 +42,7 @@ public:
     int dayOccupation(QDateTime day);
     int isDead(QDateTime task, QDateTime day);
     int isOverkilled(QDateTime task);
+    void updateMiscellaneous(int spentTime, float avgTask, int activeTask);
     QStringList getDbNames();
     QSqlDatabase db;
     QString nextDb();
