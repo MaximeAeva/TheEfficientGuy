@@ -74,6 +74,7 @@ private:
     void kill();
     void resizeEvent(QResizeEvent*);
     QString myTime(int timeElapse);
+    QString PrioToColor(int p);
 
     QLabel *crtDb = new QLabel;
     QLabel *subdbl = new QLabel;

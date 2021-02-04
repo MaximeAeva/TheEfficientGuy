@@ -139,7 +139,6 @@ void MainWindow::nextDb()
 void MainWindow::designHomePage()
 {
 
-
     QVBoxLayout *ml = new QVBoxLayout;
     QHBoxLayout *dbl = new QHBoxLayout;
     QGridLayout *ssubl = new QGridLayout;
@@ -150,6 +149,12 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->actL, 3, 0);
     ssubl->addWidget(ui->actD, 3, 1);
     ssubl->addWidget(ui->testTimer, 4, 0);
+    ssubl->addWidget(ui->graphics_Time, 5, 0);//Time spent on app (1 color)
+    ssubl->addWidget(ui->graphics_Avg, 5, 1);// Average time spent per task (several colors)
+    ssubl->addWidget(ui->graphics_Active, 5, 2);//Active task evolution (several colors)
+    ssubl->addWidget(ui->graphics_Duration, 6, 0);//Avergage estimed time (several colors)
+    ssubl->addWidget(ui->graphics_Allocation, 6, 1);//Average Allocation (several colors)
+    ssubl->addWidget(ui->graphics_Overall, 6, 2);//Overall active count (1 color)
     ui->toolBox->setCurrentIndex(0);
     subdbl->setAlignment(Qt::AlignHCenter);
     bef->setText("<");
@@ -201,6 +206,58 @@ void MainWindow::loadHomePage()
     ui->actD->setText(model6->record(0).value("cnt").toString());
 
     this->db->updateMiscellaneous(0, model4->record(0).value("val").toFloat(), model6->record(0).value("cnt").toInt());
+
+    // Test to adapt :3
+
+    QSqlQueryModel *model7 = new QSqlQueryModel;
+    model7->setQuery("SELECT id as id, spentTime as sT FROM miscellaneous ORDER BY id DESC LIMIT 10", db->db);
+    QLineSeries *lines = new QLineSeries();
+    for(int i = 0; i<10; i++)
+        lines->append(model7->record(i).value("id").toInt(),
+                      model7->record(i).value("sT").toInt());
+
+
+    QPen pen = lines->pen();
+    pen.setWidth(5);
+    pen.setBrush(QBrush(QColor("#F25244")));
+    lines->setPen(pen);
+
+    QBrush brush;
+    brush.setColor(QColor::fromRgb(49, 54, 63));
+
+    QChart *chart = new QChart();
+    chart->addSeries(lines);
+    chart->legend()->hide();
+    chart->setTitle("Charge in %");
+    chart->setBackgroundBrush(brush);
+
+    QDateTimeAxis *axisX = new QDateTimeAxis;
+    axisX->setTickCount(ui->displayFrom->date().daysTo(ui->displayTo->date()));
+    axisX->setFormat("dd MMM");
+    axisX->setTitleText("Date");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    lines->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setRange(0, 100);
+    axisY->setTickCount(11);
+    axisY->setLabelFormat("%i");
+    axisY->setTitleText("Amount (%)");
+    chart->addAxis(axisY, Qt::AlignLeft);
+    lines->attachAxis(axisY);
+
+    QFont font;
+    font.setPixelSize(18);
+    chart->setTitleFont(font);
+    chart->setTitleBrush(QBrush(Qt::white));
+    axisX->setTitleBrush(QBrush(Qt::white));
+    axisY->setTitleBrush(QBrush(Qt::white));
+
+    QBrush axisBrush(Qt::white);
+    axisX->setLabelsBrush(axisBrush);
+    axisY->setLabelsBrush(axisBrush);
+
+    //Test
 }
 
 /**
@@ -749,4 +806,31 @@ QString MainWindow::myTime(int timeElapse)
     s %= 60;
     TimeElapseShow += QString::number(s)+" secondes.";
     return TimeElapseShow;
+}
+
+QString MainWindow::PrioToColor(int p)
+{
+    QString s;
+    switch (p)
+    {
+        case 1:
+        s = "#235B66";
+        break;
+        case 2:
+        s = "#11AEBF";
+        break;
+        case 3:
+        s = "#A0BF30";
+        break;
+        case 4:
+        s = "#F2AE30";
+        break;
+        case 5:
+        s = "#F25244";
+        break;
+        default:
+        s = "#546670";
+        break;
+    }
+    return s;
 }

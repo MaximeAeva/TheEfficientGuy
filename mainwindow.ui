@@ -34,7 +34,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -121,8 +121,8 @@ color : rgb(214, 216, 218);
        <widget class="QChartView" name="graphics_Time">
         <property name="geometry">
          <rect>
-          <x>80</x>
-          <y>120</y>
+          <x>40</x>
+          <y>40</y>
           <width>256</width>
           <height>192</height>
          </rect>
@@ -141,6 +141,56 @@ color : rgb(214, 216, 218);
          <string>TextLabel</string>
         </property>
        </widget>
+       <widget class="QChartView" name="graphics_Avg">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>30</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QChartView" name="graphics_Active">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>120</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QChartView" name="graphics_Duration">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>90</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QChartView" name="graphics_Allocation">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>110</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QChartView" name="graphics_Overall">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>130</y>
+          <width>256</width>
+          <height>192</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page">
        <property name="geometry">
@@ -148,7 +198,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -161,7 +211,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -200,7 +250,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -243,7 +293,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -256,7 +306,7 @@ color : rgb(214, 216, 218);
          <x>0</x>
          <y>0</y>
          <width>769</width>
-         <height>302</height>
+         <height>334</height>
         </rect>
        </property>
        <attribute name="label">
@@ -569,7 +619,7 @@ color : rgb(214, 216, 218);
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
