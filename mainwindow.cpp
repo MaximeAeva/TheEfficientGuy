@@ -199,6 +199,8 @@ void MainWindow::loadHomePage()
     ui->avgD->setText(value);
     ui->overD->setText(model5->record(0).value("cnt").toString());
     ui->actD->setText(model6->record(0).value("cnt").toString());
+
+    this->db->updateMiscellaneous(0, model4->record(0).value("val").toFloat(), model6->record(0).value("cnt").toInt());
 }
 
 /**
@@ -730,6 +732,11 @@ bool MainWindow::event(QEvent * e)
 QString MainWindow::myTime(int timeElapse)
 {
     QString TimeElapseShow;
+    this->db->updateMiscellaneous(timeElapse, 0, 0);
+    QSqlQuery *query = new QSqlQuery(db->db);
+    query->exec("SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1");
+    query->first();
+    timeElapse = query->value(0).toInt();
     int s = round(float(timeElapse)/float(1000));
     int d = s/86400;
     TimeElapseShow = QString::number(d)+" days, ";

@@ -466,11 +466,11 @@ void database::archive(QDateTime task, bool active)
 void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
 {
     if(db.isOpen()){
-        QSqlQuery *query = new QSqlQuery(db);
-        QString str = "SELECT id FROM miscellaneous ORDER BY id DESC LIMIT 1";
-        query->exec(str);
-        query->first();
-        if(QDate::currentDate().daysTo(query->value(0).toDate()))
+        QSqlQuery *cnt = new QSqlQuery(db);
+        QString str1 = "SELECT COUNT(*) FROM miscellaneous";
+        cnt->exec(str1);
+        cnt->first();
+        if(!cnt->value(0).toInt())
         {
             QSqlQuery *query1 = new QSqlQuery(db);
             query1->prepare("INSERT INTO miscellaneous(id, avgTask, activeTask, spentTime) "
@@ -480,22 +480,41 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
             query1->bindValue(":activeTask", activeTask);
             query1->bindValue(":spentTime", spentTime);
             query1->exec();
-        } else
+        }
+        else
         {
-            QSqlQuery *t = new QSqlQuery(db);
-            QString str = "SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1";
-            t->exec(str);
-            t->first();
-            spentTime += t->value(0).toInt();
-            QSqlQuery *query1 = new QSqlQuery(db);
-            query1->prepare("UPDATE miscellaneous "
-                           "SET  avgTask=:avgTask, activeTask=:activeTask,  spentTime=:spentTime "
-                           "WHERE id=:id");
-            query1->bindValue(":avgTask", avgTask);
-            query1->bindValue(":activeTask", activeTask);
-            query1->bindValue(":spentTime", spentTime);
-            query1->bindValue(":id", QDate::currentDate());
-            query1->exec();
+            QSqlQuery *query = new QSqlQuery(db);
+            QString str = "SELECT id FROM miscellaneous ORDER BY id DESC LIMIT 1";
+            query->exec(str);
+            query->first();
+
+            if(QDate::currentDate().daysTo(query->value(0).toDate()))
+            {
+                QSqlQuery *query1 = new QSqlQuery(db);
+                query1->prepare("INSERT INTO miscellaneous(id, avgTask, activeTask, spentTime) "
+                               "VALUES (:id, :avgTask, :activeTask, :spentTime)");
+                query1->bindValue(":id", QDate::currentDate());
+                query1->bindValue(":avgTask", avgTask);
+                query1->bindValue(":activeTask", activeTask);
+                query1->bindValue(":spentTime", spentTime);
+                query1->exec();
+            } else
+            {
+                QSqlQuery *t = new QSqlQuery(db);
+                QString str = "SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1";
+                t->exec(str);
+                t->first();
+                spentTime += t->value(0).toInt();
+                QSqlQuery *query1 = new QSqlQuery(db);
+                query1->prepare("UPDATE miscellaneous "
+                               "SET  avgTask=:avgTask, activeTask=:activeTask,  spentTime=:spentTime "
+                               "WHERE id=:id");
+                query1->bindValue(":avgTask", avgTask);
+                query1->bindValue(":activeTask", activeTask);
+                query1->bindValue(":spentTime", spentTime);
+                query1->bindValue(":id", QDate::currentDate());
+                query1->exec();
+            }
         }
     }
 }
