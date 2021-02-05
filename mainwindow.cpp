@@ -23,6 +23,15 @@ MainWindow::MainWindow(QWidget *parent)
  */
 MainWindow::~MainWindow()
 {
+    QSqlQueryModel *model4 = new QSqlQueryModel;
+    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
+    QSqlQueryModel *model5 = new QSqlQueryModel;
+    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
+    QSqlQueryModel *model6 = new QSqlQueryModel;
+    model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
+    this->db->updateMiscellaneous(this->timer->elapsed(),
+                                  model4->record(0).value("val").toFloat(),
+                                  model6->record(0).value("cnt").toInt());
     db->CloseDB();
     delete ui;
 }
@@ -246,12 +255,12 @@ void MainWindow::loadHomePage()
     chart->addAxis(axisY, Qt::AlignLeft);
     lines->attachAxis(axisY);
 
-    QFont font;
+    /*QFont font;
     font.setPixelSize(18);
     chart->setTitleFont(font);
     chart->setTitleBrush(QBrush(Qt::white));
     axisX->setTitleBrush(QBrush(Qt::white));
-    axisY->setTitleBrush(QBrush(Qt::white));
+    axisY->setTitleBrush(QBrush(Qt::white));*/
 
     QBrush axisBrush(Qt::white);
     axisX->setLabelsBrush(axisBrush);
@@ -789,7 +798,15 @@ bool MainWindow::event(QEvent * e)
 QString MainWindow::myTime(int timeElapse)
 {
     QString TimeElapseShow;
-    this->db->updateMiscellaneous(timeElapse, 0, 0);
+    QSqlQueryModel *model4 = new QSqlQueryModel;
+    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
+    QSqlQueryModel *model5 = new QSqlQueryModel;
+    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
+    QSqlQueryModel *model6 = new QSqlQueryModel;
+    model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
+    this->db->updateMiscellaneous(timeElapse,
+                                  model4->record(0).value("val").toFloat(),
+                                  model6->record(0).value("cnt").toInt());
     QSqlQuery *query = new QSqlQuery(db->db);
     query->exec("SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1");
     query->first();
