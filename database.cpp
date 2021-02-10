@@ -164,8 +164,31 @@ void database::Model()
     query4->exec("CREATE TABLE IF NOT EXISTS miscellaneous"
                    "("
                    "id DATE PRIMARY KEY, "
-                   "avgTask REAL DEFAULT 0.0, "
+                   "avgTask0 REAL DEFAULT 0.0, "
+                   "avgTask1 REAL DEFAULT 0.0, "
+                   "avgTask2 REAL DEFAULT 0.0, "
+                   "avgTask3 REAL DEFAULT 0.0, "
+                   "avgTask4 REAL DEFAULT 0.0, "
+                   "avgTask5 REAL DEFAULT 0.0, "
                    "activeTask INT DEFAULT 0, "
+                   "activeTask0 INT DEFAULT 0, "
+                   "activeTask1 INT DEFAULT 0, "
+                   "activeTask2 INT DEFAULT 0, "
+                   "activeTask3 INT DEFAULT 0, "
+                   "activeTask4 INT DEFAULT 0, "
+                   "activeTask5 INT DEFAULT 0, "
+                   "estimedTime0 INT DEFAULT 0, "
+                   "estimedTime1 INT DEFAULT 0, "
+                   "estimedTime2 INT DEFAULT 0, "
+                   "estimedTime3 INT DEFAULT 0, "
+                   "estimedTime4 INT DEFAULT 0, "
+                   "estimedTime5 INT DEFAULT 0, "
+                   "allocated0 INT DEFAULT 0, "
+                   "allocated1 INT DEFAULT 0, "
+                   "allocated2 INT DEFAULT 0, "
+                   "allocated3 INT DEFAULT 0, "
+                   "allocated4 INT DEFAULT 0, "
+                   "allocated5 INT DEFAULT 0, "
                    "spentTime INT DEFAULT 0"
                    ")");
 
@@ -518,3 +541,56 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
         }
     }
 }
+
+/*void database::getStatInfo()
+{
+    QSqlQuery *avgTask = new QSqlQuery(db);
+    QString str = "SELECT priority as p, AVG(items) as avg "
+                  "FROM(SELECT itemCount as items, priority FROM task ORDER BY ROWID DESC LIMIT 20) "
+                  "GROUP BY priority ORDER BY priority ASC";
+    avgTask->exec(str);
+
+    QSqlQuery *activeTask = new QSqlQuery(db);
+    QString str1 = "SELECT COUNT(*) FROM task WHERE active=1";
+    activeTask->exec(str);
+    activeTask->first();
+
+    QSqlQuery *activeTask1 = new QSqlQuery(db);
+    QString str2 = "SELECT priority as p, COUNT(*) as cnt "
+                   "FROM(SELECT number, priority FROM task WHERE active=1 ORDER BY ROWID DESC LIMIT 20) "
+                   "GROUP BY priority ORDER BY priority ASC";
+    activeTask1->exec(str);
+
+    QSqlQuery *estimedTime = new QSqlQuery(db);
+    QString str3 = "SELECT priority as p, AVG(archiveTime) as ar "
+                   "FROM(SELECT archive as archiveTime, priority FROM task WHERE active=0 ORDER BY ROWID DESC LIMIT 20) "
+                   "GROUP BY priority ORDER BY priority ASC";
+    estimedTime->exec(str);
+
+    "avgTask0 REAL DEFAULT 0.0, "
+    "avgTask1 REAL DEFAULT 0.0, "
+    "avgTask2 REAL DEFAULT 0.0, "
+    "avgTask3 REAL DEFAULT 0.0, "
+    "avgTask4 REAL DEFAULT 0.0, "
+    "avgTask5 REAL DEFAULT 0.0, "
+    "activeTask INT DEFAULT 0, "
+    "activeTask0 INT DEFAULT 0, "
+    "activeTask1 INT DEFAULT 0, "
+    "activeTask2 INT DEFAULT 0, "
+    "activeTask3 INT DEFAULT 0, "
+    "activeTask4 INT DEFAULT 0, "
+    "activeTask5 INT DEFAULT 0, "
+    "estimedTime0 INT DEFAULT 0, "
+    "estimedTime1 INT DEFAULT 0, "
+    "estimedTime2 INT DEFAULT 0, "
+    "estimedTime3 INT DEFAULT 0, "
+    "estimedTime4 INT DEFAULT 0, "
+    "estimedTime5 INT DEFAULT 0, "
+    "allocated0 INT DEFAULT 0, "
+    "allocated1 INT DEFAULT 0, "
+    "allocated2 INT DEFAULT 0, "
+    "allocated3 INT DEFAULT 0, "
+    "allocated4 INT DEFAULT 0, "
+    "allocated5 INT DEFAULT 0, "
+    "spentTime INT DEFAULT 0"
+}*/

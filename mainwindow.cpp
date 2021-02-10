@@ -52,6 +52,7 @@ void MainWindow::designConnections()
     connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
+    connect(ui->displayArchive, SIGNAL(stateChanged(int)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
@@ -160,7 +161,7 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->testTimer, 4, 0);
     ssubl->addWidget(ui->graphics_Time, 5, 0);//Time spent on app (1 color)
     ssubl->addWidget(ui->graphics_Avg, 5, 1);// Average time spent per task (several colors)
-    ssubl->addWidget(ui->graphics_Active, 5, 2);//Active task evolution (several colors)
+    ssubl->addWidget(ui->graphics_Active, 5, 2);//Active task count evolution (several colors)
     ssubl->addWidget(ui->graphics_Duration, 6, 0);//Avergage estimed time (several colors)
     ssubl->addWidget(ui->graphics_Allocation, 6, 1);//Average Allocation (several colors)
     ssubl->addWidget(ui->graphics_Overall, 6, 2);//Overall active count (1 color)
@@ -493,9 +494,11 @@ void MainWindow::designGanttPage()
     QHBoxLayout *lh = new QHBoxLayout;
     lh->addWidget(ui->displayFrom);
     lh->addWidget(ui->displayTo);
+    lh->addWidget(ui->displayArchive);
     lh->addStretch(1);
     ui->displayFrom->setDate(QDate::currentDate());
     ui->displayTo->setDate(QDate::currentDate().addDays(14));
+    ui->displayArchive->setChecked(false);
     ui->page_2->setLayout(ganttDisp);
     ganttDisp->addItem(lh);
     rngGantt();
@@ -512,7 +515,10 @@ void MainWindow::rngGantt()
     QStringList lst;
     QStringList lstNumb;
     QSqlQuery *query = new QSqlQuery(db->db);
-    query->exec("SELECT COUNT(*) FROM task WHERE active=1");
+    if(ui->displayArchive->isChecked())
+        query->exec("SELECT COUNT(*) FROM task");
+    else
+        query->exec("SELECT COUNT(*) FROM task WHERE active=1");
     query->first();
     QSqlQueryModel *modelTask = new QSqlQueryModel;
     modelTask->setQuery("SELECT * FROM parms", db->db);
@@ -521,7 +527,11 @@ void MainWindow::rngGantt()
         dayLength[i] = modelTask->record(0).value(i).toInt();
     }
     QSqlQueryModel *titles = new QSqlQueryModel;
-    titles->setQuery("SELECT title as title, number as numb FROM task WHERE active=1 ORDER BY priority DESC", db->db);
+    if(ui->displayArchive->isChecked())
+        titles->setQuery("SELECT title as title, number as numb FROM task ORDER BY priority DESC", db->db);
+    else
+        titles->setQuery("SELECT title as title, number as numb FROM task WHERE active=1 ORDER BY priority DESC", db->db);
+
     for(int i = 0; i<query->value(0).toInt(); i++)
     {
         lst << titles->record(i).value("title").toString();
