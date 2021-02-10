@@ -27,7 +27,7 @@ gantt::gantt(database *db)
  * @param dayLength
  * @param displayFrom
  */
-void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom)
+void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom, bool editMode)
 {
     int row = lst.length();
     QStringList headerH;
@@ -157,7 +157,8 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                 item->setData(0, QVariant::fromValue(sR));
                 table->setItem(j+1, i+1, item);
                 this->targetItem = this->table->item(j+1, i+1);
-                this->table->openPersistentEditor(targetItem);
+                if(editMode)
+                    this->table->openPersistentEditor(targetItem);
 
             }
         }

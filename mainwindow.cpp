@@ -53,6 +53,7 @@ void MainWindow::designConnections()
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayArchive, SIGNAL(stateChanged(int)), this, SLOT(rngGantt()));
+    connect(ui->editModeButton, SIGNAL(clicked()), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
@@ -495,6 +496,7 @@ void MainWindow::designGanttPage()
     lh->addWidget(ui->displayFrom);
     lh->addWidget(ui->displayTo);
     lh->addWidget(ui->displayArchive);
+    lh->addWidget(ui->editModeButton);
     lh->addStretch(1);
     ui->displayFrom->setDate(QDate::currentDate());
     ui->displayTo->setDate(QDate::currentDate().addDays(14));
@@ -511,6 +513,10 @@ void MainWindow::designGanttPage()
  */
 void MainWindow::rngGantt()
 {
+    if(ui->editModeButton->isChecked())
+        ui->editModeButton->setText("Edit Mode");
+    else
+        ui->editModeButton->setText("View Mode");
     int dayLength[7];
     QStringList lst;
     QStringList lstNumb;
@@ -538,7 +544,8 @@ void MainWindow::rngGantt()
         lstNumb << titles->record(i).value("numb").toString();
     }
 
-    this->g->build(lst, lstNumb, ui->displayFrom->date().daysTo(ui->displayTo->date())+1, dayLength, ui->displayFrom->date());
+    this->g->build(lst, lstNumb, ui->displayFrom->date().daysTo(ui->displayTo->date())+1,
+                   dayLength, ui->displayFrom->date(), ui->editModeButton->isChecked());
     ganttDisp->update();
 }
 

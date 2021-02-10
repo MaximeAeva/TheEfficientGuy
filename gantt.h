@@ -29,7 +29,7 @@ class gantt : public QObject
     Q_OBJECT
 public:
     gantt(database *db);
-    void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom);
+    void build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom, bool editMode);
     QTableWidget *table = new QTableWidget;
     inline void changeDb(database *db){this->db = db;};
 

@@ -256,6 +256,22 @@ color : rgb(214, 216, 218);
          <string>Display Archives</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="editModeButton">
+        <property name="geometry">
+         <rect>
+          <x>360</x>
+          <y>0</y>
+          <width>80</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="page_3">
        <property name="geometry">
