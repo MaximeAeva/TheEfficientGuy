@@ -1,4 +1,4 @@
-#include "database.h"
+﻿#include "database.h"
 
 /**
  * @brief Link first database on range
@@ -496,11 +496,9 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
         if(!cnt->value(0).toInt())
         {
             QSqlQuery *query1 = new QSqlQuery(db);
-            query1->prepare("INSERT INTO miscellaneous(id, avgTask, activeTask, spentTime) "
-                           "VALUES (:id, :avgTask, :activeTask, :spentTime)");
+            query1->prepare("INSERT INTO miscellaneous(id, spentTime) "
+                           "VALUES (:id, :spentTime)");
             query1->bindValue(":id", QDate::currentDate());
-            query1->bindValue(":avgTask", avgTask);
-            query1->bindValue(":activeTask", activeTask);
             query1->bindValue(":spentTime", spentTime);
             query1->exec();
         }
@@ -514,11 +512,9 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
             if(QDate::currentDate().daysTo(query->value(0).toDate()))
             {
                 QSqlQuery *query1 = new QSqlQuery(db);
-                query1->prepare("INSERT INTO miscellaneous(id, avgTask, activeTask, spentTime) "
-                               "VALUES (:id, :avgTask, :activeTask, :spentTime)");
+                query1->prepare("INSERT INTO miscellaneous(id, spentTime) "
+                               "VALUES (:id, :spentTime)");
                 query1->bindValue(":id", QDate::currentDate());
-                query1->bindValue(":avgTask", avgTask);
-                query1->bindValue(":activeTask", activeTask);
                 query1->bindValue(":spentTime", spentTime);
                 query1->exec();
             } else
@@ -530,10 +526,8 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
                 spentTime += t->value(0).toInt();
                 QSqlQuery *query1 = new QSqlQuery(db);
                 query1->prepare("UPDATE miscellaneous "
-                               "SET  avgTask=:avgTask, activeTask=:activeTask,  spentTime=:spentTime "
+                               "SET  spentTime=:spentTime "
                                "WHERE id=:id");
-                query1->bindValue(":avgTask", avgTask);
-                query1->bindValue(":activeTask", activeTask);
                 query1->bindValue(":spentTime", spentTime);
                 query1->bindValue(":id", QDate::currentDate());
                 query1->exec();
@@ -544,28 +538,40 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
 
 /*void database::getStatInfo()
 {
+
+    //Average number of target per task per priority
     QSqlQuery *avgTask = new QSqlQuery(db);
     QString str = "SELECT priority as p, AVG(items) as avg "
                   "FROM(SELECT itemCount as items, priority FROM task ORDER BY ROWID DESC LIMIT 20) "
                   "GROUP BY priority ORDER BY priority ASC";
     avgTask->exec(str);
 
+    //Number of current active task
     QSqlQuery *activeTask = new QSqlQuery(db);
     QString str1 = "SELECT COUNT(*) FROM task WHERE active=1";
-    activeTask->exec(str);
+    activeTask->exec(str1);
     activeTask->first();
 
+    //Number of active task per priority
     QSqlQuery *activeTask1 = new QSqlQuery(db);
     QString str2 = "SELECT priority as p, COUNT(*) as cnt "
-                   "FROM(SELECT number, priority FROM task WHERE active=1 ORDER BY ROWID DESC LIMIT 20) "
+                   "FROM(SELECT number, priority FROM task WHERE active=1 ORDER BY ROWID DESC) "
                    "GROUP BY priority ORDER BY priority ASC";
-    activeTask1->exec(str);
+    activeTask1->exec(str2);
 
+    //Average processing time per priority
     QSqlQuery *estimedTime = new QSqlQuery(db);
     QString str3 = "SELECT priority as p, AVG(archiveTime) as ar "
                    "FROM(SELECT archive as archiveTime, priority FROM task WHERE active=0 ORDER BY ROWID DESC LIMIT 20) "
                    "GROUP BY priority ORDER BY priority ASC";
-    estimedTime->exec(str);
+    estimedTime->exec(str3);
+
+    //Average allocation per priority
+    QSqlQuery *allocated = new QSqlQuery(db);
+    QString str4 = "SELECT AVG(ct), p FROM (SELECT COUNT(*) as ct, t.priority as p FROM allocation "
+                   "JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 10) GROUP BY p ORDER BY p ASC";
+    allocated->exec(str4);
+    SELECT COUNT(*), t.priority FROM allocation JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 20
 
     "avgTask0 REAL DEFAULT 0.0, "
     "avgTask1 REAL DEFAULT 0.0, "

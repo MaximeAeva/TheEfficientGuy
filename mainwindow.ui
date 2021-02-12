@@ -243,23 +243,26 @@ color : rgb(214, 216, 218);
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="displayArchive">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>0</y>
-          <width>83</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Display Archives</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="editModeButton">
         <property name="geometry">
          <rect>
           <x>360</x>
+          <y>0</y>
+          <width>80</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="displayArchive">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
           <y>0</y>
           <width>80</width>
           <height>25</height>

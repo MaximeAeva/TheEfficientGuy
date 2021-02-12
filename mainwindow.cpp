@@ -52,7 +52,7 @@ void MainWindow::designConnections()
     connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
-    connect(ui->displayArchive, SIGNAL(stateChanged(int)), this, SLOT(rngGantt()));
+    connect(ui->displayArchive, SIGNAL(clicked()), this, SLOT(rngGantt()));
     connect(ui->editModeButton, SIGNAL(clicked()), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
@@ -221,11 +221,11 @@ void MainWindow::loadHomePage()
     // Test to adapt :3
 
     QSqlQueryModel *model7 = new QSqlQueryModel;
-    model7->setQuery("SELECT id as id, spentTime as sT FROM miscellaneous ORDER BY id DESC LIMIT 10", db->db);
+    model7->setQuery("SELECT id as id, spentTime as sT FROM miscellaneous ORDER BY id ASC LIMIT 10", db->db);
     QLineSeries *lines = new QLineSeries();
     for(int i = 0; i<10; i++)
-        lines->append(model7->record(i).value("id").toInt(),
-                      model7->record(i).value("sT").toInt());
+        lines->append(i,
+                      (model7->record(i).value("sT").toInt()/1000)/60);
 
 
     QPen pen = lines->pen();
@@ -242,18 +242,16 @@ void MainWindow::loadHomePage()
     chart->setTitle("Charge in %");
     chart->setBackgroundBrush(brush);
 
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(ui->displayFrom->date().daysTo(ui->displayTo->date()));
-    axisX->setFormat("dd MMM");
-    axisX->setTitleText("Date");
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setTickCount(10);
+    axisX->setLabelFormat("%i");
+    axisX->setTitleText("Records");
     chart->addAxis(axisX, Qt::AlignBottom);
     lines->attachAxis(axisX);
 
     QValueAxis *axisY = new QValueAxis;
-    axisY->setRange(0, 100);
-    axisY->setTickCount(11);
     axisY->setLabelFormat("%i");
-    axisY->setTitleText("Amount (%)");
+    axisY->setTitleText("Amount (mn)");
     chart->addAxis(axisY, Qt::AlignLeft);
     lines->attachAxis(axisY);
 
@@ -268,7 +266,12 @@ void MainWindow::loadHomePage()
     axisX->setLabelsBrush(axisBrush);
     axisY->setLabelsBrush(axisBrush);
 
-    //Test
+    ui->graphics_Time->setChart(chart);
+    //ui->graphics_Avg->setChart(chart);
+    //ui->graphics_Active->setChart(chart);
+    //ui->graphics_Duration->setChart(chart);
+    //ui->graphics_Allocation->setChart(chart);
+    //ui->graphics_Overall->setChart(chart);
 }
 
 /**
@@ -514,9 +517,14 @@ void MainWindow::designGanttPage()
 void MainWindow::rngGantt()
 {
     if(ui->editModeButton->isChecked())
-        ui->editModeButton->setText("Edit Mode");
-    else
         ui->editModeButton->setText("View Mode");
+    else
+        ui->editModeButton->setText("Edit Mode");
+
+    if(ui->displayArchive->isChecked())
+        ui->displayArchive->setText("Hide archives");
+    else
+        ui->displayArchive->setText("Display archives");
     int dayLength[7];
     QStringList lst;
     QStringList lstNumb;
