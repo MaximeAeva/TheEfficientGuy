@@ -493,7 +493,7 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
         QString str1 = "SELECT COUNT(*) FROM miscellaneous";
         cnt->exec(str1);
         cnt->first();
-        if(!cnt->value(0).toInt())
+        if(!cnt->value(0).toInt())//add the first line
         {
             QSqlQuery *query1 = new QSqlQuery(db);
             query1->prepare("INSERT INTO miscellaneous(id, spentTime) "
@@ -509,7 +509,7 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
             query->exec(str);
             query->first();
 
-            if(QDate::currentDate().daysTo(query->value(0).toDate()))
+            if(QDate::currentDate().daysTo(query->value(0).toDate()))//Add a new line
             {
                 QSqlQuery *query1 = new QSqlQuery(db);
                 query1->prepare("INSERT INTO miscellaneous(id, spentTime) "
@@ -517,7 +517,7 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
                 query1->bindValue(":id", QDate::currentDate());
                 query1->bindValue(":spentTime", spentTime);
                 query1->exec();
-            } else
+            } else//Update a new line
             {
                 QSqlQuery *t = new QSqlQuery(db);
                 QString str = "SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1";
@@ -533,18 +533,48 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
                 query1->exec();
             }
         }
+        getStatInfo();
     }
 }
 
-/*void database::getStatInfo()
+void database::getStatInfo()
 {
 
     //Average number of target per task per priority
-    QSqlQuery *avgTask = new QSqlQuery(db);
-    QString str = "SELECT priority as p, AVG(items) as avg "
+    QSqlQueryModel *avgTask = new QSqlQueryModel();
+    QString str = "SELECT AVG(items) as avg, priority as p "
                   "FROM(SELECT itemCount as items, priority FROM task ORDER BY ROWID DESC LIMIT 20) "
                   "GROUP BY priority ORDER BY priority ASC";
-    avgTask->exec(str);
+    avgTask->setQuery(str, db);
+
+    for(int i = 0; i<avgTask->rowCount(); i++)
+    {
+        QSqlQuery *query1 = new QSqlQuery(db);
+        switch(avgTask->record(i).value("p").toInt())
+        {
+            case 0:
+                query1->prepare("UPDATE miscellaneous SET avgTask0=:val WHERE id=:id");
+            break;
+            case 1:
+                query1->prepare("UPDATE miscellaneous SET avgTask1=:val WHERE id=:id");
+            break;
+            case 2:
+                query1->prepare("UPDATE miscellaneous SET avgTask2=:val WHERE id=:id");
+            break;
+            case 3:
+                query1->prepare("UPDATE miscellaneous SET avgTask3=:val WHERE id=:id");
+            break;
+            case 4:
+                query1->prepare("UPDATE miscellaneous SET avgTask4=:val WHERE id=:id");
+            break;
+            case 5:
+                query1->prepare("UPDATE miscellaneous SET avgTask5=:val WHERE id=:id");
+            break;
+        }
+        query1->bindValue(":val", avgTask->record(i).value("avg").toReal());
+        query1->bindValue(":id", QDate::currentDate());
+        query1->exec();
+    }
 
     //Number of current active task
     QSqlQuery *activeTask = new QSqlQuery(db);
@@ -553,50 +583,110 @@ void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
     activeTask->first();
 
     //Number of active task per priority
-    QSqlQuery *activeTask1 = new QSqlQuery(db);
+    QSqlQueryModel *activeTask1 = new QSqlQueryModel();
     QString str2 = "SELECT priority as p, COUNT(*) as cnt "
                    "FROM(SELECT number, priority FROM task WHERE active=1 ORDER BY ROWID DESC) "
                    "GROUP BY priority ORDER BY priority ASC";
-    activeTask1->exec(str2);
+    activeTask1->setQuery(str2, db);
+
+    for(int i = 0; i<activeTask1->rowCount(); i++)
+    {
+        QSqlQuery *query1 = new QSqlQuery(db);
+        switch(activeTask1->record(i).value("p").toInt())
+        {
+            case 0:
+                query1->prepare("UPDATE miscellaneous SET activeTask0=:val WHERE id=:id");
+            break;
+            case 1:
+                query1->prepare("UPDATE miscellaneous SET activeTask1=:val WHERE id=:id");
+            break;
+            case 2:
+                query1->prepare("UPDATE miscellaneous SET activeTask2=:val WHERE id=:id");
+            break;
+            case 3:
+                query1->prepare("UPDATE miscellaneous SET activeTask3=:val WHERE id=:id");
+            break;
+            case 4:
+                query1->prepare("UPDATE miscellaneous SET activeTask4=:val WHERE id=:id");
+            break;
+            case 5:
+                query1->prepare("UPDATE miscellaneous SET activeTask5=:val WHERE id=:id");
+            break;
+        }
+        query1->bindValue(":val", activeTask1->record(i).value("cnt").toInt());
+        query1->bindValue(":id", QDate::currentDate());
+        query1->exec();
+    }
 
     //Average processing time per priority
-    QSqlQuery *estimedTime = new QSqlQuery(db);
+    QSqlQueryModel *estimedTime = new QSqlQueryModel();
     QString str3 = "SELECT priority as p, AVG(archiveTime) as ar "
                    "FROM(SELECT archive as archiveTime, priority FROM task WHERE active=0 ORDER BY ROWID DESC LIMIT 20) "
                    "GROUP BY priority ORDER BY priority ASC";
-    estimedTime->exec(str3);
+    estimedTime->setQuery(str3, db);
+
+    for(int i = 0; i<estimedTime->rowCount(); i++)
+    {
+        QSqlQuery *query1 = new QSqlQuery(db);
+        switch(estimedTime->record(i).value("p").toInt())
+        {
+            case 0:
+                query1->prepare("UPDATE miscellaneous SET estimedTime0=:val WHERE id=:id");
+            break;
+            case 1:
+                query1->prepare("UPDATE miscellaneous SET estimedTime1=:val WHERE id=:id");
+            break;
+            case 2:
+                query1->prepare("UPDATE miscellaneous SET estimedTime2=:val WHERE id=:id");
+            break;
+            case 3:
+                query1->prepare("UPDATE miscellaneous SET estimedTime3=:val WHERE id=:id");
+            break;
+            case 4:
+                query1->prepare("UPDATE miscellaneous SET estimedTime4=:val WHERE id=:id");
+            break;
+            case 5:
+                query1->prepare("UPDATE miscellaneous SET estimedTime5=:val WHERE id=:id");
+            break;
+        }
+        query1->bindValue(":val", estimedTime->record(i).value("ar").toInt());
+        query1->bindValue(":id", QDate::currentDate());
+        query1->exec();
+    }
 
     //Average allocation per priority
-    QSqlQuery *allocated = new QSqlQuery(db);
-    QString str4 = "SELECT AVG(ct), p FROM (SELECT COUNT(*) as ct, t.priority as p FROM allocation "
+    QSqlQueryModel *allocated = new QSqlQueryModel();
+    QString str4 = "SELECT AVG(ct) as avg, p as p FROM (SELECT COUNT(*) as ct, t.priority as p FROM allocation "
                    "JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 10) GROUP BY p ORDER BY p ASC";
-    allocated->exec(str4);
-    SELECT COUNT(*), t.priority FROM allocation JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 20
+    allocated->setQuery(str4, db);
 
-    "avgTask0 REAL DEFAULT 0.0, "
-    "avgTask1 REAL DEFAULT 0.0, "
-    "avgTask2 REAL DEFAULT 0.0, "
-    "avgTask3 REAL DEFAULT 0.0, "
-    "avgTask4 REAL DEFAULT 0.0, "
-    "avgTask5 REAL DEFAULT 0.0, "
-    "activeTask INT DEFAULT 0, "
-    "activeTask0 INT DEFAULT 0, "
-    "activeTask1 INT DEFAULT 0, "
-    "activeTask2 INT DEFAULT 0, "
-    "activeTask3 INT DEFAULT 0, "
-    "activeTask4 INT DEFAULT 0, "
-    "activeTask5 INT DEFAULT 0, "
-    "estimedTime0 INT DEFAULT 0, "
-    "estimedTime1 INT DEFAULT 0, "
-    "estimedTime2 INT DEFAULT 0, "
-    "estimedTime3 INT DEFAULT 0, "
-    "estimedTime4 INT DEFAULT 0, "
-    "estimedTime5 INT DEFAULT 0, "
-    "allocated0 INT DEFAULT 0, "
-    "allocated1 INT DEFAULT 0, "
-    "allocated2 INT DEFAULT 0, "
-    "allocated3 INT DEFAULT 0, "
-    "allocated4 INT DEFAULT 0, "
-    "allocated5 INT DEFAULT 0, "
-    "spentTime INT DEFAULT 0"
-}*/
+    for(int i = 0; i<allocated->rowCount(); i++)
+    {
+        QSqlQuery *query1 = new QSqlQuery(db);
+        switch(allocated->record(i).value("p").toInt())
+        {
+            case 0:
+                query1->prepare("UPDATE miscellaneous SET allocated0=:val WHERE id=:id");
+            break;
+            case 1:
+                query1->prepare("UPDATE miscellaneous SET allocated1=:val WHERE id=:id");
+            break;
+            case 2:
+                query1->prepare("UPDATE miscellaneous SET allocated2=:val WHERE id=:id");
+            break;
+            case 3:
+                query1->prepare("UPDATE miscellaneous SET allocated3=:val WHERE id=:id");
+            break;
+            case 4:
+                query1->prepare("UPDATE miscellaneous SET allocated4=:val WHERE id=:id");
+            break;
+            case 5:
+                query1->prepare("UPDATE miscellaneous SET allocated5=:val WHERE id=:id");
+            break;
+        }
+        query1->bindValue(":val", allocated->record(i).value("avg").toInt());
+        query1->bindValue(":id", QDate::currentDate());
+        query1->exec();
+    }
+
+}

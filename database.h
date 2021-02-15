@@ -52,6 +52,7 @@ private:
 
     QStringList dbNames;
     void Model();
+    void getStatInfo();
 };
 
 #endif // DATABASE_H

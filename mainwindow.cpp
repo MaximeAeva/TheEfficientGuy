@@ -218,8 +218,6 @@ void MainWindow::loadHomePage()
 
     this->db->updateMiscellaneous(0, model4->record(0).value("val").toFloat(), model6->record(0).value("cnt").toInt());
 
-    // Test to adapt :3
-
     QSqlQueryModel *model7 = new QSqlQueryModel;
     model7->setQuery("SELECT id as id, spentTime as sT FROM miscellaneous ORDER BY id ASC LIMIT 10", db->db);
     QLineSeries *lines = new QLineSeries();
@@ -239,7 +237,7 @@ void MainWindow::loadHomePage()
     QChart *chart = new QChart();
     chart->addSeries(lines);
     chart->legend()->hide();
-    chart->setTitle("Charge in %");
+    chart->setTitle("Time spent on App");
     chart->setBackgroundBrush(brush);
 
     QValueAxis *axisX = new QValueAxis;
