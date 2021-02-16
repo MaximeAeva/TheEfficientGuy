@@ -26,7 +26,7 @@ color : rgb(214, 216, 218);
 </string>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_6">
        <property name="geometry">
@@ -40,84 +40,6 @@ color : rgb(214, 216, 218);
        <attribute name="label">
         <string>DashBoard</string>
        </attribute>
-       <widget class="QLabel" name="avgD">
-        <property name="geometry">
-         <rect>
-          <x>450</x>
-          <y>230</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="avgL">
-        <property name="geometry">
-         <rect>
-          <x>280</x>
-          <y>220</y>
-          <width>141</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Average target per task</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="overD">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>290</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="overL">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
-          <y>260</y>
-          <width>181</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Overall task count</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="actL">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>120</y>
-          <width>181</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Active tasks count</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="actD">
-        <property name="geometry">
-         <rect>
-          <x>460</x>
-          <y>150</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
        <widget class="QChartView" name="graphics_Time">
         <property name="geometry">
          <rect>
@@ -126,19 +48,6 @@ color : rgb(214, 216, 218);
           <width>256</width>
           <height>192</height>
          </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="testTimer">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>50</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
         </property>
        </widget>
        <widget class="QChartView" name="graphics_Avg">

@@ -486,7 +486,7 @@ void database::archive(QDateTime task, bool active)
     }
 }
 
-void database::updateMiscellaneous(int spentTime, float avgTask, int activeTask)
+void database::updateMiscellaneous(int spentTime)
 {
     if(db.isOpen()){
         QSqlQuery *cnt = new QSqlQuery(db);
@@ -577,10 +577,26 @@ void database::getStatInfo()
     }
 
     //Number of current active task
-    QSqlQuery *activeTask = new QSqlQuery(db);
-    QString str1 = "SELECT COUNT(*) FROM task WHERE active=1";
-    activeTask->exec(str1);
-    activeTask->first();
+    QSqlQuery *archiveTot = new QSqlQuery(db);
+    QString strat = "SELECT COUNT(*) FROM task WHERE active=0";
+    archiveTot->exec(strat);
+    archiveTot->first();
+    QSqlQuery *query3 = new QSqlQuery(db);
+    query3->prepare("UPDATE miscellaneous SET avgTask=:val WHERE id=:id");
+    query3->bindValue(":val", archiveTot->value(0).toInt());
+    query3->bindValue(":id", QDate::currentDate());
+    query3->exec();
+
+    //Number of current active task
+    QSqlQuery *tot = new QSqlQuery(db);
+    QString strt = "SELECT COUNT(*) FROM task";
+    tot->exec(strt);
+    tot->first();
+    QSqlQuery *query4 = new QSqlQuery(db);
+    query4->prepare("UPDATE miscellaneous SET activeTask=:val WHERE id=:id");
+    query4->bindValue(":val", tot->value(0).toInt());
+    query4->bindValue(":id", QDate::currentDate());
+    query4->exec();
 
     //Number of active task per priority
     QSqlQueryModel *activeTask1 = new QSqlQueryModel();
@@ -657,7 +673,7 @@ void database::getStatInfo()
     //Average allocation per priority
     QSqlQueryModel *allocated = new QSqlQueryModel();
     QString str4 = "SELECT AVG(ct) as avg, p as p FROM (SELECT COUNT(*) as ct, t.priority as p FROM allocation "
-                   "JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 10) GROUP BY p ORDER BY p ASC";
+                   "JOIN task as t ON parentTask=t.number WHERE t.active = 0 GROUP BY parentTask LIMIT 20) GROUP BY p ORDER BY p ASC";
     allocated->setQuery(str4, db);
 
     for(int i = 0; i<allocated->rowCount(); i++)
