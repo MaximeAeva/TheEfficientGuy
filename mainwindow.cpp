@@ -218,7 +218,7 @@ void MainWindow::loadHomePage()
     QChart *chart = new QChart();
     chart->addSeries(spentTimeLines);
     chart->legend()->hide();
-    chart->setTitle("Time : "+myTime(timeElap->record().value(0).toInt()));
+    chart->setTitle("Time : "+myTime(timeElap->record().value(0).toInt(), 0));
     chart->setBackgroundBrush(brush);
 
     QValueAxis *axisX = new QValueAxis;
@@ -1006,7 +1006,7 @@ bool MainWindow::event(QEvent * e)
             break ;
 
         case QEvent::WindowDeactivate :
-            myTime(this->timer->elapsed());
+            myTime(this->timer->elapsed(), 1);
             break ;
     } ;
     return QMainWindow::event(e) ;
@@ -1017,7 +1017,7 @@ bool MainWindow::event(QEvent * e)
  * @param timeElapse
  * @return
  */
-QString MainWindow::myTime(int timeElapse)
+QString MainWindow::myTime(int timeElapse, bool rec)
 {
     QString TimeElapseShow;
     QSqlQueryModel *model4 = new QSqlQueryModel;
@@ -1026,7 +1026,7 @@ QString MainWindow::myTime(int timeElapse)
     model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
     QSqlQueryModel *model6 = new QSqlQueryModel;
     model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
-    this->db->updateMiscellaneous(timeElapse);
+    if(rec) this->db->updateMiscellaneous(timeElapse);
     QSqlQuery *query = new QSqlQuery(db->db);
     query->exec("SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1");
     query->first();

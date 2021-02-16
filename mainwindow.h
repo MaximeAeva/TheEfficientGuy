@@ -73,7 +73,7 @@ private:
     void load(tray *t);
     void kill();
     void resizeEvent(QResizeEvent*);
-    QString myTime(int timeElapse);
+    QString myTime(int timeElapse, bool rec);
     QString PrioToColor(int p);
 
     QLabel *crtDb = new QLabel;
