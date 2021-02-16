@@ -218,24 +218,30 @@ void MainWindow::loadHomePage()
 
     this->db->updateMiscellaneous(0, model4->record(0).value("val").toFloat(), model6->record(0).value("cnt").toInt());
 
-    QSqlQueryModel *model7 = new QSqlQueryModel;
-    model7->setQuery("SELECT id as id, spentTime as sT FROM miscellaneous ORDER BY id ASC LIMIT 10", db->db);
-    QLineSeries *lines = new QLineSeries();
+    QSqlQueryModel *generalMod = new QSqlQueryModel;
+    generalMod->setQuery("SELECT id, avgTask, activeTask, spentTime, avgTask0, avgTask1, avgTask2, avgTask3, "
+                         "avgTask4, avgTask5, activeTask0, activeTask1, activeTask2, activeTask3,"
+                         " activeTask4, activeTask5, estimedTime0, estimedTime1, estimedTime2, estimedTime3,"
+                         " estimedTime4, estimedTime5, allocated0, allocated1, allocated2, allocated3,"
+                         " allocated4, allocated5 FROM miscellaneous ORDER BY id ASC LIMIT 10", db->db);
+
+    QLineSeries *spentTimeLines = new QLineSeries();
     for(int i = 0; i<10; i++)
-        lines->append(i,
-                      (model7->record(i).value("sT").toInt()/1000)/60);
+        spentTimeLines->append(i,(generalMod->record(i).value(3).toInt()/1000)/60);
 
 
-    QPen pen = lines->pen();
+
+
+    QPen pen = spentTimeLines->pen();
     pen.setWidth(5);
     pen.setBrush(QBrush(QColor("#F25244")));
-    lines->setPen(pen);
+    spentTimeLines->setPen(pen);
 
     QBrush brush;
     brush.setColor(QColor::fromRgb(49, 54, 63));
 
     QChart *chart = new QChart();
-    chart->addSeries(lines);
+    chart->addSeries(spentTimeLines);
     chart->legend()->hide();
     chart->setTitle("Time spent on App");
     chart->setBackgroundBrush(brush);
@@ -245,27 +251,58 @@ void MainWindow::loadHomePage()
     axisX->setLabelFormat("%i");
     axisX->setTitleText("Records");
     chart->addAxis(axisX, Qt::AlignBottom);
-    lines->attachAxis(axisX);
+    spentTimeLines->attachAxis(axisX);
 
     QValueAxis *axisY = new QValueAxis;
     axisY->setLabelFormat("%i");
     axisY->setTitleText("Amount (mn)");
     chart->addAxis(axisY, Qt::AlignLeft);
-    lines->attachAxis(axisY);
+    spentTimeLines->attachAxis(axisY);
 
-    /*QFont font;
-    font.setPixelSize(18);
-    chart->setTitleFont(font);
-    chart->setTitleBrush(QBrush(Qt::white));
-    axisX->setTitleBrush(QBrush(Qt::white));
-    axisY->setTitleBrush(QBrush(Qt::white));*/
+    QChart *chart2 = new QChart();
+
+    QValueAxis *avgTaskX = new QValueAxis;
+    avgTaskX->setTickCount(10);
+    avgTaskX->setLabelFormat("%i");
+    avgTaskX->setTitleText("Records");
+    chart2->addAxis(avgTaskX, Qt::AlignBottom);
+
+    QValueAxis *avgTaskY = new QValueAxis;
+    avgTaskY->setLabelFormat("%f");
+    avgTaskY->setTitleText("Amount (mn)");
+    chart2->addAxis(avgTaskY, Qt::AlignLeft);
+
+    float max = 0;
+    for(int p = 0; p<6; p++)
+    {
+        QLineSeries *avgTaskLines = new QLineSeries();
+        QPen avgTaskPen = avgTaskLines->pen();
+        avgTaskPen.setWidth(5);
+        avgTaskPen.setBrush(QBrush(QColor(PrioToColor(p))));
+        avgTaskLines->setPen(avgTaskPen);
+        for(int i = 0; i<10; i++)
+        {
+            avgTaskLines->append(i,generalMod->record(i).value(4+p).toReal());
+            if(generalMod->record(i).value(4+p).toReal()>max)
+                max = generalMod->record(i).value(4+p).toReal();
+        }
+        chart2->addSeries(avgTaskLines);
+        avgTaskLines->attachAxis(avgTaskX);
+        avgTaskLines->attachAxis(avgTaskY);
+    }
+    chart2->legend()->hide();
+    chart2->setTitle("test");
+    chart2->setBackgroundBrush(brush);
+    avgTaskY->setMax(max);
+
+
 
     QBrush axisBrush(Qt::white);
     axisX->setLabelsBrush(axisBrush);
     axisY->setLabelsBrush(axisBrush);
 
     ui->graphics_Time->setChart(chart);
-    //ui->graphics_Avg->setChart(chart);
+    ui->graphics_Avg->setChart(chart2);
     //ui->graphics_Active->setChart(chart);
     //ui->graphics_Duration->setChart(chart);
     //ui->graphics_Allocation->setChart(chart);
