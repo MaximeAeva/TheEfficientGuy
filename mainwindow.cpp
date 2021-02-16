@@ -193,7 +193,7 @@ void MainWindow::loadHomePage()
     this->db->updateMiscellaneous(0);
 
     QSqlQuery *timeElap = new QSqlQuery(db->db);
-    timeElap->exec("SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1");
+    timeElap->exec("SELECT SUM(spentTime) FROM miscellaneous");
     timeElap->first();
 
     QSqlQueryModel *generalMod = new QSqlQueryModel;
@@ -218,7 +218,7 @@ void MainWindow::loadHomePage()
     QChart *chart = new QChart();
     chart->addSeries(spentTimeLines);
     chart->legend()->hide();
-    chart->setTitle("Time : "+myTime(timeElap->record().value(0).toInt(), 0));
+    chart->setTitle("Time. ("+myTime(timeElap->record().value(0).toInt(), 0)+")");
     chart->setBackgroundBrush(brush);
 
     QValueAxis *axisX = new QValueAxis;
@@ -1020,17 +1020,8 @@ bool MainWindow::event(QEvent * e)
 QString MainWindow::myTime(int timeElapse, bool rec)
 {
     QString TimeElapseShow;
-    QSqlQueryModel *model4 = new QSqlQueryModel;
-    model4->setQuery("SELECT AVG(valeur) as val FROM (SELECT COUNT(*) as valeur FROM target GROUP BY parentTask)", db->db);
-    QSqlQueryModel *model5 = new QSqlQueryModel;
-    model5->setQuery("SELECT COUNT(*) as cnt FROM task", db->db);
-    QSqlQueryModel *model6 = new QSqlQueryModel;
-    model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
+
     if(rec) this->db->updateMiscellaneous(timeElapse);
-    QSqlQuery *query = new QSqlQuery(db->db);
-    query->exec("SELECT spentTime FROM miscellaneous ORDER BY id DESC LIMIT 1");
-    query->first();
-    timeElapse = query->value(0).toInt();
     int s = round(float(timeElapse)/float(1000));
     int d = s/86400;
     TimeElapseShow = QString::number(d)+" days, ";
