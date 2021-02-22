@@ -336,7 +336,7 @@ void MainWindow::loadHomePage()
         estimedTimeLines->attachAxis(estimedTimeY);
     }
     chart4->legend()->hide();
-    chart4->setTitle("Estimed processing time");
+    chart4->setTitle("Processing time");
     chart4->setBackgroundBrush(brush);
     estimedTimeY->setMax(max);
 
@@ -943,16 +943,16 @@ void MainWindow::designArchive()
  */
 void MainWindow::resizeEvent(QResizeEvent*)
 {
-    t1->setMinimumWidth((this->width()-50)/5);
-    t2->setMinimumWidth((this->width()-50)/5);
-    t3->setMinimumWidth((this->width()-50)/5);
-    t4->setMinimumWidth((this->width()-50)/5);
+    //t1->setMinimumWidth((this->width()-50)/5);
+    //t2->setMinimumWidth((this->width()-50)/5);
+    //t3->setMinimumWidth((this->width()-50)/5);
+    //t4->setMinimumWidth((this->width()-50)/5);
     QList<tray *> trays = this->findChildren<tray *>();
     foreach(tray* T, trays)
     {
         QList<task *> tasks = T->findChildren<task *>();
-        foreach(task* t, tasks)
-            t->resizeIt(T->width()-10);
+        /*foreach(task* t, tasks)
+            t->resizeIt(T->width()-10);*/
     }
 }
 

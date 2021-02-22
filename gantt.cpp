@@ -159,6 +159,8 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
                 this->targetItem = this->table->item(j+1, i+1);
                 if(editMode)
                     this->table->openPersistentEditor(targetItem);
+                else
+                    this->table->closePersistentEditor(targetItem);
 
             }
         }
