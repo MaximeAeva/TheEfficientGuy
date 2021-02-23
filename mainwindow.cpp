@@ -266,7 +266,7 @@ void MainWindow::loadHomePage()
     chart2->legend()->hide();
     chart2->setTitle("Average targets per task");
     chart2->setBackgroundBrush(brush);
-    avgTaskY->setMax(max);
+    avgTaskY->setMax(max+(0.1*max));
 
     //Chart avgTask
 
@@ -302,7 +302,7 @@ void MainWindow::loadHomePage()
     chart3->legend()->hide();
     chart3->setTitle("Active tasks");
     chart3->setBackgroundBrush(brush);
-    actTaskY->setMax(max);
+    actTaskY->setMax(max+(0.1*max));
 
     //Chart estimedTime
 
@@ -338,7 +338,7 @@ void MainWindow::loadHomePage()
     chart4->legend()->hide();
     chart4->setTitle("Processing time");
     chart4->setBackgroundBrush(brush);
-    estimedTimeY->setMax(max);
+    estimedTimeY->setMax(max+(0.1*max));
 
 
     //Chart allocated
@@ -375,7 +375,7 @@ void MainWindow::loadHomePage()
     chart5->legend()->hide();
     chart5->setTitle("Allocated time");
     chart5->setBackgroundBrush(brush);
-    allocatedY->setMax(max);
+    allocatedY->setMax(max+(0.1*max));
 
     //Chart tot
 
@@ -411,7 +411,7 @@ void MainWindow::loadHomePage()
     chart6->legend()->hide();
     chart6->setTitle("Total task and archive count");
     chart6->setBackgroundBrush(brush);
-    totY->setMax(max);
+    totY->setMax(max+(0.1*max));
 
     QBrush axisBrush(Qt::white);
 
