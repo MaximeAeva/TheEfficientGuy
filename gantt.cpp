@@ -20,6 +20,15 @@ gantt::gantt(database *db)
 }
 
 /**
+* @brief gantt::~gantt
+*/
+gantt::~gantt()
+{
+    this->db = NULL;
+    delete db;
+}
+
+/**
  * @brief Build Gantt (item delegate painting)
  * @param lst
  * @param lstNumb

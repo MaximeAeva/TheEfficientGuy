@@ -106,6 +106,7 @@ QString database::prevDb()
 void database::CloseDB()
 {
     if(db.isOpen()) db.close();
+    QSqlDatabase::removeDatabase(this->db.connectionName());
 }
 
 /**

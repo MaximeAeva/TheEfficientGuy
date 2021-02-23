@@ -103,6 +103,22 @@ task::~task()
     delete this->lab;
     this->completion = NULL;
     delete this->completion;
+
+    this->stateBar = NULL;
+    this->labelColor = NULL;
+    this->projTim = NULL;
+    this->alloc = NULL;
+    this->aloc = NULL;
+    this->time = NULL;
+    this->titleBar = NULL;
+
+    delete this->stateBar;
+    delete this->labelColor;
+    delete this->projTim;
+    delete this->alloc;
+    delete this->aloc;
+    delete this->time;
+    delete this->titleBar;
 }
 
 /**

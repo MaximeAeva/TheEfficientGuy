@@ -22,6 +22,19 @@ tray::tray(QString title, int id, database *db)
 }
 
 /**
+ * @brief tray::~tray
+ */
+tray::~tray()
+{
+    this->db = NULL;
+    delete db;
+    this->layout = NULL;
+    delete layout;
+    this->content = NULL;
+    delete content;
+}
+
+/**
  * @brief DragEvent enter accepted
  * @param event
  */

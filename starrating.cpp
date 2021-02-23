@@ -76,3 +76,9 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
 
     painter->restore();
 }
+
+StarRating::~StarRating()
+{
+    this->db = NULL;
+    delete db;
+}

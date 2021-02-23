@@ -30,7 +30,44 @@ MainWindow::~MainWindow()
     QSqlQueryModel *model6 = new QSqlQueryModel;
     model6->setQuery("SELECT COUNT(*) as cnt FROM task WHERE active=1", db->db);
     this->db->updateMiscellaneous(this->timer->elapsed());
+
     db->CloseDB();
+    this->db = NULL;
+    delete db;
+    this->crtDb = NULL;
+    this->subdbl = NULL;
+    this->bef = NULL;
+    this->aft = NULL;
+    this->adder = NULL;
+    this->g = NULL;
+    this->t1 = NULL;
+    this->t2 = NULL;
+    this->t3 = NULL;
+    this->t4 = NULL;
+    this->t5 = NULL;
+    this->timer = NULL;
+    this->ganttDisp = NULL;
+    this->b = NULL;
+    this->pageL = NULL;
+    this->col = NULL;
+
+    delete crtDb;
+    delete subdbl;
+    delete bef;
+    delete aft;
+    delete adder;
+    delete g;
+    delete t1;
+    delete t2;
+    delete t3;
+    delete t4;
+    delete t5;
+    delete timer;
+    delete ganttDisp;
+    delete b;
+    delete pageL;
+    delete col;
+
     delete ui;
 }
 

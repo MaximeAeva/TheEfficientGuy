@@ -19,6 +19,7 @@ public:
 
     StarRating(std::vector<int> myStarCount = {}, int maxStarCount = 10,
                QDateTime task = QDateTime::currentDateTime(), QDateTime day = QDateTime::currentDateTime(), QColor star = Qt::red);
+    ~StarRating();
 
     void paint(QPainter *painter, const QRect &rect,
                const QPalette, EditMode) const;
