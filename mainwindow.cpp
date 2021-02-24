@@ -1015,18 +1015,37 @@ void MainWindow::addDb()
  */
 void MainWindow::dlDb()
 {
-    if(ui->comboDb->currentIndex())
+    QDialog *d = new QDialog;
+    QGridLayout *layout = new QGridLayout;
+    QLabel *t = new QLabel;
+    QPushButton *ok = new QPushButton;
+    ok->setText("OK");
+    QPushButton *canc = new QPushButton;
+    canc->setText("Cancel");
+    connect(ok, SIGNAL(clicked()), d, SLOT(accept()));
+    connect(canc, SIGNAL(clicked()), d, SLOT(reject()));
+    t->setText("Do you want to delete "+ this->db->db.databaseName());
+    layout->addWidget(t, 0, 0, 1, 2);
+    layout->addWidget(ok, 1, 0);
+    layout->addWidget(canc, 1, 1);
+    d->setLayout(layout);
+    d->setWindowTitle("Confirmation box");
+    int dialogCode = d->exec();
+    if(dialogCode == QDialog::Accepted)
     {
-        if(ui->comboDb->currentText() == this->db->db.databaseName())
-            nextDb();
-        if(!QFile::remove(ui->comboDb->currentText()))
-            qDebug() << ui->comboDb->currentText();
+        if(ui->comboDb->currentIndex())
+        {
+            if(ui->comboDb->currentText() == this->db->db.databaseName())
+                nextDb();
+            if(!QFile::remove(ui->comboDb->currentText()))
+                qDebug() << ui->comboDb->currentText();
+        }
+        ui->dbName->clear();
+        ui->comboDb->clear();
+        QStringList l = this->db->getDbNames();
+        ui->comboDb->addItem(" ");
+        ui->comboDb->addItems(l);
     }
-    ui->dbName->clear();
-    ui->comboDb->clear();
-    QStringList l = this->db->getDbNames();
-    ui->comboDb->addItem(" ");
-    ui->comboDb->addItems(l);
 }
 
 /**

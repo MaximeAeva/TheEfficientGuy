@@ -448,7 +448,26 @@ void task::hideShowWid()
  */
 void task::dlTask()
 {
-    this->~task();
+    QDialog *d = new QDialog;
+    QGridLayout *layout = new QGridLayout;
+    QLabel *t = new QLabel;
+    QPushButton *ok = new QPushButton;
+    ok->setText("OK");
+    QPushButton *canc = new QPushButton;
+    canc->setText("Cancel");
+    connect(ok, SIGNAL(clicked()), d, SLOT(accept()));
+    connect(canc, SIGNAL(clicked()), d, SLOT(reject()));
+    t->setText("Do you want to delete "+ this->title);
+    layout->addWidget(t, 0, 0, 1, 2);
+    layout->addWidget(ok, 1, 0);
+    layout->addWidget(canc, 1, 1);
+    d->setLayout(layout);
+    d->setWindowTitle("Confirmation box");
+    int dialogCode = d->exec();
+    if(dialogCode == QDialog::Accepted)
+    {
+        this->~task();
+    }
 }
 
 /**

@@ -26,6 +26,10 @@ gantt::~gantt()
 {
     this->db = NULL;
     delete db;
+    this->table = NULL;
+    this->targetItem = NULL;
+    delete this->table;
+    delete this->targetItem;
 }
 
 /**
