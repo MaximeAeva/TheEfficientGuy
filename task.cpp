@@ -151,7 +151,7 @@ void task::mouseReleaseEvent(QMouseEvent *event)
     deadl->setCalendarPopup(true);
     colorD->setCurrentColor(this->colorTask);
     spin->setValue(this->duration);
-    spin->setMinimum(1);
+    spin->setRange(1, 999);
     connect(slide, SIGNAL(valueChanged(int)), slideVal, SLOT(setNum(int)));
     secondLay->addWidget(slideVal);
     secondLay->addWidget(slide);

@@ -42,6 +42,8 @@ public slots:
     void createTask();
     void loadHomePage();
     void reloadPage();
+    void ShowContextMenu(const QPoint &pos);
+    void addNotes();
     inline void setMon(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET monday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setTue(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET tuesday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setWed(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET wednesday=:val"); query->bindValue(":val", val); query->exec();};

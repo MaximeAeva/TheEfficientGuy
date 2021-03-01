@@ -94,6 +94,7 @@ void MainWindow::designConnections()
     connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
     connect(ui->addDb, SIGNAL(clicked()), this, SLOT(addDb()));
     connect(ui->dlDb, SIGNAL(clicked()), this, SLOT(dlDb()));
+    connect(ui->page_6, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ShowContextMenu(const QPoint &)));
 }
 
 /**
@@ -209,6 +210,7 @@ void MainWindow::designHomePage()
     ml->addWidget(subdbl);
     ml->addItem(ssubl);
     ui->page_6->setLayout(ml);
+    ui->page_6->setContextMenuPolicy(Qt::CustomContextMenu);
     loadHomePage();
 }
 
@@ -240,9 +242,15 @@ void MainWindow::loadHomePage()
                          " estimedTime4, estimedTime5, allocated0, allocated1, allocated2, allocated3,"
                          " allocated4, allocated5 FROM miscellaneous ORDER BY id DESC LIMIT 10", db->db);
 
+
+    float max = 0;
     QLineSeries *spentTimeLines = new QLineSeries();
     for(int i = 0; i<10; i++)
+    {
         spentTimeLines->append(10-i,(generalMod->record(i).value(3).toInt()/1000)/60);
+        if(((generalMod->record(i).value(3).toInt()/1000)/60)>max)
+            max = ((generalMod->record(i).value(3).toInt()/1000)/60);
+    }
 
     QPen pen = spentTimeLines->pen();
     pen.setWidth(5);
@@ -260,6 +268,7 @@ void MainWindow::loadHomePage()
 
     QValueAxis *axisX = new QValueAxis;
     axisX->setTickCount(10);
+    axisX->setLabelFormat("%i");
     chart->addAxis(axisX, Qt::AlignBottom);
     spentTimeLines->attachAxis(axisX);
 
@@ -268,6 +277,7 @@ void MainWindow::loadHomePage()
     axisY->setTitleText("Amount (mn)");
     chart->addAxis(axisY, Qt::AlignLeft);
     spentTimeLines->attachAxis(axisY);
+    axisY->setRange(0, max+(0.1*max));
 
     //Chart avgTask
 
@@ -275,6 +285,7 @@ void MainWindow::loadHomePage()
 
     QValueAxis *avgTaskX = new QValueAxis;
     avgTaskX->setTickCount(10);
+    avgTaskX->setLabelFormat("%i");
     chart2->addAxis(avgTaskX, Qt::AlignBottom);
 
     QValueAxis *avgTaskY = new QValueAxis;
@@ -282,7 +293,7 @@ void MainWindow::loadHomePage()
     avgTaskY->setTitleText("Targets per task");
     chart2->addAxis(avgTaskY, Qt::AlignLeft);
 
-    float max = 0;
+    max = 0;
     for(int p = 0; p<6; p++)
     {
         QLineSeries *avgTaskLines = new QLineSeries();
@@ -305,12 +316,13 @@ void MainWindow::loadHomePage()
     chart2->setBackgroundBrush(brush);
     avgTaskY->setRange(0, max+(0.1*max));
 
-    //Chart avgTask
+    //Chart activeTask
 
     QChart *chart3 = new QChart();
 
     QValueAxis *actTaskX = new QValueAxis;
     actTaskX->setTickCount(10);
+    actTaskX->setLabelFormat("%i");
     chart3->addAxis(actTaskX, Qt::AlignBottom);
 
     QValueAxis *actTaskY = new QValueAxis;
@@ -339,7 +351,8 @@ void MainWindow::loadHomePage()
     chart3->legend()->hide();
     chart3->setTitle("Active tasks");
     chart3->setBackgroundBrush(brush);
-    actTaskY->setRange(0, max+(0.1*max));
+    actTaskY->setRange(0, max+1);
+    actTaskY->setTickInterval(1+((int(max)+1)%10));
 
     //Chart estimedTime
 
@@ -347,6 +360,7 @@ void MainWindow::loadHomePage()
 
     QValueAxis *estimedTimeX = new QValueAxis;
     estimedTimeX->setTickCount(10);
+    estimedTimeX->setLabelFormat("%i");
     chart4->addAxis(estimedTimeX, Qt::AlignBottom);
 
     QValueAxis *estimedTimeY = new QValueAxis;
@@ -384,6 +398,7 @@ void MainWindow::loadHomePage()
 
     QValueAxis *allocatedX = new QValueAxis;
     allocatedX->setTickCount(10);
+    allocatedX->setLabelFormat("%i");
     chart5->addAxis(allocatedX, Qt::AlignBottom);
 
     QValueAxis *allocatedY = new QValueAxis;
@@ -420,6 +435,7 @@ void MainWindow::loadHomePage()
 
     QValueAxis *totX = new QValueAxis;
     totX->setTickCount(10);
+    totX->setLabelFormat("%i");
     chart6->addAxis(totX, Qt::AlignBottom);
 
     QValueAxis *totY = new QValueAxis;
@@ -1117,4 +1133,36 @@ QString MainWindow::PrioToColor(int p)
         break;
     }
     return s;
+}
+
+void MainWindow::ShowContextMenu(const QPoint &pos)
+{
+   QMenu contextMenu(tr("Context menu"), this);
+   QFont font;
+   font.setPixelSize(18);
+
+   contextMenu.setFont(font);
+   contextMenu.setStyleSheet("QMenu::item {"
+                                 "color: #66767A;"
+                                 "background-color: #A6C0C6;"
+                             "} "
+                             "QMenu::item:selected {"
+                                "color: #66767A;"
+                                 "background-color: black;"
+                             "}");
+   QAction action1("Add a note", this);
+   connect(&action1, SIGNAL(triggered()), this, SLOT(addNotes()));
+   contextMenu.addAction(&action1);
+
+   contextMenu.exec(mapToGlobal(pos));
+}
+
+void MainWindow::addNotes()
+{
+    QDockWidget note;
+    note.setStyleSheet("QDockWidget {background-color:#FFDF7D;}");
+    QVBoxLayout *lay = new QVBoxLayout;
+    note.setLayout(lay);
+    note.setParent(ui->page_6);
+    note.show();
 }
