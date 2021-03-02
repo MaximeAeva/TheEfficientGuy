@@ -2,18 +2,17 @@
 
 postit::postit(QWidget *parent, QPoint p)
 {
-    QPalette pal = this->palette();
-    pal.setColor(QPalette::Background, QColor("#FFDF7D"));
-    this->setAutoFillBackground(true);
-    this->setPalette(pal);
+    this->setStyleSheet("border:1px solid #66767A;background-color:#FFDF7D;");
     quit->setText("X");
+    quit->setStyleSheet("QPushButton {color: #BFA75E;border:none;}");
+    this->setMinimumSize(20, 20);
     layTest1->addStretch(1);
     labelTest->setText("Note");
     QFont font;
     font.setPixelSize(18);
     labelTest->setFont(font);
     layTest1->addWidget(quit);
-    labelTest->setStyleSheet("QLabel {color: black;background-color:#FFDF7D;}");
+    labelTest->setStyleSheet("QLabel {color: black;border:none;}");
     layTest->addItem(layTest1);
     layTest->addWidget(labelTest);
     this->setLayout(layTest);
@@ -41,6 +40,7 @@ void postit::dl()
 void postit::mousePressEvent(QMouseEvent *event)
 {
     ref = event->pos();
+    this->raise();
 }
 
 void postit::mouseMoveEvent(QMouseEvent *event)
@@ -77,3 +77,11 @@ void postit::mouseDoubleClickEvent(QMouseEvent *event)
         this->adjustSize();
     }
 }
+
+void postit::paintEvent(QPaintEvent *pe)
+{
+  QStyleOption o;
+  o.initFrom(this);
+  QPainter p(this);
+  style()->drawPrimitive(QStyle::PE_Widget, &o, &p, this);
+};

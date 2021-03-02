@@ -7,11 +7,11 @@
 #include <string.h>
 #include <QLabel>
 #include <QString>
-#include <QStyle>
+#include <QStyleOption>
 #include <QWindow>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QGridLayout>
+#include <QPainter>
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QPoint>
@@ -49,6 +49,7 @@ private:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *pe) override;
 
 
 };

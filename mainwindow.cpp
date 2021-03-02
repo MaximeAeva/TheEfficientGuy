@@ -1160,5 +1160,4 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 void MainWindow::addNotes()
 {
     postit *p = new postit(ui->page_6);
-
 }
