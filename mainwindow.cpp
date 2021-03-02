@@ -1159,10 +1159,6 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 
 void MainWindow::addNotes()
 {
-    QDockWidget note;
-    note.setStyleSheet("QDockWidget {background-color:#FFDF7D;}");
-    QVBoxLayout *lay = new QVBoxLayout;
-    note.setLayout(lay);
-    note.setParent(ui->page_6);
-    note.show();
+    postit *p = new postit(ui->page_6);
+
 }

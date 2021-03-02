@@ -24,6 +24,7 @@
 #include "database.h"
 #include "target.h"
 #include "gantt.h"
+#include "postit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

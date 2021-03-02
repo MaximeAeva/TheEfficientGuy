@@ -22,6 +22,7 @@ SOURCES += \
     gantt.cpp \
     main.cpp \
     mainwindow.cpp \
+    postit.cpp \
     stardelegate.cpp \
     stareditor.cpp \
     starrating.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     database.h \
     gantt.h \
     mainwindow.h \
+    postit.h \
     stardelegate.h \
     stareditor.h \
     starrating.h \
