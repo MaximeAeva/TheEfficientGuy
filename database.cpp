@@ -193,6 +193,15 @@ void database::Model()
                    "spentTime INT DEFAULT 0"
                    ")");
 
+    QSqlQuery *query5 = new QSqlQuery(db);
+    query5->exec("CREATE TABLE IF NOT EXISTS note"
+                   "("
+                   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "x INT, "
+                   "y INT, "
+                   "text VARCHAR(255)"
+                   ")");
+
     query->exec("SELECT COUNT(*) FROM parms");
     query->first();
     if(!query->value(0).toInt())
@@ -706,4 +715,43 @@ void database::getStatInfo()
         query1->exec();
     }
 
+}
+
+void database::updateNote(int id, int x, int y, QString text)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("UPDATE note "
+                   "SET x=:x, y=:y, text=:text "
+                   "WHERE id=:id");
+    query->bindValue(":x", x);
+    query->bindValue(":y", y);
+    query->bindValue(":text", text);
+    query->bindValue(":id", id);
+    query->exec();
+}
+
+
+int database::addNote(int x, int y, QString text)
+{
+    QSqlQuery *query = new QSqlQuery(db);
+    query->prepare("INSERT INTO note(x, y, text) "
+                   "VALUES (:x, :y, :text)");
+    query->bindValue(":x", x);
+    query->bindValue(":y", y);
+    query->bindValue(":text", text);
+    query->exec();
+    QSqlQuery *getId = new QSqlQuery(db);
+    getId->exec("SELECT id FROM note ORDER BY ROWID DESC LIMIT 1");
+    getId->first();
+    return getId->record().value(0).toInt();
+}
+
+
+void database::deleteNote(int id)
+{
+    if(db.isOpen()){
+    QSqlQuery *query = new QSqlQuery(db);
+    QString str = "DELETE FROM note WHERE id="+QString::number(id);
+    query->exec(str);
+    }
 }

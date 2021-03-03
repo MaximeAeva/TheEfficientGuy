@@ -157,6 +157,40 @@ void MainWindow::kill()
             t->~task();
         }
     }
+    QList<postit *> note = ui->page_6->findChildren<postit *>();
+    foreach(postit* p, note)
+        p->~postit();
+}
+
+/**
+ * @brief Go to the previous Db
+ */
+void MainWindow::prevDb()
+{
+    QString nameDb = db->prevDb();
+    kill();
+    this->db = new database(nameDb);
+    t1->changeDb(db);
+    t2->changeDb(db);
+    t3->changeDb(db);
+    t4->changeDb(db);
+    QList<tray *> trays = this->findChildren<tray *>();
+    foreach(tray* T, trays)
+    {
+        load(T);
+    }
+    crtDb->setText(nameDb.remove(".db"));
+    this->g->changeDb(db);
+    rngGantt();
+    update();
+    loadHomePage();
+    QSqlQueryModel *Notes = new QSqlQueryModel;
+    Notes->setQuery("SELECT id, x, y, text FROM note", db->db);
+    for(int i = 0; i<Notes->rowCount(); i++)
+    {
+        QPoint p = {Notes->record(i).value(1).toInt(), Notes->record(i).value(2).toInt()};
+        postit *n = new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
+    }
 }
 
 /**
@@ -181,6 +215,13 @@ void MainWindow::nextDb()
     rngGantt();
     update();
     loadHomePage();
+    QSqlQueryModel *Notes = new QSqlQueryModel;
+    Notes->setQuery("SELECT id, x, y, text FROM note", db->db);
+    for(int i = 0; i<Notes->rowCount(); i++)
+    {
+        QPoint p = {Notes->record(i).value(1).toInt(), Notes->record(i).value(2).toInt()};
+        postit *n = new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
+    }
 }
 
 void MainWindow::designHomePage()
@@ -212,6 +253,13 @@ void MainWindow::designHomePage()
     ui->page_6->setLayout(ml);
     ui->page_6->setContextMenuPolicy(Qt::CustomContextMenu);
     loadHomePage();
+    QSqlQueryModel *Notes = new QSqlQueryModel;
+    Notes->setQuery("SELECT id, x, y, text FROM note", db->db);
+    for(int i = 0; i<Notes->rowCount(); i++)
+    {
+        QPoint p = {Notes->record(i).value(1).toInt(), Notes->record(i).value(2).toInt()};
+        new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
+    }
 }
 
 void MainWindow::loadHomePage()
@@ -524,29 +572,6 @@ void MainWindow::loadHomePage()
     ui->graphics_Overall->setChart(chart6);
 }
 
-/**
- * @brief Go to the previous Db
- */
-void MainWindow::prevDb()
-{
-    QString nameDb = db->prevDb();
-    kill();
-    this->db = new database(nameDb);
-    t1->changeDb(db);
-    t2->changeDb(db);
-    t3->changeDb(db);
-    t4->changeDb(db);
-    QList<tray *> trays = this->findChildren<tray *>();
-    foreach(tray* T, trays)
-    {
-        load(T);
-    }
-    crtDb->setText(nameDb.remove(".db"));
-    this->g->changeDb(db);
-    rngGantt();
-    update();
-    loadHomePage();
-}
 
 /**
  * @brief Design Kanban page
@@ -1040,7 +1065,7 @@ void MainWindow::dlDb()
     canc->setText("Cancel");
     connect(ok, SIGNAL(clicked()), d, SLOT(accept()));
     connect(canc, SIGNAL(clicked()), d, SLOT(reject()));
-    t->setText("Do you want to delete "+ this->db->db.databaseName());
+    t->setText("Do you want to delete "+ ui->comboDb->currentText());
     layout->addWidget(t, 0, 0, 1, 2);
     layout->addWidget(ok, 1, 0);
     layout->addWidget(canc, 1, 1);
@@ -1159,5 +1184,5 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 
 void MainWindow::addNotes()
 {
-    postit *p = new postit(ui->page_6);
+    new postit(ui->page_6, db);
 }

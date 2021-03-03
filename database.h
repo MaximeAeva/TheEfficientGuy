@@ -43,6 +43,9 @@ public:
     int isDead(QDateTime task, QDateTime day);
     int isOverkilled(QDateTime task);
     void updateMiscellaneous(int spentTime);
+    int addNote(int x, int y, QString text);
+    void updateNote(int id, int x, int y, QString text);
+    void deleteNote(int id);
     QStringList getDbNames();
     QSqlDatabase db;
     QString nextDb();

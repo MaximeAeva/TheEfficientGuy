@@ -1,18 +1,21 @@
 #include "postit.h"
 
-postit::postit(QWidget *parent, QPoint p)
+postit::postit(QWidget *parent, database *datab, QPoint p, QString text, int id)
 {
+    this->db = datab;
+    this->id = id;
     this->setStyleSheet("border:1px solid #66767A;background-color:#FFDF7D;");
     quit->setText("X");
-    quit->setStyleSheet("QPushButton {color: #BFA75E;border:none;}");
+    quit->setStyleSheet("QPushButton {color: #B07309;border:none;}");
     this->setMinimumSize(20, 20);
     layTest1->addStretch(1);
-    labelTest->setText("Note");
+    labelTest->setText(text);
     QFont font;
-    font.setPixelSize(18);
+    font.setPixelSize(20);
+    font.setBold(true);
     labelTest->setFont(font);
     layTest1->addWidget(quit);
-    labelTest->setStyleSheet("QLabel {color: black;border:none;}");
+    labelTest->setStyleSheet("QLabel {color: #B07309;border:none;}");
     layTest->addItem(layTest1);
     layTest->addWidget(labelTest);
     this->setLayout(layTest);
@@ -21,6 +24,8 @@ postit::postit(QWidget *parent, QPoint p)
     this->show();
     this->setMinimumSize(200, 200);
     this->adjustSize();
+    if(!id)
+        db->addNote(this->pos().x(), this->pos().y(), this->labelTest->text());
     connect(quit, SIGNAL(clicked()), this, SLOT(dl()));
 }
 
@@ -34,6 +39,8 @@ postit::~postit()
 
 void postit::dl()
 {
+    db->deleteNote(id);
+    this->id=-1;
     this->~postit();
 }
 
@@ -41,6 +48,11 @@ void postit::mousePressEvent(QMouseEvent *event)
 {
     ref = event->pos();
     this->raise();
+}
+
+void postit::mouseReleaseEvent(QMouseEvent *)
+{
+    db->updateNote(id, this->pos().x(), this->pos().y(), this->labelTest->text());
 }
 
 void postit::mouseMoveEvent(QMouseEvent *event)
@@ -54,11 +66,12 @@ void postit::mouseMoveEvent(QMouseEvent *event)
        this->move(this->pos()+event->pos()-ref);
 }
 
-void postit::mouseDoubleClickEvent(QMouseEvent *event)
+void postit::mouseDoubleClickEvent(QMouseEvent *)
 {
     QDialog *d = new QDialog;
     QGridLayout *layout = new QGridLayout;
     QTextEdit *t = new QTextEdit;
+    t->setText(labelTest->text());
     QPushButton *ok = new QPushButton;
     ok->setText("OK");
     QPushButton *canc = new QPushButton;
@@ -75,10 +88,11 @@ void postit::mouseDoubleClickEvent(QMouseEvent *event)
     {
         this->labelTest->setText(t->toPlainText());
         this->adjustSize();
+        db->updateNote(id, this->pos().x(), this->pos().y(), this->labelTest->text());
     }
 }
 
-void postit::paintEvent(QPaintEvent *pe)
+void postit::paintEvent(QPaintEvent *)
 {
   QStyleOption o;
   o.initFrom(this);
