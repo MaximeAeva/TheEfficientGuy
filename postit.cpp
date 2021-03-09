@@ -25,7 +25,7 @@ postit::postit(QWidget *parent, database *datab, QPoint p, QString text, int id)
     this->setMinimumSize(200, 200);
     this->adjustSize();
     if(!id)
-        db->addNote(this->pos().x(), this->pos().y(), this->labelTest->text());
+        this->id = db->addNote(this->pos().x(), this->pos().y(), this->labelTest->text());
     connect(quit, SIGNAL(clicked()), this, SLOT(dl()));
 }
 
@@ -88,7 +88,7 @@ void postit::mouseDoubleClickEvent(QMouseEvent *)
     {
         this->labelTest->setText(t->toPlainText());
         this->adjustSize();
-        db->updateNote(id, this->pos().x(), this->pos().y(), this->labelTest->text());
+        db->updateNote(id, this->pos().x(), this->pos().y(), t->toPlainText());
     }
 }
 
