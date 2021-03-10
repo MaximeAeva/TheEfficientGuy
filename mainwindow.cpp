@@ -6,10 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setCentralWidget(ui->toolBox);
-    this->setWindowState(Qt::WindowMaximized);
-    this->setWindowTitle("The Efficient Guy !");
-    this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
     designHomePage();
     designPage();
     designParms();
@@ -17,6 +13,46 @@ MainWindow::MainWindow(QWidget *parent)
     designConnections();
     designArchive();
     designChargePage();
+    ui->stackedWidget->addWidget(ui->page_6);
+    ui->stackedWidget->addWidget(ui->page);
+    ui->stackedWidget->addWidget(ui->page_2);
+    ui->stackedWidget->addWidget(ui->page_3);
+    ui->stackedWidget->addWidget(ui->page_5);
+    ui->stackedWidget->addWidget(ui->page_4);
+    ui->stackedWidget->setCurrentIndex(crtPage);
+    this->selector->setStyleSheet("QPushButton{"
+                                   "font: 87 14pt;"
+                                   "border-color: #66767A;"
+                                   "color: black;"
+                                   "background-color: #9BB3B9;"
+                                   "border : 2px solid;"
+                                   "border-radius : 15px;"
+                                   "height : 1em;"
+                                   "width : 1em;}"
+                                   "QPushButton:hover{"
+                                       "background-color: #66767A;"
+                                       "color: #A6C0C6;"
+                                       "border-color: #A6C0C6;}"
+                                   "QPushButton:pressed{"
+                                       "background-color: #A6C0C6;"
+                                       "color: #66767A;"
+                                       "border-color: #66767A;}");
+    selector->setText("Menu");
+
+
+    QGridLayout *fl = new QGridLayout;
+    QWidget *widget = new QWidget();
+    widget->setStyleSheet("QWidget {color: #E6E6E8;}");
+    fl->addWidget(ui->stackedWidget, 0, 0, 2, 10);
+    fl->addWidget(selector, 0, 9, 1, 1);
+    widget->setLayout(fl);
+    this->setCentralWidget(widget);
+
+    this->setWindowState(Qt::WindowMaximized);
+    this->setWindowTitle("The Efficient Guy !");
+    this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
+
+    connect(selector, SIGNAL(clicked()), this, SLOT(showMenu()));
 }
 
 /**
@@ -92,7 +128,7 @@ void MainWindow::designConnections()
     connect(ui->editModeButton, SIGNAL(clicked()), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayFrom, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
-    connect(ui->toolBox, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(refreshSelector(int)));
     connect(ui->addDb, SIGNAL(clicked()), this, SLOT(addDb()));
     connect(ui->dlDb, SIGNAL(clicked()), this, SLOT(dlDb()));
     connect(ui->page_6, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(ShowContextMenu(const QPoint &)));
@@ -190,7 +226,7 @@ void MainWindow::prevDb()
     for(int i = 0; i<Notes->rowCount(); i++)
     {
         QPoint p = {Notes->record(i).value(1).toInt(), Notes->record(i).value(2).toInt()};
-        postit *n = new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
+        new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
     }
 }
 
@@ -221,7 +257,7 @@ void MainWindow::nextDb()
     for(int i = 0; i<Notes->rowCount(); i++)
     {
         QPoint p = {Notes->record(i).value(1).toInt(), Notes->record(i).value(2).toInt()};
-        postit *n = new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
+        new postit(ui->page_6, db, p, Notes->record(i).value(3).toString(), Notes->record(i).value(0).toInt());
     }
 }
 
@@ -237,7 +273,6 @@ void MainWindow::designHomePage()
     ssubl->addWidget(ui->graphics_Duration, 1, 0);//Avergage estimed time (several colors)
     ssubl->addWidget(ui->graphics_Allocation, 1, 1);//Average Allocation (several colors)
     ssubl->addWidget(ui->graphics_Overall, 1, 2);//Overall active count (1 color)
-    ui->toolBox->setCurrentIndex(0);
     subdbl->setAlignment(Qt::AlignHCenter);
     bef->setText("<");
     bef->setMaximumSize(40, 40);
@@ -1020,23 +1055,6 @@ void MainWindow::designArchive()
     loadArchive();
 }
 
-/**
- * @brief Handle resize event to ensure adaptability
- */
-void MainWindow::resizeEvent(QResizeEvent*)
-{
-    //t1->setMinimumWidth((this->width()-50)/5);
-    //t2->setMinimumWidth((this->width()-50)/5);
-    //t3->setMinimumWidth((this->width()-50)/5);
-    //t4->setMinimumWidth((this->width()-50)/5);
-    QList<tray *> trays = this->findChildren<tray *>();
-    foreach(tray* T, trays)
-    {
-        QList<task *> tasks = T->findChildren<task *>();
-        /*foreach(task* t, tasks)
-            t->resizeIt(T->width()-10);*/
-    }
-}
 
 /**
  * @brief Add a database file
@@ -1189,4 +1207,56 @@ void MainWindow::ShowContextMenu(const QPoint &pos)
 void MainWindow::addNotes()
 {
     new postit(ui->page_6, db);
+}
+
+void MainWindow::showMenu()
+{
+    QPoint p = selector->pos();
+    QMenu appMenu(tr("Menu"), this);
+    QFont font;
+    font.setPixelSize(18);
+
+    appMenu.setFont(font);
+    appMenu.setStyleSheet("QMenu::item {"
+                                  "color: #66767A;"
+                                  "background-color: #A6C0C6;"
+                              "} "
+                              "QMenu::item:selected {"
+                                 "color: #66767A;"
+                                  "background-color: black;"
+                              "}");
+    QAction action1("Dashboard");
+    QAction action2("Kanban");
+    QAction action3("Gantt");
+    QAction action4("Charge");
+    QAction action5("Archive");
+    QAction action6("Parameters");
+    QAction action7("Quit");
+    QSignalMapper* signalMapper = new QSignalMapper (this) ;
+    connect (&action1, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+    connect (&action2, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+    connect (&action3, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+    connect (&action4, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+    connect (&action5, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+    connect (&action6, SIGNAL(triggered()), signalMapper, SLOT(map())) ;
+
+    signalMapper -> setMapping (&action1, 0) ;
+    signalMapper -> setMapping (&action2, 1) ;
+    signalMapper -> setMapping (&action3, 2) ;
+    signalMapper -> setMapping (&action4, 3) ;
+    signalMapper -> setMapping (&action5, 4) ;
+    signalMapper -> setMapping (&action6, 5) ;
+
+    connect (signalMapper, SIGNAL(mapped(int)), ui->stackedWidget, SLOT(setCurrentIndex(int))) ;
+
+    connect(&action7, SIGNAL(triggered()), this, SLOT(close()));
+    appMenu.addAction(&action1);
+    appMenu.addAction(&action2);
+    appMenu.addAction(&action3);
+    appMenu.addAction(&action4);
+    appMenu.addAction(&action5);
+    appMenu.addAction(&action6);
+    appMenu.addAction(&action7);
+
+    appMenu.exec(mapToGlobal(p));
 }

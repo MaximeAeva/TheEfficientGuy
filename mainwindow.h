@@ -7,7 +7,9 @@
 #include <QVBoxLayout>
 #include <QDateTime>
 #include <QString>
+#include <QAction>
 #include <QSqlQuery>
+#include <QStackedWidget>
 #include <QSqlQueryModel>
 #include <QtCharts>
 #include <QLineSeries>
@@ -61,6 +63,7 @@ public slots:
     void nextDb();
     void addDb();
     void dlDb();
+    void showMenu();
 
 private:
     Ui::MainWindow *ui;
@@ -75,12 +78,14 @@ private:
     void designHomePage();
     void load(tray *t);
     void kill();
-    void resizeEvent(QResizeEvent*);
     QString myTime(int timeElapse, bool rec);
     QString PrioToColor(int p);
 
+    int crtPage = 0;
     QLabel *crtDb = new QLabel;
     QLabel *subdbl = new QLabel;
+    QPushButton *selector = new QPushButton;
+    QMenu appMenu;
     QPushButton *bef = new QPushButton;
     QPushButton *aft = new QPushButton;
     QPushButton *adder = new QPushButton;
