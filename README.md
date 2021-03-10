@@ -1,12 +1,16 @@
 ﻿# The Efficient Guy
 > A full integrated task management and optimization tool
 
+Please, check the [Documentation](https://github.com/MaximeAeva/TheEfficientGuy/blob/master/DOCS.md) !
+
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.gif">
 </p>
 
 ## Installation
+
 Windows:
+Qt5 + charts and sql modules
 
 ```console
 git clone
@@ -14,10 +18,14 @@ git clone
 
 ## Usage example
 
-Just want to see when and how allocate my time to each task to be as efficient as possible
+Just want to see when and how to allocate my time on each task to be as efficient as possible.
+
+*DO NOT HESITATE TO LET ME A COMMENT TO HELP ME IMPROVE*
 
 ## Release History
 
+* 0.3.0
+|   Statistical home page, notes
 * 0.2.0
 |   Archive management, slide gantt edit, commented code, size adaptive
 * 0.1.0
@@ -31,7 +39,7 @@ Me – [MaximeAeva](https://github.com/MaximeAeva) – Feel free to contact
 
 ## Contributing
 
-1. Fork it (<https://github.com/MaximeAeva/Dropplet/fork>)
+1. Fork it (<https://github.com/MaximeAeva/TheEfficientGuy/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)

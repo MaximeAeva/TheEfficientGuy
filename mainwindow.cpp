@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setCentralWidget(ui->toolBox);
     this->setWindowState(Qt::WindowMaximized);
     this->setWindowTitle("The Efficient Guy !");
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
@@ -492,6 +493,7 @@ void MainWindow::loadHomePage()
     chart6->addAxis(totY, Qt::AlignLeft);
 
     max = 0;
+    float min = generalMod->record(0).value(1).toInt();
     for(int p = 0; p<2; p++)
     {
         QLineSeries *totLines = new QLineSeries();
@@ -504,6 +506,8 @@ void MainWindow::loadHomePage()
             totLines->append(10-i,generalMod->record(i).value(1+p).toInt());
             if(generalMod->record(i).value(1+p).toReal()>max)
                 max = generalMod->record(i).value(1+p).toReal();
+            if(generalMod->record(i).value(1+p).toReal()<min)
+                min = generalMod->record(i).value(1+p).toReal();
         }
         chart6->addSeries(totLines);
         totLines->attachAxis(totX);
@@ -512,7 +516,7 @@ void MainWindow::loadHomePage()
     chart6->legend()->hide();
     chart6->setTitle("Total task and archive count");
     chart6->setBackgroundBrush(brush);
-    totY->setRange(0, max+(0.1*max));
+    totY->setRange(min-(0.1*min), max+(0.1*max));
 
     QBrush axisBrush(Qt::white);
 
