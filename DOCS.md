@@ -48,7 +48,7 @@ From the menu go to parameters
 </p>
 Give a name to your db and click "add"
 <p align="center">
-  <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/createdb.png">
+  <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/createbd.png">
 </p>
 Go back to dashboard and use arrows between db name to switch from a db to another.
 <p align="center">
@@ -89,6 +89,12 @@ Go to Gantt page in order to schedule your task. Click to schedule/unschedule.
 # Functions
 
 # Known bugs
+
+* 0.3.0
+|Object : `1. Display`
+|       Workaround : resize window and display will adapt
+|Object :`2. Target deletion`
+|       Workaround : select item before delete them
 
 
 
