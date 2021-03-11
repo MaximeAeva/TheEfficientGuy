@@ -21,6 +21,7 @@ tray::tray(QString title, int id, database *db)
     this->content->setLayout(this->layout);
     this->setWidget(scroll);
     scroll->setWidget(content);
+    scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setAcceptDrops(true);
 }
 
