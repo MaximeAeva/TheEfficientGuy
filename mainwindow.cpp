@@ -977,8 +977,8 @@ void MainWindow::designChargePage()
     QHBoxLayout *l = new QHBoxLayout;
     l->addWidget(ui->graphicsView);
     l->addWidget(ui->graphicsView_2);
-    ui->page_3->setLayout(l);
     loadPage();
+    ui->page_3->setLayout(l);   
 }
 
 /**

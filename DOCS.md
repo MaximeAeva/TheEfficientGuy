@@ -1,47 +1,45 @@
 ﻿# Documentation
--------------------------------------------------------------------------
-## Table of content
+### Table of content
 
 * Pages
 * Tutorial
 * Functions
 * Known bugs
 
--------------------------------------------------------------------------
 
-# Pages
+## Pages
 
-## DashBoard
+### DashBoard
 
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/DashBoard.PNG">
 </p>
 
-## Kanban
+### Kanban
 
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellokanban.PNG">
 </p>
 
-## Gantt
+### Gantt
 
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hellogantt.PNG">
 </p>
 
-## Charge
+### Charge
 
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.PNG">
 </p>
 
-## Archive
+### Archive
 
-## Parameters
+### Parameters
 
-# Tutorial
+## Tutorial
 
-## Create your db
+### Create your db
 From the menu go to parameters
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/menu.png">
@@ -55,13 +53,13 @@ Go back to dashboard and use arrows between db name to switch from a db to anoth
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/choosedb.png">
 </p>
 
-## Set your week timetable
+### Set your week timetable
 Go back to parameters page and set the number of hours per day
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/dayset.png">
 </p>
 
-## Add tasks
+### Add tasks
 Go to Kanban page and click the "+" button. A task will appear on the "To do" tray.
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/addtask.png">
@@ -76,24 +74,26 @@ You can drag and drop your task from a tray to another.
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/shifttray.png">
 </p>
 
-## Schedule your future
+### Schedule your future
 Go to Gantt page in order to schedule your task. Click to schedule/unschedule.
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/edit.png">
 </p>
 
-## Manage your charge
+### Manage your charge
 
-## Analyse your activities
+### Analyse your activities
 
-# Functions
+### Add a note on your home page
 
-# Known bugs
+## Functions
 
-* 0.3.0
-| **Object :** `1. Display`  
-|       **Workaround :** resize window and display will adapt  
-| **Object :**`2. Target deletion`  
+Nothing for now...
+
+## Known bugs
+
+* 0.3.0   
+| **Object :** `2. Target deletion`  
 |       **Workaround :** select item before delete them  
 
 
