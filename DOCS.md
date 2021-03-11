@@ -91,10 +91,10 @@ Go to Gantt page in order to schedule your task. Click to schedule/unschedule.
 # Known bugs
 
 * 0.3.0
-|Object : `1. Display`
-|       Workaround : resize window and display will adapt
-|Object :`2. Target deletion`
-|       Workaround : select item before delete them
+| **Object :** `1. Display`  
+|       **Workaround :** resize window and display will adapt  
+| **Object :**`2. Target deletion`  
+|       **Workaround :** select item before delete them  
 
 
 
