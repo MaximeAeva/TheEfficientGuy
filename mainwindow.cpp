@@ -13,12 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
     designConnections();
     designArchive();
     designChargePage();
-    ui->stackedWidget->addWidget(ui->page_6);
-    ui->stackedWidget->addWidget(ui->page);
-    ui->stackedWidget->addWidget(ui->page_2);
-    ui->stackedWidget->addWidget(ui->page_3);
-    ui->stackedWidget->addWidget(ui->page_5);
-    ui->stackedWidget->addWidget(ui->page_4);
+    ui->stackedWidget->layout()->addWidget(ui->page_6);
+    ui->stackedWidget->layout()->addWidget(ui->page);
+    ui->stackedWidget->layout()->addWidget(ui->page_2);
+    ui->stackedWidget->layout()->addWidget(ui->page_3);
+    ui->stackedWidget->layout()->addWidget(ui->page_5);
+    ui->stackedWidget->layout()->addWidget(ui->page_4);
     ui->stackedWidget->setCurrentIndex(crtPage);
     this->selector->setStyleSheet("QPushButton{"
                                    "font: 87 14pt;"
@@ -47,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent)
     fl->addWidget(selector, 0, 9, 1, 1);
     widget->setLayout(fl);
     this->setCentralWidget(widget);
-
     this->setWindowState(Qt::WindowMaximized);
     this->setWindowTitle("The Efficient Guy !");
     this->setWindowIcon(QIcon(QCoreApplication::applicationDirPath() +"/icone.ico"));
@@ -1051,8 +1050,8 @@ void MainWindow::designArchive()
 {
     QHBoxLayout *lay = new QHBoxLayout;
     lay->addWidget(t5);
-    ui->page_5->setLayout(lay);
     loadArchive();
+    ui->page_5->setLayout(lay);
 }
 
 

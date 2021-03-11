@@ -38,7 +38,6 @@ task::task()
     lab->setLayout(layout);
     this->setWidget(lab);
     this->lab->setMaximumHeight(0);
-
 }
 
 /**
@@ -512,6 +511,7 @@ void task::designTitleBar()
     layout->addWidget(archive);
     layout->addWidget(quit);
     this->titleBar->setLayout(layout);
+    this->titleBar->setMinimumHeight(50);
     this->setTitleBarWidget(titleBar);
 }
 

@@ -2,6 +2,7 @@
 #define TRAY_H
 
 #include <QDockWidget>
+#include <QScrollArea>
 #include <QString>
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
