@@ -31,6 +31,7 @@ private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
+    void resizeEvent(QResizeEvent *event);
 };
 
 #endif // TRAY_H

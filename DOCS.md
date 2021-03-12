@@ -4,7 +4,6 @@
 * Pages
 * Tutorial
 * Functions
-* Known bugs
 
 
 ## Pages
@@ -48,7 +47,7 @@ Give a name to your db and click "add"
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/createbd.png">
 </p>
-Go back to dashboard and use arrows between db name to switch from a db to another.
+Go back to dashboard and use arrows near db name to switch from a db to another.
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/choosedb.png">
 </p>
@@ -64,7 +63,7 @@ Go to Kanban page and click the "+" button. A task will appear on the "To do" tr
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/addtask.png">
 </p>
-Double click on the task, a popup will appear and help you configure the task.
+Click on the task, a popup will appear and help you configure the task.
 Only edited fields will be saved.
 <p align="center">
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/programtask.png">
@@ -89,12 +88,4 @@ Go to Gantt page in order to schedule your task. Click to schedule/unschedule.
 ## Functions
 
 Nothing for now...
-
-## Known bugs
-
-* 0.3.0   
-| **Object :** `2. Target deletion`  
-|       **Workaround :** select item before delete them  
-
-
 

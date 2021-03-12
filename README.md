@@ -7,6 +7,8 @@ Please, check the [Documentation](https://github.com/MaximeAeva/TheEfficientGuy/
   <img src="https://github.com/MaximeAeva/TheEfficientGuy/blob/master/res/hello.gif">
 </p>
 
+*Feel free to open issues, request improvments, clone and even more !*
+
 ## Installation
 
 Windows:
@@ -20,17 +22,15 @@ git clone
 
 Just want to see when and how to allocate my time on each task to be as efficient as possible.
 
-*DO NOT HESITATE TO LET ME A COMMENT TO HELP ME IMPROVE*
-
 ## Release History
 
-* 0.3.0
+* **0.3.0**
 |   Statistical home page, notes
-* 0.2.0
+* **0.2.0**
 |   Archive management, slide gantt edit, commented code, size adaptive
-* 0.1.0
+* **0.1.0**
 |   Need improvement (such as criticity computation) but works fine
-* 0.0.0
+* **0.0.0**
 |   Currently first steps
 
 ## Meta

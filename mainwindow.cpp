@@ -1126,6 +1126,11 @@ bool MainWindow::event(QEvent * e)
         case QEvent::WindowDeactivate :
             myTime(this->timer->elapsed(), 1);
             break ;
+        case QEvent::Resize :
+            //qDebug() << this->size();
+        break;
+        default:
+        break;
     } ;
     return QMainWindow::event(e) ;
 }

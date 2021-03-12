@@ -67,3 +67,13 @@ void tray::dropEvent(QDropEvent *event)
     object->group = this->id;
     this->db->updateTask(object->wdwId, object->priority, object->duration, object->group, object->itemCount, object->deadLine, object->title, object->colorTask.name());
 }
+
+void tray::resizeEvent(QResizeEvent *)
+{
+    QList<task *> tasks = this->findChildren<task *>();
+    foreach(task* T, tasks)
+    {
+        T->setMaximumWidth(this->width());
+        T->titleBarWidget()->setMaximumWidth(this->width());
+    }
+}
