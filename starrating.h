@@ -18,7 +18,8 @@ public:
     enum EditMode { Editable, ReadOnly };
 
     StarRating(std::vector<int> myStarCount = {}, int maxStarCount = 10,
-               QDateTime task = QDateTime::currentDateTime(), QDateTime day = QDateTime::currentDateTime(), QColor star = Qt::red);
+               QDateTime task = QDateTime::currentDateTime(),
+               QDateTime day = QDateTime::currentDateTime(), QColor star = Qt::red, bool isEd = true);
     ~StarRating();
 
     void paint(QPainter *painter, const QRect &rect,
@@ -39,6 +40,7 @@ private:
     QColor colorStar;
     std::vector<int> myStarCount;
     int myMaxStarCount;
+    bool isEditable = true;
 };
 
 Q_DECLARE_METATYPE(StarRating)

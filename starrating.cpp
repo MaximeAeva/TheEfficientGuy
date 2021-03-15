@@ -13,13 +13,15 @@ const int PaintingScaleFactor = 20;
  * @param day
  * @param colorStar
  */
-StarRating::StarRating(std::vector<int> starCount, int maxStarCount, QDateTime task, QDateTime day, QColor colorStar)
+StarRating::StarRating(std::vector<int> starCount, int maxStarCount,
+                       QDateTime task, QDateTime day, QColor colorStar, bool isEd)
 {
     myStarCount = starCount;
     myMaxStarCount = maxStarCount;
     this->task = task;
     this->day = day;
     this->colorStar = colorStar;
+    if(!isEd) isEditable = false;
 
     starPolygon << QPointF(0.1, 0.0) << QPointF(0.9, 0.0) <<
                    QPointF(0.9, 1.0) << QPointF(0.1, 1.0) << QPointF(0.1, 0.0);
@@ -56,7 +58,7 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
     painter->scale(PaintingScaleFactor, PaintingScaleFactor);
     bool isdeadline = false;
 
-    if(this->colorStar != Qt::transparent)
+    if(isEditable)
         if(db->isDead(this->task, this->day)<=0) isdeadline = true;
 
     for (int i = 0; i < myMaxStarCount; ++i) {
