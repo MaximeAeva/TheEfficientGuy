@@ -62,15 +62,45 @@ void StarRating::paint(QPainter *painter, const QRect &rect,
         if(db->isDead(this->task, this->day)<=0) isdeadline = true;
 
     for (int i = 0; i < myMaxStarCount; ++i) {
-        if (myStarCount[i])
+        if(isEditable)
         {
-            painter->setBrush(this->colorStar);
-            painter->drawPolygon(starPolygon, Qt::WindingFill);
+            if (myStarCount[i])
+            {
+                painter->setBrush(this->colorStar);
+                painter->drawPolygon(starPolygon, Qt::WindingFill);
+            }
+            else
+            {
+                if(isdeadline) painter->setBrush(QColor::fromRgb(30, 30, 30));
+                else painter->setBrush(Qt::black);
+                painter->drawPolygon(starPolygon, Qt::WindingFill);
+            }
         }
         else
         {
-            if(isdeadline) painter->setBrush(QColor::fromRgb(30, 30, 30));
-            else painter->setBrush(Qt::black);
+            QString s;
+            switch (myStarCount[i])
+            {
+                case 1:
+                s = "#235B66";
+                break;
+                case 2:
+                s = "#11AEBF";
+                break;
+                case 3:
+                s = "#A0BF30";
+                break;
+                case 4:
+                s = "#F2AE30";
+                break;
+                case 5:
+                s = "#F25244";
+                break;
+                default:
+                s = "#546670";
+                break;
+            }
+            painter->setBrush(QColor(s));
             painter->drawPolygon(starPolygon, Qt::WindingFill);
         }
         painter->translate(1.0, 0.0);

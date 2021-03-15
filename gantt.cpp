@@ -106,32 +106,11 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         float ratio = float(db->getAlloc(QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz")))/float(q->record(0).value("d").toInt());
         int ratio1 = round(5*ratio);
         if(ratio1>5) ratio1 = 5;
-        std::vector<int> vect = {1};
-        QString s;
-        switch (ratio1)
-        {
-            case 1:
-            s = "#235B66";
-            break;
-            case 2:
-            s = "#11AEBF";
-            break;
-            case 3:
-            s = "#A0BF30";
-            break;
-            case 4:
-            s = "#F2AE30";
-            break;
-            case 5:
-            s = "#F25244";
-            break;
-            default:
-            s = "#546670";
-            break;
-        }
+        std::vector<int> vect = {};
+        vect.push_back(ratio1);
         QTableWidgetItem *item = new QTableWidgetItem;
         StarRating sR(vect, 1,
-                 QDateTime::currentDateTime(), QDateTime::currentDateTime(), QColor(s), false);
+                 QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::red, false);
         sR.setDB(this->db);
         item->setData(0, QVariant::fromValue(sR));
         table->setItem(j+1, 0, item);
@@ -146,10 +125,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         std::vector<int> vect = {};
         //Allocation count
         for(int k = 0; k < dayLength[da-1]; k++)
-        {
-            if(db->isAllocated(QDateTime(displayFrom.addDays(i)), k)) vect.push_back(1);
-            else vect.push_back(0);
-        }
+            vect.push_back(db->isAllocated(QDateTime(displayFrom.addDays(i)), k));
         QTableWidgetItem *item = new QTableWidgetItem;
         StarRating sR(vect, dayLength[da-1],
                  QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::transparent, false);

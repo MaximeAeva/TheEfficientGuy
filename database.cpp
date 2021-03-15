@@ -375,13 +375,13 @@ void database::deleteAllocation(QDateTime task, QDateTime day, int value)
  * @param value
  * @return
  */
-bool database::isAllocated(QDateTime day, int value)
+int database::isAllocated(QDateTime day, int value)
 {
     QSqlQuery *query = new QSqlQuery(db);
     QString str = "SELECT COUNT(*) FROM allocation WHERE day="+day.toString("yyyyMMdd")+" AND value="+QString::fromStdString(std::to_string(value));
     query->exec(str);
     query->first();
-    return query->value(0).toBool();
+    return query->value(0).toInt();
 }
 
 /**

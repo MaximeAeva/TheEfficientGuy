@@ -37,7 +37,7 @@ public:
     void addAllocation(QDateTime task, QDateTime day, int value);
     void deleteAllocation(QDateTime task, QDateTime day, int value);
     void archive(QDateTime task, bool active);
-    bool isAllocated(QDateTime day, int value);
+    int isAllocated(QDateTime day, int value);
     int getAlloc(QDateTime task);
     int dayOccupation(QDateTime day);
     int isDead(QDateTime task, QDateTime day);

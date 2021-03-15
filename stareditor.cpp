@@ -56,11 +56,11 @@ void StarEditor::mouseReleaseEvent(QMouseEvent *event)
     }
     for(int star = this->start; star<=end; star++)
     {
-        if(myStarRating.getVect().at(star-1))
+        /*if(myStarRating.getVect().at(star-1))
             myStarRating.setStar(star-1);
         else if(!myStarRating.db->isAllocated(myStarRating.day, star-1))
-            myStarRating.setStar(star-1);
-
+            myStarRating.setStar(star-1);*/
+        myStarRating.setStar(star-1);
         if(myStarRating.getVect().at(star-1))
         {
             myStarRating.db->addAllocation(myStarRating.task, myStarRating.day, star-1);
