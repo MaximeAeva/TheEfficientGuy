@@ -54,6 +54,7 @@ public slots:
     inline void setFri(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET friday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSat(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET saturday=:val"); query->bindValue(":val", val); query->exec();};
     inline void setSun(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET sunday=:val"); query->bindValue(":val", val); query->exec();};
+    inline void setOpt(int val){QSqlQuery *query = new QSqlQuery(db->db); query->prepare("UPDATE parms SET opt1=:val"); query->bindValue(":val", val); query->exec();};
     void refreshSelector(int);
     void designPage();
     void loadArchive();

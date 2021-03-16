@@ -148,7 +148,8 @@ void database::Model()
                    "thursday INT, "
                    "friday INT, "
                    "saturday INT, "
-                   "sunday INT "
+                   "sunday INT, "
+                   "opt1 INT "
                    ")");
 
     QSqlQuery *query3 = new QSqlQuery(db);

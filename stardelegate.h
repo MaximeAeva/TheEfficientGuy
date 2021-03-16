@@ -22,9 +22,13 @@
      void setEditorData(QWidget *editor, const QModelIndex &index) const;
      void setModelData(QWidget *editor, QAbstractItemModel *model,
                        const QModelIndex &index) const;
+     inline void setAllocInt(int a){this->allocDisp=a;};
 
  private slots:
      void commitAndCloseEditor();
+
+ private:
+     int allocDisp;
  };
 
  #endif

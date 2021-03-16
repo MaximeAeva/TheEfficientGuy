@@ -122,6 +122,7 @@ void MainWindow::designConnections()
     connect(ui->spinFriday, SIGNAL(valueChanged(int)), this, SLOT(setFri(int)));
     connect(ui->spinSaturday, SIGNAL(valueChanged(int)), this, SLOT(setSat(int)));
     connect(ui->spinSunday, SIGNAL(valueChanged(int)), this, SLOT(setSun(int)));
+    connect(ui->overloadOpt, SIGNAL(valueChanged(int)), this, SLOT(setOpt(int)));
     connect(ui->displayTo, SIGNAL(dateChanged(QDate)), this, SLOT(rngGantt()));
     connect(ui->displayArchive, SIGNAL(clicked()), this, SLOT(rngGantt()));
     connect(ui->editModeButton, SIGNAL(clicked()), this, SLOT(rngGantt()));
@@ -755,7 +756,7 @@ void MainWindow::designParms()
     lht->setAlignment(Qt::AlignCenter);
     lhfo->setAlignment(Qt::AlignCenter);*/
     QSqlQuery *query = new QSqlQuery(db->db);
-    query->exec("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM parms");
+    query->exec("SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday, opt1 FROM parms");
     query->first();
     ui->spinMonday->setValue(query->value("monday").toInt());
     ui->spinTuesday->setValue(query->value("tuesday").toInt());
@@ -764,7 +765,8 @@ void MainWindow::designParms()
     ui->spinFriday->setValue(query->value("friday").toInt());
     ui->spinSaturday->setValue(query->value("saturday").toInt());
     ui->spinSunday->setValue(query->value("sunday").toInt());
-
+    ui->overloadOpt->setValue(query->value("opt1").toInt());
+    mainLay->addWidget(ui->overloadOpt);
     mainLay->addWidget(ui->labDb);
 
     dbl->addWidget(ui->dbName);

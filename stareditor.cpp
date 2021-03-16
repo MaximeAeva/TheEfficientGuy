@@ -56,11 +56,16 @@ void StarEditor::mouseReleaseEvent(QMouseEvent *event)
     }
     for(int star = this->start; star<=end; star++)
     {
-        /*if(myStarRating.getVect().at(star-1))
+        //to activate if 1hour = 1 task
+        if(alDisp)
+        {
+            if(myStarRating.getVect().at(star-1))
+                myStarRating.setStar(star-1);
+            else if(myStarRating.db->isAllocated(myStarRating.day, star-1) < alDisp)
+                myStarRating.setStar(star-1);
+        }
+        else
             myStarRating.setStar(star-1);
-        else if(!myStarRating.db->isAllocated(myStarRating.day, star-1))
-            myStarRating.setStar(star-1);*/
-        myStarRating.setStar(star-1);
         if(myStarRating.getVect().at(star-1))
         {
             myStarRating.db->addAllocation(myStarRating.task, myStarRating.day, star-1);

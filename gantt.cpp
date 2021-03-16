@@ -43,6 +43,10 @@ gantt::~gantt()
 void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7], QDate displayFrom, bool editMode)
 {
     int row = lst.length();
+    QSqlQuery *optt = new QSqlQuery(this->db->db);
+    optt->exec("SELECT opt1 FROM parms");
+    optt->first();
+    int opt = optt->value("opt1").toInt();
     QStringList headerH;
     QStringList headerV;
     this->table->setRowCount(row+1);
@@ -104,7 +108,7 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
 
         q->setQuery(stcol, db->db);
         float ratio = float(db->getAlloc(QDateTime::fromString(lstNumb[j],"yyyyMMddhhmmssz")))/float(q->record(0).value("d").toInt());
-        int ratio1 = round(5*ratio);
+        int ratio1 = floor(5*ratio);
         if(ratio1>5) ratio1 = 5;
         std::vector<int> vect = {};
         vect.push_back(ratio1);
@@ -122,10 +126,29 @@ void gantt::build(QStringList lst, QStringList lstNumb, int col, int dayLength[7
         if(this->table->width()/(col+1)<(20*dayLength[da-1])) w = 20*dayLength[da-1];
         if (dayLength[da-1] == 0) w = 20;
         this->table->setItemDelegate(new StarDelegate);
+        StarDelegate *sD = static_cast<StarDelegate *>(this->table->itemDelegate());
+        sD->setAllocInt(opt);
         std::vector<int> vect = {};
         //Allocation count
-        for(int k = 0; k < dayLength[da-1]; k++)
-            vect.push_back(db->isAllocated(QDateTime(displayFrom.addDays(i)), k));
+        if(opt)
+        {
+            for(int k = 0; k < dayLength[da-1]; k++)
+            {
+                int val = floor(5*db->isAllocated(QDateTime(displayFrom.addDays(i)), k)/opt);
+                if(val>5) val = 5;
+                vect.push_back(val);
+            }
+        }
+        else
+        {
+            for(int k = 0; k < dayLength[da-1]; k++)
+            {
+                if(db->isAllocated(QDateTime(displayFrom.addDays(i)), k))
+                    vect.push_back(2);
+                else
+                    vect.push_back(0);
+            }
+        }
         QTableWidgetItem *item = new QTableWidgetItem;
         StarRating sR(vect, dayLength[da-1],
                  QDateTime::currentDateTime(), QDateTime::currentDateTime(), Qt::transparent, false);

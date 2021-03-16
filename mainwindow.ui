@@ -27,7 +27,7 @@
        <string notr="true">background-color: rgb(24, 26, 31);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="page_6">
        <widget class="QChartView" name="graphics_Time">
@@ -472,6 +472,28 @@
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
+       <widget class="QSpinBox" name="overloadOpt">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>410</y>
+          <width>46</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>999</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -483,7 +505,7 @@
      <x>0</x>
      <y>0</y>
      <width>976</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

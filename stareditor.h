@@ -17,7 +17,7 @@ public:
         myStarRating = starRating;
     }
     StarRating starRating() { return myStarRating; }
-
+    inline void setAllocInt(int a){this->alDisp=a;};
 signals:
     void editingFinished();
 
@@ -29,7 +29,7 @@ protected:
 
 private:
     int starAtPosition(int x);
-
+    int alDisp = 0;
     StarRating myStarRating;
 };
 

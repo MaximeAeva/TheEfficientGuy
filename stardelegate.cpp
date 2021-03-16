@@ -53,6 +53,7 @@ QWidget *StarDelegate::createEditor(QWidget *parent,
 {
  if ((index.data()).canConvert<StarRating>()) {
      StarEditor *editor = new StarEditor(parent);
+     editor->setAllocInt(this->allocDisp);
      connect(editor, SIGNAL(editingFinished()),
              this, SLOT(commitAndCloseEditor()));
      return editor;
