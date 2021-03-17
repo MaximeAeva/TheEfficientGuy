@@ -831,10 +831,14 @@ void MainWindow::designGanttPage()
  */
 void MainWindow::rngGantt()
 {
+    QSqlQuery *vac = new QSqlQuery(db->db);
     if(ui->editModeButton->isChecked())
         ui->editModeButton->setText("View Mode");
     else
+    {
         ui->editModeButton->setText("Edit Mode");
+        vac->exec("VACUUM");
+    }
 
     if(ui->displayArchive->isChecked())
         ui->displayArchive->setText("Hide archives");

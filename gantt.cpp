@@ -7,6 +7,7 @@
 gantt::gantt(database *db)
 {
     this->db = db;
+    this->table->setAlternatingRowColors(true);
     this->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     this->table->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -16,7 +17,9 @@ gantt::gantt(database *db)
     this->targetItem = this->table->item(1, 0);
     this->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->table->setStyleSheet("QHeaderView::section{background-color: rgb(24, 26, 31); "
-                               "color : rgb(214,216,218);} QTableWidget {gridline-color: rgb(170,170,170);}");
+                               "color : rgb(214,216,218);} "
+                               "QTableWidget {gridline-color: rgb(170,170,170); "
+                               "alternate-background-color: rgb(47, 51, 61);background-color: rgb(24, 26, 31);}");
 }
 
 /**
