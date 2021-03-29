@@ -684,7 +684,8 @@ void database::getStatInfo()
     //Average allocation per priority
     QSqlQueryModel *allocated = new QSqlQueryModel();
     QString str4 = "SELECT AVG(ct) as avg, p as p FROM (SELECT COUNT(*) as ct, t.priority as p FROM allocation "
-                   "JOIN task as t ON parentTask=t.number GROUP BY parentTask LIMIT 20) GROUP BY p ORDER BY p ASC";
+                   "JOIN task as t ON parentTask=t.number GROUP BY parentTask "
+                   "ORDER BY allocation.number DESC LIMIT 20) GROUP BY p ORDER BY p ASC";
     allocated->setQuery(str4, db);
 
     for(int i = 0; i<allocated->rowCount(); i++)
