@@ -166,6 +166,7 @@ void database::Model()
     query4->exec("CREATE TABLE IF NOT EXISTS miscellaneous"
                    "("
                    "id DATE PRIMARY KEY, "
+                   "avgTask REAL DEFAULT 0.0, "
                    "avgTask0 REAL DEFAULT 0.0, "
                    "avgTask1 REAL DEFAULT 0.0, "
                    "avgTask2 REAL DEFAULT 0.0, "
